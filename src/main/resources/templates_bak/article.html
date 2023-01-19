@@ -1,0 +1,45 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="ch" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="component/header :: head(~{::title},~{::meta})">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <title th:text='${ article.meta.title + " " + pageInfo.author + pageInfo.titleSuffix}'></title>
+    <meta name="description" th:content="${article.meta.summary}">
+</head>
+<body>
+<div th:replace="component/header :: nav">
+
+</div>
+<div class="container main-content">
+    <div class="display-4" th:utext="${article.meta.title}"></div>
+
+    <div class="alert alert-primary" style="margin:1rem 0;" role="alert">
+        <div class="list-inline">
+            Date : <span class="badge badge-pill badge-dark"
+                         th:text="${#dates.format(article.meta.lastModifiedTime , 'yyyy-MM-dd')}"></span>
+            Author : <span class="badge badge-pill badge-dark" th:text="${pageInfo.author}"></span>
+        </div>
+    </div>
+
+    <div class="under-line" th:utext="${article.html}"></div>
+
+    <div class="row" style="margin-top:15px">
+        <div class="col-sm-6 col-xs-12 text-left">
+            <div th:if="${article.prev != null}">
+                上一篇：<a th:href="${'/article/md/get/'+article.prev.sha256}">[[${article.prev.title}]]</a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-12 text-right">
+            <div th:if="${article.next != null}">
+                下一篇：<a th:href="${'/article/md/get/'+article.next.sha256}">[[${article.next.title}]]</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="component/footer :: comments(id=${article.meta.sha256})"></div>
+</div>
+<footer th:replace="component/footer :: footer">
+
+</footer>
+</body>
+</html>
