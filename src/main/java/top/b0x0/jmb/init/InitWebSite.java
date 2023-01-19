@@ -16,25 +16,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
-import top.b0x0.jmb.component.Cost;
-import top.b0x0.jmb.common.global.GlobalData;
-import top.b0x0.jmb.component.MarkDownHandler;
 import top.b0x0.jmb.common.config.WebSiteConfig;
-import top.b0x0.jmb.component.FileListenerFactory;
+import top.b0x0.jmb.common.global.GlobalData;
 import top.b0x0.jmb.common.pojo.ArticleMetaData;
 import top.b0x0.jmb.common.pojo.Catalog;
 import top.b0x0.jmb.common.pojo.GiTalk;
 import top.b0x0.jmb.common.pojo.MetaInfo;
 import top.b0x0.jmb.common.utils.OSUtils;
+import top.b0x0.jmb.component.Cost;
+import top.b0x0.jmb.component.FileListenerFactory;
+import top.b0x0.jmb.component.MarkDownHandler;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -87,13 +87,29 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
      * 设置thymeleaf全局变量
      */
     private void resolverStaticVariables() {
+        Map<String, String> configMap = new HashMap<>();
+        configMap.put("websiteName", "测试博客");
+        configMap.put("websiteDescription", "一个用java写的Markdown博客");
+        configMap.put("websiteLogo", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
+        configMap.put("websiteIcon", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
+        configMap.put("yourAvatar", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
+        configMap.put("yourEmail", "123@qq.com");
+        configMap.put("yourName", "李瑕");
+        configMap.put("footerAbout", "");
+        configMap.put("footerICP", "AE8666");
+        configMap.put("footerCopyRight", "@NewNew");
+        configMap.put("footerPoweredBy", "WULILINGHAN");
+        configMap.put("footerPoweredByURL", "https://github.com/wulilinghan/java-markdown-blog");
+
         //顺便设置静态导航栏
-        int lastIndex = page.getNewestSize() > markdownMetaList.size() ? markdownMetaList.size() : page.getNewestSize();
+        int lastIndex = authorInfo.getNewestSize() > markdownMetaList.size() ? markdownMetaList.size() : authorInfo.getNewestSize();
         thymeleafViewResolver.setStaticVariables(
                 ImmutableMap.of("navMenu", metaInfo.getCatalog(),
-                        "pageInfo", page,
+                        "pageInfo", authorInfo,
                         "giTalk", new GiTalk(),
-                        "newest", markdownMetaList.subList(0, lastIndex)));
+                        "newest", markdownMetaList.subList(0, lastIndex),
+                        "configurations", configMap)
+        );
     }
 
     /**

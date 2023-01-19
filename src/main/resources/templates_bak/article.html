@@ -2,7 +2,7 @@
 <html lang="ch" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="component/header :: head(~{::title},~{::meta})">
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static_bak/css/bootstrap.min.css">
     <title th:text='${ article.meta.title + " " + pageInfo.author + pageInfo.titleSuffix}'></title>
     <meta name="description" th:content="${article.meta.summary}">
 </head>

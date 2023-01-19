@@ -57,9 +57,9 @@
     <div class="widewrapper subheader">
         <div class="container">
             <div class="clean-breadcrumb">
-                <img th:src="@{${blogDetailVO.blogCategoryIcon}}" style=" margin-top: -4px;height: 16px;width: 16px;"
+                <img th:src="@{${blogDetail.categoryIcon}}" style=" margin-top: -4px;height: 16px;width: 16px;"
                      alt="my personal blog">
-                <a href="#">&nbsp;<th:block th:text="${blogDetailVO.blogCategoryName}"></th:block>
+                <a href="#">&nbsp;<th:block th:text="${blogDetail.categoryName}"></th:block>
                 </a>
             </div>
         </div>
@@ -71,29 +71,29 @@
             <div class="col-md-12 blog-main">
                 <article class="blog-post">
                     <div class="body" id="blog-content">
-                        <h1 th:text="${blogDetailVO.blogTitle}"></h1>
+                        <h1 th:text="${blogDetail.tittle/h1>
                         <div class="meta">
                             <i class="fa fa-calendar"></i>
-                            <th:block th:text="${#dates.format(blogDetailVO.createTime, 'yyyy-MM-dd')}"></th:block>
+                            <th:block th:text="${#dates.format(blogDetail.creationTime, 'yyyy-MM-dd')}"></th:block>
                             <span class="separator">&#x2F;</span>
                             <i class="fa fa-comments"></i><span class="data"><a
                                 href="#comments"><th:block
-                                th:text="${blogDetailVO.commentCount}"></th:block>条评论</a></span>
+                                th:text="${blogDetail.commentCount}"></th:block>条评论</a></span>
                             <span class="separator">&#x2F;</span>
                             <i class="fa fa-street-view"></i>
-                            <th:block th:text="${blogDetailVO.blogViews}"></th:block>
+                            <th:block th:text="${blogDetail.blogViews}"></th:block>
                             浏览
                         </div>
                         <div class="meta">
                             <p class="post-tags">
-                                <th:block th:each="tag : ${blogDetailVO.blogTags}">
+                                <th:block th:each="tag : ${blogDetail.blogTags}">
                                     <a th:href="@{'/tag/' + ${tag}}">
                                         <th:block th:text="${tag}"></th:block>
                                     </a>
                                 </th:block>
                             </p>
                         </div>
-                        <th:block th:utext="${blogDetailVO.blogContent}"/>
+                        <th:block th:utext="${blogDetail.html}"/>
                     </div>
                 </article>
                 <aside class="blog-rights clearfix">
@@ -141,40 +141,40 @@
                     <th:block th:if="${null != commentPageResult}">
                         <ul class="blog-pagination" style="margin-left: 40%;margin-top:40px;">
                             <li th:class="${commentPageResult.currPage==1}?'disabled' : ''"><a
-                                    th:href="@{${commentPageResult.currPage==1}?'##':'/blog/'+${blogDetailVO.blogId}+'?commentPage=' + ${commentPageResult.currPage-1}+'#comments'}">&laquo;</a>
+                                    th:href="@{${commentPageResult.currPage==1}?'##':'/blog/'+${blogDetail.blogId}+'?commentPage=' + ${commentPageResult.currPage-1}+'#comments'}">&laquo;</a>
                             </li>
                             <li th:if="${commentPageResult.currPage-3 >=1}"><a
-                                    th:href="@{'/blog/'+${blogDetailVO.blogId}+'?commentPage=' + ${commentPageResult.currPage-3}+'#comments'}"
+                                    th:href="@{'/blog/'+${blogDetail.blogId}+'?commentPage=' + ${commentPageResult.currPage-3}+'#comments'}"
                                     th:text="${commentPageResult.currPage -3}">1</a></li>
                             <li th:if="${commentPageResult.currPage-2 >=1}"><a
-                                    th:href="@{'/blog/'+${blogDetailVO.blogId}+'?commentPage=' + ${commentPageResult.currPage-2}+'#comments'}"
+                                    th:href="@{'/blog/'+${blogDetail.blogId}+'?commentPage=' + ${commentPageResult.currPage-2}+'#comments'}"
                                     th:text="${commentPageResult.currPage -2}">1</a></li>
                             <li th:if="${commentPageResult.currPage-1 >=1}"><a
-                                    th:href="@{'/blog/'+${blogDetailVO.blogId}+'?commentPage=' + ${commentPageResult.currPage-1}}"
+                                    th:href="@{'/blog/'+${blogDetail.blogId}+'?commentPage=' + ${commentPageResult.currPage-1}}"
                                     th:text="${commentPageResult.currPage -1}">1</a></li>
                             <li class="active"><a href="#" th:text="${commentPageResult.currPage}">1</a></li>
                             <li th:if="${commentPageResult.currPage+1 <=commentPageResult.totalPage}"><a
-                                    th:href="@{'/blog/'+${blogDetailVO.blogId}+'?commentPage=' + ${commentPageResult.currPage+1}+'#comments'}"
+                                    th:href="@{'/blog/'+${blogDetail.blogId}+'?commentPage=' + ${commentPageResult.currPage+1}+'#comments'}"
                                     th:text="${commentPageResult.currPage +1}">1</a></li>
                             <li th:if="${commentPageResult.currPage+2 <=commentPageResult.totalPage}"><a
-                                    th:href="@{'/blog/'+${blogDetailVO.blogId}+'?commentPage=' + ${commentPageResult.currPage+2}+'#comments'}"
+                                    th:href="@{'/blog/'+${blogDetail.blogId}+'?commentPage=' + ${commentPageResult.currPage+2}+'#comments'}"
                                     th:text="${commentPageResult.currPage +2}">1</a></li>
                             <li th:if="${commentPageResult.currPage+3 <=commentPageResult.totalPage}"><a
-                                    th:href="@{'/blog/'+${blogDetailVO.blogId}+'?commentPage=' + ${commentPageResult.currPage+3}+'#comments'}"
+                                    th:href="@{'/blog/'+${blogDetail.blogId}+'?commentPage=' + ${commentPageResult.currPage+3}+'#comments'}"
                                     th:text="${commentPageResult.currPage +3}">1</a></li>
                             <li th:class="${commentPageResult.currPage==commentPageResult.totalPage}?'disabled' : ''"><a
-                                    th:href="@{${commentPageResult.currPage==commentPageResult.totalPage}?'##' : '/blog/'+${blogDetailVO.blogId}+'?commentPage=' + ${commentPageResult.currPage+1}+'#comments'}">&raquo;</a>
+                                    th:href="@{${commentPageResult.currPage==commentPageResult.totalPage}?'##' : '/blog/'+${blogDetail.blogId}+'?commentPage=' + ${commentPageResult.currPage+1}+'#comments'}">&raquo;</a>
                             </li>
                         </ul>
                     </th:block>
                 </aside>
-                <th:block th:if="${blogDetailVO.enableComment==0}">
+                <th:block th:if="${blogDetail.enableComment==0}">
 
                 <aside class="create-comment" id="create-comment">
                     <hr>
                     <h2><i class="fa fa-pencil"></i> 添加评论</h2>
                     <form action="#" method="get" onsubmit="return false;" accept-charset="utf-8">
-                        <input type="hidden" id="blogId" name="blogId" th:value="${blogDetailVO.blogId}"></input>
+                        <input type="hidden" id="blogId" name="blogId" th:value="${blogDetail.blogId}"></input>
                         <div class="row">
                             <div class="col-md-6">
                                 <input type="text" name="commentator" id="commentator" placeholder="(*必填)怎么称呼你?"

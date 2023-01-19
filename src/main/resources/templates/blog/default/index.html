@@ -9,31 +9,43 @@
             <div class="col-md-8 blog-main">
                 <th:block th:if="${null != blogPageResult}">
                     <th:block th:each="blog,iterStat : ${blogPageResult.list}">
-                        <div class="col-md-6 col-sm-6 blog-main-card">
-                            <article class="blog-summary">
-                                <header>
-                                    <a th:href="@{'/blog/' + ${blog.blogId}}">
-                                        <img th:src="@{${blog.blogCoverImage}}" alt="">
-                                        <h3>
-                                            <th:block th:text="${blog.blogTitle}"></th:block>
-                                        </h3>
-                                    </a>
-                                    <div class="blog-category">
-                                        <a th:href="@{'/category/' + ${blog.blogCategoryName}}">
-                                            <div class="blog-category-icon">
-                                                <img th:src="@{${blog.blogCategoryIcon}}" alt="">
-                                            </div>
-                                            <div class="blog-category" th:utext="${blog.blogCategoryName}">
-                                            </div>
-                                        </a>
+<!--                        <div class="col-md-6 col-sm-6 blog-main-card">-->
+<!--                            <article class="blog-summary">-->
+<!--                                <header>-->
+<!--                                    <a th:href="@{'/article/md/' + ${blog.sha256}}">-->
+<!--                                        <div>-->
+<!--                                            <th:block th:text="${blog.title}"></th:block>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                </header>-->
+<!--                            </article>-->
+<!--                            <div class="media-body" th:utext="${blog.summary}"></div>-->
+<!--                        </div>-->
+<!--                        <th:block th:if="${iterStat.last and iterStat.count%2==1}">-->
+<!--                            <div class="col-md-6 col-sm-6 blog-main-card">-->
+<!--                            </div>-->
+<!--                        </th:block>-->
+                        <div class="col-sm-12">
+                            <div class="media under-line">
+                                <div class="media-body">
+                                    <div class="row">
+                                        <div class="col-sm-7">
+                                            <a th:href="@{'/article/md/get/'+${blog.sha256}}"><h3 th:text="${blog.title}"></h3></a>
+                                        </div>
+                                        <div class="col-sm-5 text-right ">
+                                            <span class="text-success">Update:</span>
+                                            <span class="text-light bg-dark"
+                                                  th:text="${#dates.format(blog.lastModifiedTime , 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                        </div>
                                     </div>
-                                </header>
-                            </article>
-                        </div>
-                        <th:block th:if="${iterStat.last and iterStat.count%2==1}">
-                            <div class="col-md-6 col-sm-6 blog-main-card">
+                                    <div class="media-body" th:utext="${blog.summary}">
+                                    </div>
+                                </div>
                             </div>
-                        </th:block>
+                        </div>
+                        <div class="col-sm-12 text-left">
+                        </div>
+                        <hr/>
                     </th:block>
                 </th:block>
                 <th:block th:if="${null != blogPageResult}">

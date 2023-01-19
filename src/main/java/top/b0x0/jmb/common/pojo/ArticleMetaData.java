@@ -13,24 +13,22 @@ import java.nio.file.Path;
 @Data
 public class ArticleMetaData {
 
-    private long hash;
+    private String articleId;
     private String sha256;
     private String absolutePath; //文件绝对路径
     private transient Path path;
 
     private String title; //标题
     private String summary; //摘要
+    private String coverImage = "";
+    private String categoryName = "";
+    private String categoryIcon = "";
     private long creationTime; // 创建时间
     private long lastModifiedTime; // 更新时间
     private long lastAccessTime; // 上次访问时间
 
     public ArticleMetaData(File file) {
         this.absolutePath = file.getAbsolutePath();
-        this.path = file.toPath();
-    }
-
-    public ArticleMetaData(File file, long parentHash) {
-        this.absolutePath = file.getName();
         this.path = file.toPath();
     }
 

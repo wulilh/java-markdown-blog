@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import top.b0x0.jmb.common.pojo.GiTalk;
-import top.b0x0.jmb.common.pojo.Page;
+import top.b0x0.jmb.common.pojo.AuthorInfo;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -28,7 +28,7 @@ public class WebSiteConfig {
 
     private String metaFile = "metaInfo.json";
     private String charset = "UTF-8";
-    private Page page;
+    private AuthorInfo authorInfo;
     private String hostName;
     private GiTalk giTalk;
 

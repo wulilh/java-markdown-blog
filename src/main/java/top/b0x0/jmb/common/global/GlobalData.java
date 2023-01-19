@@ -6,8 +6,7 @@ import org.springframework.util.StringUtils;
 import top.b0x0.jmb.common.pojo.ArticleMetaData;
 import top.b0x0.jmb.common.pojo.Catalog;
 import top.b0x0.jmb.common.pojo.MetaInfo;
-import top.b0x0.jmb.common.pojo.Page;
-import top.b0x0.jmb.common.utils.OSUtils;
+import top.b0x0.jmb.common.pojo.AuthorInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class GlobalData {
     public static String INDEX_DIR = "";
 
     public static MetaInfo metaInfo;
-    protected transient Page page = new Page();
+    protected transient AuthorInfo authorInfo = new AuthorInfo();
 
     public static CopyOnWriteArrayList<ArticleMetaData> markdownMetaList = new CopyOnWriteArrayList<>();
     public static ConcurrentHashMap<String, ArticleMetaData> markdownIndex = new ConcurrentHashMap<>();
