@@ -52,7 +52,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
     @Resource
     private WebSiteConfig webSiteConfig;
     @Resource
-    ThymeleafViewResolver thymeleafViewResolver;
+    private ThymeleafViewResolver thymeleafViewResolver;
 
     @PostConstruct
     public void init() {
@@ -92,9 +92,10 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         configMap.put("websiteDescription", "一个用java写的Markdown博客");
         configMap.put("websiteLogo", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
         configMap.put("websiteIcon", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
-        configMap.put("yourAvatar", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
-        configMap.put("yourEmail", "123@qq.com");
-        configMap.put("yourName", "李瑕");
+        configMap.put("avatar", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
+        configMap.put("email", "1902325071@qq.com");
+        configMap.put("qq", "1902325071");
+        configMap.put("name", "李瑕");
         configMap.put("footerAbout", "");
         configMap.put("footerICP", "AE8666");
         configMap.put("footerCopyRight", "@NewNew");
@@ -150,12 +151,12 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         log.info("web-site-config: markdown dir[{}] , index dir[{}] ", markdownDir, indexDir);
         File markDownDirFile = new File(markdownDir);
         if (!markDownDirFile.isDirectory()) {
-            log.error("markDown-dir[{}] is not directory", markdownDir);
+            log.error("config markDown-dir[{}] is not directory", markdownDir);
             throw new RuntimeException("markDown-dir is not directory");
         }
         File indexDirFile = new File(indexDir);
         if (!indexDirFile.isDirectory()) {
-            log.error("index-dir[{}] is not directory", indexDir);
+            log.error("config index-dir[{}] is not directory", indexDir);
             throw new RuntimeException("index-dir is not directory");
         }
         // 获取文档目录元数据信息

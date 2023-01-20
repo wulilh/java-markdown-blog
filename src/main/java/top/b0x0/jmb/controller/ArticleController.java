@@ -25,23 +25,21 @@ public class ArticleController {
 //    public static String theme = "amaze";
 
     @Resource
-    ArticleService articleService;
+    private ArticleService articleService;
 
     @RequestMapping("/")
     public ModelAndView index(PageBaseDto baseDto) {
-        ModelAndView modelAndView = new ModelAndView("blog/" + theme + "/index");
-
+//        ModelAndView modelAndView = new ModelAndView("blog/" + theme + "/index");
+        ModelAndView modelAndView = new ModelAndView("index");
         if (baseDto == null) {
-            modelAndView = new ModelAndView("error/error_404");
+            modelAndView = new ModelAndView("error/404");
             return modelAndView;
         }
-
         PageResult pageResult = new PageResult(GlobalData.markdownMetaList, baseDto.getCurrPage(), baseDto.getPageSize());
-        modelAndView.addObject("blogPageResult", pageResult);
-        modelAndView.addObject("newBlogs", new ArrayList<>());
-        modelAndView.addObject("hotBlogs", new ArrayList<>());
-        modelAndView.addObject("hotTags", new ArrayList<>());
-        modelAndView.addObject("pageName", "首页");
+        modelAndView.addObject("page", pageResult);
+        modelAndView.addObject("types",new ArrayList<>());
+        modelAndView.addObject("tags",new ArrayList<>());
+        modelAndView.addObject("recommendBlogs",new ArrayList<>());
         return modelAndView;
     }
 

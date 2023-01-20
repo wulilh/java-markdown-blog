@@ -13,10 +13,13 @@ public class PageResult implements Serializable {
     private static final long serialVersionUID = 3602764259182858275L;
 
     private int total; //总记录数
-    private int currPage; //当前页数
-    private int pageSize; //每页记录数
+    private int currPage = 1; //当前页数
+    private int pageSize = 10; //每页记录数
     private int totalPage; //总页数
     private List<?> list; //列表数据
+
+    private int first; //第一页
+    private int last; //下一页
 
     public PageResult() {
     }
@@ -79,6 +82,22 @@ public class PageResult implements Serializable {
         this.list = list;
     }
 
+    public int getFirst() {
+        return first;
+    }
+
+    public void setFirst(int first) {
+        this.first = first;
+    }
+
+    public int getLast() {
+        return last;
+    }
+
+    public void setLast(int last) {
+        this.last = last;
+    }
+
     @Override
     public String toString() {
         return "PageResult{" +
@@ -87,6 +106,8 @@ public class PageResult implements Serializable {
                 ", pageSize=" + pageSize +
                 ", totalPage=" + totalPage +
                 ", list=" + list +
+                ", first=" + first +
+                ", last=" + last +
                 '}';
     }
 }
