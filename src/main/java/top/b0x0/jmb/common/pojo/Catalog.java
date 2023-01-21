@@ -2,9 +2,9 @@ package top.b0x0.jmb.common.pojo;
 
 import lombok.Data;
 import org.apache.commons.io.FilenameUtils;
-import top.b0x0.jmb.common.utils.HashCode;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,8 +17,9 @@ import java.util.List;
 @Data
 public class Catalog {
 
-    private String name;//当前目录路径
-    private String uri;//当前目录路径
+    private transient Path path;//当前目录路径
+    private String name;//当前目录名称
+    private String absolutePath;//当前目录路径
     private String sha256;//文件夹sha256
     private boolean isDirectory;
     private List<Catalog> subCatalogs = new ArrayList<>();//子级目录的文章信息
@@ -27,9 +28,11 @@ public class Catalog {
     public Catalog() {
     }
 
-    public Catalog(String uri) {
-        this.uri = uri;
-        this.name = FilenameUtils.getName(new File(uri).getName());
+    public Catalog(String absolutePath) {
+        this.absolutePath = absolutePath;
+        File directoryFile = new File(absolutePath);
+        this.path = directoryFile.toPath();
+        this.name = FilenameUtils.getName(directoryFile.getName());
     }
 
     public void addSubCatalog(Catalog catalog) {
@@ -43,7 +46,9 @@ public class Catalog {
     public List<String> catalogs() {
         List<String> list = new LinkedList<>();
         for (Catalog catalog : subCatalogs) {
-            list.add(catalog.getUri());
+            if (catalog.isDirectory()) {
+                list.add(catalog.getPath().toFile().getAbsolutePath());
+            }
         }
         return list;
     }

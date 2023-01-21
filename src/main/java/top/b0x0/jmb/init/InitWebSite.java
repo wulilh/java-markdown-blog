@@ -2,7 +2,7 @@ package top.b0x0.jmb.init;
 
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.ImmutableMap;
+import com.hankcs.hanlp.HanLP;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,6 @@ import top.b0x0.jmb.common.pojo.MetaInfo;
 import top.b0x0.jmb.common.utils.OSUtils;
 import top.b0x0.jmb.component.Cost;
 import top.b0x0.jmb.component.FileListenerFactory;
-import top.b0x0.jmb.component.MarkDownHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,7 +67,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
             metaInfo = loadCatalog();
             markdownMetaList = sortMarkDownFiles(metaInfo.getCatalog());
             aboutFile = new File(webSiteConfig.getIndexDir() + OSUtils.fileSeparator() + webSiteConfig.getAbout());
-            resolverStaticVariables();
+            setThymeleafGlobalStaticVariables();
             startFileMonitor();
         } catch (Exception e) {
             log.error("System init error", e);
@@ -79,20 +78,22 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
     }
 
     private void startFileMonitor() throws Exception {
-        FileAlterationMonitor monitor = fileListenerFactory.getMonitor(MARKDOWN_DIR);
-        monitor.start();
+        FileAlterationMonitor markdownDirMonitor = fileListenerFactory.getMonitor(MARKDOWN_DIR);
+        markdownDirMonitor.start();
+        FileAlterationMonitor indexDirMonitor = fileListenerFactory.getMonitor(INDEX_DIR);
+        indexDirMonitor.start();
     }
 
     /**
      * 设置thymeleaf全局变量
      */
-    private void resolverStaticVariables() {
+    private void setThymeleafGlobalStaticVariables() {
         Map<String, String> configMap = new HashMap<>();
         configMap.put("websiteName", "测试博客");
         configMap.put("websiteDescription", "一个用java写的Markdown博客");
-        configMap.put("websiteLogo", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
-        configMap.put("websiteIcon", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
-        configMap.put("avatar", "https://en.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
+        configMap.put("websiteLogo", "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
+        configMap.put("websiteIcon", "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
+        configMap.put("avatar", "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
         configMap.put("email", "1902325071@qq.com");
         configMap.put("qq", "1902325071");
         configMap.put("name", "李瑕");
@@ -101,15 +102,14 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         configMap.put("footerCopyRight", "@NewNew");
         configMap.put("footerPoweredBy", "WULILINGHAN");
         configMap.put("footerPoweredByURL", "https://github.com/wulilinghan/java-markdown-blog");
-
-        //顺便设置静态导航栏
-        int lastIndex = authorInfo.getNewestSize() > markdownMetaList.size() ? markdownMetaList.size() : authorInfo.getNewestSize();
         thymeleafViewResolver.setStaticVariables(
-                ImmutableMap.of("navMenu", metaInfo.getCatalog(),
-                        "pageInfo", authorInfo,
-                        "giTalk", new GiTalk(),
-                        "newest", markdownMetaList.subList(0, lastIndex),
-                        "configurations", configMap)
+                new HashMap<>() {
+                    {
+                        put("giTalk", new GiTalk());
+                        put("newblogs", markdownMetaList.subList(0, 5));
+                        put("configurations", configMap);
+                    }
+                }
         );
     }
 
@@ -171,7 +171,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         //------------------------------------------------
         List<ArticleMetaData> rootArticles = rootCatalog.getArticles();
         for (ArticleMetaData ra : rootArticles) {
-            markdownIndex.put(ra.getSha256(), ra);
+            markdownIndex.put(ra.getArticleId(), ra);
         }
         catalogIndex.put(rootCatalog.getSha256(), rootCatalog);
         for (Catalog subCatalog : rootCatalog.getSubCatalogs()) {
@@ -273,8 +273,11 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
     private ArticleMetaData getArticleMetaInfo(final File file) {
         // 文档元信息
         ArticleMetaData metaInfo = new ArticleMetaData(file);
+        metaInfo.setArticleId(IdUtil.simpleUUID()); // articleId
         metaInfo.setTitle(FilenameUtils.getBaseName(file.toString()));//标题
-        metaInfo.setSummary(MarkDownHandler.mdSimpleToHtml(getSummary(file)));//摘要
+//        metaInfo.setSummary(MarkDownHandler.mdSimpleToHtml(getSummary(file)));//摘要
+        String summary = HanLP.getSummary(getContent(file), 100);
+        metaInfo.setSummary(summary);//摘要
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             metaInfo.setSha256(DigestUtils.sha256Hex(fileInputStream)); // 文件sha256
 
@@ -286,6 +289,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
+        metaInfo.setCoverImage("https://www.2008php.com/2018_Website_appreciate/2018-11-05/20181105120350bcNnmbcNnm.jpg");
         return metaInfo;
     }
 

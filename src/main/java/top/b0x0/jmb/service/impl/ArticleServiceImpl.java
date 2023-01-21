@@ -29,7 +29,7 @@ public class ArticleServiceImpl implements ArticleService {
         CopyOnWriteArrayList<ArticleMetaData> mdMetaList = GlobalData.markdownMetaList;
         for (int i = 0; i < mdMetaList.size(); i++) {
             ArticleMetaData metaData = mdMetaList.get(i);
-            if (metaData.getSha256().equals(articleId)) {
+            if (metaData.getArticleId().equals(articleId)) {
                 if (i > 0) {
                     articleResult.setPrev(mdMetaList.get(i - 1));
                 }
@@ -38,6 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
                 }
                 articleResult.setMeta(metaData);
                 articleResult.setHtml(MarkDownHandler.mdToHtml(GlobalData.getContent(metaData.getPath().toFile())));
+                articleResult.setId(metaData.getArticleId());
                 return articleResult;
             }
         }

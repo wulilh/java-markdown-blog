@@ -17,5 +17,6 @@ public class ArticleResult extends PageResult {
     private ArticleMetaData meta;
 
     private String html;
+    private String id;
 
 }

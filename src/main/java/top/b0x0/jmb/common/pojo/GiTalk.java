@@ -10,7 +10,7 @@ import lombok.Data;
  **/
 @Data
 public class GiTalk {
-    private Boolean enable = Boolean.FALSE;
+    private boolean enable = false;
     private String owner;
     private String admin;
     private String repo;

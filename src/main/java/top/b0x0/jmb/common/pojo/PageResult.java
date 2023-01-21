@@ -18,8 +18,8 @@ public class PageResult implements Serializable {
     private int totalPage; //总页数
     private List<?> list; //列表数据
 
-    private int first; //第一页
-    private int last; //下一页
+    private boolean first; //是否是第一页
+    private boolean last; //是否是最后一页
 
     public PageResult() {
     }
@@ -40,6 +40,9 @@ public class PageResult implements Serializable {
         long skipNum = (long) pageSize * (currPage - 1);
         skipNum = skipNum <= 0 ? 0 : skipNum;
         this.list = list.stream().skip(skipNum).limit(pageSize).collect(Collectors.toList());
+
+        this.first = currPage == 1;
+        this.last = this.totalPage == currPage;
     }
 
     public int getTotal() {
@@ -82,19 +85,19 @@ public class PageResult implements Serializable {
         this.list = list;
     }
 
-    public int getFirst() {
+    public boolean isFirst() {
         return first;
     }
 
-    public void setFirst(int first) {
+    public void setFirst(boolean first) {
         this.first = first;
     }
 
-    public int getLast() {
+    public boolean isLast() {
         return last;
     }
 
-    public void setLast(int last) {
+    public void setLast(boolean last) {
         this.last = last;
     }
 

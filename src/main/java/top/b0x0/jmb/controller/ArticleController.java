@@ -45,10 +45,10 @@ public class ArticleController {
 
     @RequestMapping("article/md/{articleId}")
     public ModelAndView get(@PathVariable("articleId") String articleId) throws ArticleNotFoundException {
-        ModelAndView modelAndView = new ModelAndView("blog/" + theme + "/detail");
+//        ModelAndView modelAndView = new ModelAndView("blog/" + theme + "/detail");
+        ModelAndView modelAndView = new ModelAndView("blog");
         ArticleResult articleResult = articleService.get(articleId);
-        modelAndView.addObject("blogDetail", articleResult);
-        modelAndView.addObject("pageName", "详情");
+        modelAndView.addObject("blog", articleResult);
         return modelAndView;
     }
 
@@ -59,8 +59,7 @@ public class ArticleController {
         return modelAndView;
     }
 
-
-    @RequestMapping("article/md/about.html")
+    @RequestMapping("about")
     public ModelAndView about() throws ArticleNotFoundException {
         ModelAndView modelAndView = new ModelAndView("about");
         modelAndView.addObject("content", articleService.getAbout());

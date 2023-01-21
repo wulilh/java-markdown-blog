@@ -7,7 +7,7 @@ package top.b0x0.jmb.common.pojo;
 public class PageBaseDto {
 
     private int currPage = 1; //当前页数
-    private int pageSize = 10; //每页记录数
+    private int pageSize = 5; //每页记录数
 
     public PageBaseDto() {
     }
