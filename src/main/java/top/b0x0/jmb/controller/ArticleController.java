@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping("/")
 public class ArticleController {
-    public static String theme = "default";
+    public static String theme = GlobalData.theme;
     //public static String theme = "yummy-jekyll";
 //    public static String theme = "amaze";
 
@@ -29,24 +29,22 @@ public class ArticleController {
 
     @RequestMapping("/")
     public ModelAndView index(PageBaseDto baseDto) {
-//        ModelAndView modelAndView = new ModelAndView("blog/" + theme + "/index");
-        ModelAndView modelAndView = new ModelAndView("index");
+        ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/index");
         if (baseDto == null) {
-            modelAndView = new ModelAndView("error/404");
+            modelAndView = new ModelAndView("theme/" + theme + "/error/404");
             return modelAndView;
         }
         PageResult pageResult = new PageResult(GlobalData.markdownMetaList, baseDto.getCurrPage(), baseDto.getPageSize());
         modelAndView.addObject("page", pageResult);
-        modelAndView.addObject("types",new ArrayList<>());
-        modelAndView.addObject("tags",new ArrayList<>());
-        modelAndView.addObject("recommendBlogs",new ArrayList<>());
+        modelAndView.addObject("types", new ArrayList<>());
+        modelAndView.addObject("tags", new ArrayList<>());
+        modelAndView.addObject("recommendBlogs", new ArrayList<>());
         return modelAndView;
     }
 
     @RequestMapping("article/md/{articleId}")
     public ModelAndView get(@PathVariable("articleId") String articleId) throws ArticleNotFoundException {
-//        ModelAndView modelAndView = new ModelAndView("blog/" + theme + "/detail");
-        ModelAndView modelAndView = new ModelAndView("blog");
+        ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/blog");
         ArticleResult articleResult = articleService.get(articleId);
         modelAndView.addObject("blog", articleResult);
         return modelAndView;
@@ -61,7 +59,7 @@ public class ArticleController {
 
     @RequestMapping("about")
     public ModelAndView about() throws ArticleNotFoundException {
-        ModelAndView modelAndView = new ModelAndView("about");
+        ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/about");
         modelAndView.addObject("content", articleService.getAbout());
         return modelAndView;
     }

@@ -19,6 +19,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author wuliling Created By 2023-01-18 16:38
  **/
 public class GlobalData {
+    public static String theme = "default";
+
     public final static String MARKDOWN_SUFFIX = "md";
     public static String CHARSET = "";
 

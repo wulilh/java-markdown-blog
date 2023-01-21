@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+import top.b0x0.jmb.common.global.GlobalData;
 
 /**
  * 全局异常处理
@@ -16,11 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    public static String theme = GlobalData.theme;
 
     @ExceptionHandler({ArticleNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView articleHandler(ArticleNotFoundException notFound) {
-        ModelAndView modelAndView = new ModelAndView("error/404_article");
+        ModelAndView modelAndView = new ModelAndView(theme + "/error/404");
         log.error("article {} not found !", notFound.getSha256());
         return modelAndView;
     }
@@ -28,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({Exception.class, Throwable.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView exceptionHandler(HttpServletRequest request, Exception e) {
-        ModelAndView modelAndView = new ModelAndView("error/500");
+        ModelAndView modelAndView = new ModelAndView(theme + "/error/500");
         e.printStackTrace();
         log.error("uri : {} , exception: {}", request.getRequestURI(), e.getCause());
         return modelAndView;
