@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import top.b0x0.jmb.common.exception.ArticleNotFoundException;
 import top.b0x0.jmb.common.global.GlobalData;
 import top.b0x0.jmb.common.pojo.ArticleResult;
-import top.b0x0.jmb.common.pojo.PageBaseDto;
+import top.b0x0.jmb.common.pojo.PageQueryBaseDto;
 import top.b0x0.jmb.common.pojo.PageResult;
 import top.b0x0.jmb.service.ArticleService;
 
@@ -28,13 +28,13 @@ public class ArticleController {
     private ArticleService articleService;
 
     @RequestMapping("/")
-    public ModelAndView index(PageBaseDto baseDto) {
+    public ModelAndView index(PageQueryBaseDto baseDto) {
         ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/index");
         if (baseDto == null) {
             modelAndView = new ModelAndView("theme/" + theme + "/error/404");
             return modelAndView;
         }
-        PageResult pageResult = new PageResult(GlobalData.markdownMetaList, baseDto.getCurrPage(), baseDto.getPageSize());
+        PageResult pageResult = new PageResult(GlobalData.articleMetaList, baseDto.getCurrPage(), baseDto.getPageSize());
         modelAndView.addObject("page", pageResult);
         modelAndView.addObject("types", new ArrayList<>());
         modelAndView.addObject("tags", new ArrayList<>());

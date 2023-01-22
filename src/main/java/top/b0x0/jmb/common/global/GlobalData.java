@@ -5,8 +5,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.StringUtils;
 import top.b0x0.jmb.common.pojo.ArticleMetaData;
 import top.b0x0.jmb.common.pojo.Catalog;
-import top.b0x0.jmb.common.pojo.MetaInfo;
-import top.b0x0.jmb.common.pojo.AuthorInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +25,10 @@ public class GlobalData {
     public static String MARKDOWN_DIR = "";
     public static String INDEX_DIR = "";
 
-    public static MetaInfo metaInfo;
-    protected transient AuthorInfo authorInfo = new AuthorInfo();
+    public static Catalog catalog;
 
-    public static CopyOnWriteArrayList<ArticleMetaData> markdownMetaList = new CopyOnWriteArrayList<>();
-    public static ConcurrentHashMap<String, ArticleMetaData> markdownIndex = new ConcurrentHashMap<>();
+    public static CopyOnWriteArrayList<ArticleMetaData> articleMetaList = new CopyOnWriteArrayList<>();
+    public static ConcurrentHashMap<String, ArticleMetaData> articleMetaIndex = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<String, Catalog> catalogIndex = new ConcurrentHashMap<>();
     public static File aboutFile;
 

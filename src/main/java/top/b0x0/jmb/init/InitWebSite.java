@@ -12,16 +12,15 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 import top.b0x0.jmb.common.config.WebSiteConfig;
 import top.b0x0.jmb.common.global.GlobalData;
 import top.b0x0.jmb.common.pojo.ArticleMetaData;
 import top.b0x0.jmb.common.pojo.Catalog;
 import top.b0x0.jmb.common.pojo.GiTalk;
-import top.b0x0.jmb.common.pojo.MetaInfo;
 import top.b0x0.jmb.common.utils.OSUtils;
 import top.b0x0.jmb.component.Cost;
 import top.b0x0.jmb.component.FileListenerFactory;
@@ -29,7 +28,6 @@ import top.b0x0.jmb.component.FileListenerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -44,6 +42,7 @@ import java.util.stream.Collectors;
  **/
 @Component
 @Slf4j
+@Order(1)
 public class InitWebSite extends GlobalData implements ApplicationRunner {
 
     @Resource
@@ -64,8 +63,8 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         log.info("web site start init....");
         try (final Cost cost = new Cost("web-site-init")) {
-            metaInfo = loadCatalog();
-            markdownMetaList = sortMarkDownFiles(metaInfo.getCatalog());
+            catalog = loadCatalog();
+            articleMetaList = sortArticle(catalog);
             aboutFile = new File(webSiteConfig.getIndexDir() + OSUtils.fileSeparator() + webSiteConfig.getAbout());
             setThymeleafGlobalStaticVariables();
             startFileMonitor();
@@ -106,7 +105,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
                 new HashMap<>() {
                     {
                         put("giTalk", new GiTalk());
-                        put("newblogs", markdownMetaList.subList(0, 5));
+                        put("newblogs", articleMetaList.subList(0, 5));
                         put("configurations", configMap);
                     }
                 }
@@ -119,7 +118,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
      * @param catalog 根目录
      * @return List<MetaData> 所有文章列表
      */
-    public CopyOnWriteArrayList<ArticleMetaData> sortMarkDownFiles(final Catalog catalog) {
+    public CopyOnWriteArrayList<ArticleMetaData> sortArticle(final Catalog catalog) {
         List<ArticleMetaData> result = new CopyOnWriteArrayList<>();
         // 递归获取目录的 ArticleMetaInfo
         getArticleMetaInfoFromCatalog(catalog, result);
@@ -145,33 +144,31 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
     /**
      * 获取本地 markdown 文档目录信息
      */
-    private MetaInfo loadCatalog() throws Exception {
+    private Catalog loadCatalog() throws Exception {
         String markdownDir = webSiteConfig.getMarkdownDir();
         String indexDir = webSiteConfig.getIndexDir();
-        log.info("web-site-config: markdown dir[{}] , index dir[{}] ", markdownDir, indexDir);
+        log.info("website-config: markdown dir[{}] , index dir[{}] ", markdownDir, indexDir);
         File markDownDirFile = new File(markdownDir);
         if (!markDownDirFile.isDirectory()) {
-            log.error("config markDown-dir[{}] is not directory", markdownDir);
-            throw new RuntimeException("markDown-dir is not directory");
+            log.error("website markDown-dir[{}] is not directory", markdownDir);
+            throw new RuntimeException("website.markdown-dir not set or not directory");
         }
         File indexDirFile = new File(indexDir);
         if (!indexDirFile.isDirectory()) {
-            log.error("config index-dir[{}] is not directory", indexDir);
-            throw new RuntimeException("index-dir is not directory");
+            log.error("website index-dir[{}] is not directory", indexDir);
+            throw new RuntimeException("website.index-dir not set or not directory");
         }
         // 获取文档目录元数据信息
-        MetaInfo metaInfo = new MetaInfo();
-        String metaJsonFilePath = indexDirFile.getAbsolutePath() + OSUtils.fileSeparator() + webSiteConfig.getMetaFile();
+        String catalogJsonFilePath = indexDirFile.getAbsolutePath() + OSUtils.fileSeparator() + webSiteConfig.getCatalogFile();
         // 文档根目录
         Catalog rootCatalog = new Catalog(markDownDirFile.getPath());
         // 递归获取子目录信息
         recursiveCatalog(markDownDirFile, rootCatalog);
-        metaInfo.setCatalog(rootCatalog);
 
         //------------------------------------------------
         List<ArticleMetaData> rootArticles = rootCatalog.getArticles();
         for (ArticleMetaData ra : rootArticles) {
-            markdownIndex.put(ra.getArticleId(), ra);
+            articleMetaIndex.put(ra.getArticleId(), ra);
         }
         catalogIndex.put(rootCatalog.getSha256(), rootCatalog);
         for (Catalog subCatalog : rootCatalog.getSubCatalogs()) {
@@ -179,31 +176,10 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         }
         //------------------------------------------------
 
-        String jsonString = JSON.toJSONString(metaInfo);
-        FileUtils.writeStringToFile(new File(metaJsonFilePath), jsonString, CHARSET);
-        return metaInfo;
-    }
-
-    /**
-     * 读取本地MetaInfo文件
-     *
-     * @param metaJsonFilePath D:\website\index\viewers.json
-     * @return /
-     */
-    private MetaInfo loadLocalMetaInfo(String metaJsonFilePath) {
-        MetaInfo metaInfo = null;
-        try {
-            File oldMetaInfoFile = new File(metaJsonFilePath);
-            if (oldMetaInfoFile.exists()) {
-                String metaJsonString = FileUtils.readFileToString(oldMetaInfoFile, Charset.forName(CHARSET));
-                if (StringUtils.hasText(metaJsonString)) {
-                    metaInfo = JSON.parseObject(metaJsonString, MetaInfo.class);
-                }
-            }
-        } catch (Exception e) {
-            log.error("load local MetaInfo error", e);
-        }
-        return metaInfo;
+        String catalogJsonString = JSON.toJSONString(rootCatalog);
+        FileUtils.writeStringToFile(new File(catalogJsonFilePath), catalogJsonString, CHARSET);
+        catalog = rootCatalog;
+        return rootCatalog;
     }
 
     /**
@@ -290,6 +266,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
             log.error(e.getMessage(), e);
         }
         metaInfo.setCoverImage("https://www.2008php.com/2018_Website_appreciate/2018-11-05/20181105120350bcNnmbcNnm.jpg");
+        metaInfo.setCoverImage("https://source.unsplash.com/random/800x0");
         return metaInfo;
     }
 

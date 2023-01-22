@@ -8,9 +8,9 @@ import lombok.Getter;
 public class ArticleNotFoundException extends Exception {
 
     @Getter
-    private String sha256;
+    private String articleId;
 
-    public ArticleNotFoundException(String sha256) {
-        this.sha256 = sha256;
+    public ArticleNotFoundException(String articleId) {
+        this.articleId = articleId;
     }
 }

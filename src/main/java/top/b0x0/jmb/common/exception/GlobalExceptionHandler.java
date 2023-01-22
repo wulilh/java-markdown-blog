@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView articleHandler(ArticleNotFoundException notFound) {
         ModelAndView modelAndView = new ModelAndView(theme + "/error/404");
-        log.error("article {} not found !", notFound.getSha256());
+        log.error("article {} not found !", notFound.getArticleId());
         return modelAndView;
     }
 

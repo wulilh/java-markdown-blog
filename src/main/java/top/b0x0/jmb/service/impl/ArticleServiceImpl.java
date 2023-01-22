@@ -26,7 +26,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleResult get(final String articleId) throws ArticleNotFoundException {
         ArticleResult articleResult = new ArticleResult();
-        CopyOnWriteArrayList<ArticleMetaData> mdMetaList = GlobalData.markdownMetaList;
+        CopyOnWriteArrayList<ArticleMetaData> mdMetaList = GlobalData.articleMetaList;
         for (int i = 0; i < mdMetaList.size(); i++) {
             ArticleMetaData metaData = mdMetaList.get(i);
             if (metaData.getArticleId().equals(articleId)) {

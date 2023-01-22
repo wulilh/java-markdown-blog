@@ -7,10 +7,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.StringUtils;
 import top.b0x0.jmb.TestBase;
 import top.b0x0.jmb.common.pojo.ArticleMetaData;
 import top.b0x0.jmb.common.pojo.Catalog;
-import top.b0x0.jmb.common.pojo.MetaInfo;
 import top.b0x0.jmb.common.utils.JacksonUtils;
 
 import java.io.File;
@@ -30,6 +30,32 @@ import java.util.*;
 public class FileTest extends TestBase {
 
     @Test
+    public void test_r() throws IOException {
+        String s = "cache";
+        File file = new File(s);
+        System.out.println("file = " + file.getAbsolutePath());
+
+        boolean exists = file.exists();
+        System.out.println("exists = " + exists);
+        if (!exists) {
+            boolean mkdir = file.mkdir();
+            System.out.println("mkdir = " + mkdir);
+        }
+//        FileUtils.touch(file);
+    }
+
+    @Test
+    public void test() {
+        String s = "jdbc:sqlite:dbs/jmb.db";
+        if (!StringUtils.hasLength(s) || !(s.split(":").length == 3)) {
+            throw new RuntimeException(s + " sqlite url error");
+        }
+        String dataSourceUrl = s.split(":")[2];
+        String absolutePath = new File(dataSourceUrl).getAbsolutePath();
+        System.out.println("absolutePath = " + absolutePath);
+    }
+
+    @Test
     public void path() throws IOException {
         File file = new File("D:\\website\\articles");
         String baseName = FilenameUtils.getBaseName(file.toString());
@@ -45,18 +71,16 @@ public class FileTest extends TestBase {
 //            MetaInfo metaInfo = JacksonUtils.json2pojo(metaJsonString, MetaInfo.class);
 //            System.out.println("metaInfo = " + metaInfo);
 //        }
-        MetaInfo metaInfo = JSON.parseObject(metaJsonString, MetaInfo.class);
+        Catalog metaInfo = JSON.parseObject(metaJsonString, Catalog.class);
         System.out.println("metaInfo = " + JSON.toJSONString(metaInfo));
     }
 
 
     @Test
     public void test_writeFile() throws Exception {
-        MetaInfo metaInfo = new MetaInfo();
         File file = new File("D:\\website\\articles\\metaInfo.json");
         Catalog catalog = new Catalog(file.getAbsolutePath());
-        metaInfo.setCatalog(catalog);
-        String obj2json = JacksonUtils.obj2json(metaInfo);
+        String obj2json = JacksonUtils.obj2json(catalog);
         FileUtils.writeStringToFile(file, obj2json, "utf-8");
     }
 

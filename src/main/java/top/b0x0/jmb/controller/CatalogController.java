@@ -20,14 +20,13 @@ import java.util.Map;
 public class CatalogController {
 
     @Resource
-    ArticleService articleService;
+    private ArticleService articleService;
 
     @RequestMapping("list/{catalogId}")
     public ModelAndView list(@PathVariable("catalogId") String catalogId) {
         ModelAndView modelAndView = new ModelAndView("index");
         List<ArticleMetaData> articleMetaData = articleService.listCatalogArticle(catalogId);
         Map<String, Object> map = new HashMap<>();
-        map.put("getTotalPages", 5);
         map.put("data", articleMetaData);
         modelAndView.addObject("articles", map);
         return modelAndView;
