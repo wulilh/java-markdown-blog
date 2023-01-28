@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,9 @@ public class Message {
     private String avatar; //头像
     private Date createTime;
 
+    private String toNickname;
+    private String toEmail;
+
     private Boolean replyInform;//留言被回复后是否发邮件通知
 
     private String openid;//评论人的openid，默认为空
@@ -30,4 +34,8 @@ public class Message {
     private Message parentMessage; //评论
 
     private Integer adminMessage = 0;//评论类型，0为游客评论，1为访客评论，2为管理员评论
+
+    public void appendReplyMessage(Collection<Message> messages) {
+        this.replyMessages.addAll(messages);
+    }
 }

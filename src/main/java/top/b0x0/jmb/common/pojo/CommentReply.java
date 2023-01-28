@@ -24,6 +24,8 @@ public class CommentReply implements Serializable {
     private String userId;
     private String nickname;
     private String email;
+    private String toNickname;
+    private String toEmail;
     private String toUserId;
     private String content;
     private Date createTime;

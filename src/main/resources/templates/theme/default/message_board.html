@@ -125,7 +125,8 @@
 
                         <div class="comment" th:each="message : ${messages.getList()}" th:if="!${message.parentMessage}">
                             <a class="avatar">
-                                <img th:src="@{${message.avatar}}" src="default/images/avatar.png">
+<!--                                <img th:src="@{${message.avatar}}" src="default/images/avatar.png">-->
+                                <img src="default/images/avatar.png" alt=""/>
                             </a>
                             <div class="content">
                                 <a class="author">
@@ -155,21 +156,18 @@
                             <div class="comments" th:if="${#arrays.length(message.replyMessages)}>0">
                                 <div class="comment" th:each="reply : ${message.replyMessages}">
                                     <a class="avatar">
-                                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
+<!--                                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">-->
+                                        <img src="default/images/avatar.png" alt=""/>
                                     </a>
                                     <div class="content">
                                         <a class="author">
                                             <span th:text="${reply.nickname}">小红</span>
-                                            <div class="ui mini basic adminComment left pointing label m-padded-mini"
-                                                 th:if="${reply.adminMessage}==2">博主
-                                            </div>
-                                            <span class="ui mini basic visitComment left pointing label m-padded-mini"
-                                                  th:if="${reply.adminMessage}==1">访客</span>
-                                            <span class="ui mini basic touristComment left pointing label m-padded-mini"
-                                                  th:if="${reply.adminMessage}==0">游客</span>
-                                            <span class="ui small basic githubComment left pointing label m-padded-mini"
-                                                  th:if="${message.adminMessage}==3">gayhub</span>
-                                            &nbsp;<span th:text="|@ ${reply.parentMessage.nickname}|" class="m-teal">@ 小白</span>
+                                            <div class="ui mini basic adminComment left pointing label m-padded-mini" th:if="${reply.adminMessage}==2">博主</div>
+                                            <span class="ui mini basic visitComment left pointing label m-padded-mini" th:if="${reply.adminMessage}==1">访客</span>
+                                            <span class="ui mini basic touristComment left pointing label m-padded-mini" th:if="${reply.adminMessage}==0">游客</span>
+                                            <span class="ui small basic githubComment left pointing label m-padded-mini" th:if="${message.adminMessage}==3">gayhub</span>
+<!--                                            &nbsp;<span th:text="|@ ${reply.parentMessage.nickname}|" class="m-teal">@ 小白</span>-->
+                                            &nbsp;<span th:text="|@ ${reply.toNickname}|" class="m-teal">@ 小白</span>
                                         </a>
                                         <div class="metadata">
                                             <span class="date"

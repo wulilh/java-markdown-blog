@@ -16,6 +16,8 @@ create table comment_reply(
     nickname VARCHAR , --'评论者昵称'
     email VARCHAR , --'评论者邮箱'
     to_user_id varchar not null ,	--'被评论者id'
+    to_nickname varchar not null ,	--'被评论者昵称'
+    to_email varchar not null ,	--'被评论者邮箱'
     content text not null ,--'评论内容'
     create_time timestamp default (datetime('now','localtime')) ,	-- '创建时间'
     update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'

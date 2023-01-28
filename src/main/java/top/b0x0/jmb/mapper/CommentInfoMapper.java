@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CommentInfoMapper {
 
-    List<CommentInfo> list();
+    List<CommentInfo> listComment();
 
     List<CommentReply> listReply(CommentReply reply);
 }

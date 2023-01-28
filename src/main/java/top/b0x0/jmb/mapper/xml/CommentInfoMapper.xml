@@ -16,15 +16,15 @@
         id,user_id,nickname,email,content,create_time,update_time,is_valid
     </sql>
 
-    <select id="list" resultType="top.b0x0.jmb.common.pojo.CommentInfo">
-        select * from comment_info where is_valid = 'Y'
+    <select id="listComment" resultType="top.b0x0.jmb.common.pojo.CommentInfo">
+        select * from comment_info where is_valid = 'Y'  order by create_time desc
     </select>
 
     <select id="listReply" resultType="top.b0x0.jmb.common.pojo.CommentReply">
         select * from comment_reply
         where is_valid = 'Y'
         <if test="commentId !=null">
-            and comment_id = #{comment_id}
+            and comment_id = #{commentId}
         </if>
         <if test="userId !='' and userId !=null">
             and user_id = #{userId}
@@ -35,5 +35,6 @@
         <if test="toUserId !='' and toUserId !=null">
             and to_user_id = #{toUserId}
         </if>
+        order by create_time
     </select>
 </mapper>
