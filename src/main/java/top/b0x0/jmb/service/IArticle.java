@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author wuliling Created By 2023-01-18 21:45
  **/
-public interface ArticleService {
+public interface IArticle {
     ArticleResult get(String articleId) throws ArticleNotFoundException;
 
     String getAbout() throws ArticleNotFoundException;

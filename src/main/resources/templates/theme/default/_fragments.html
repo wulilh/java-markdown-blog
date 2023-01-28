@@ -38,10 +38,10 @@
     <div class="ui inverted secondary stackable menu">
       <h2 class="ui teal header item" title="个人博客" th:text="${configurations.get('websiteName')}">wulilinghan_Blog</h2>
       <a href="#" target="_blank" th:href="@{/}" class="m-item item m-mobile-hide " th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>&nbsp;首页</a>
-      <a href="#" target="_blank" th:href="@{/types/-1}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini idea icon"></i>分类</a>
+<!--      <a href="#" target="_blank" th:href="@{/types/-1}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini idea icon"></i>分类</a>-->
       <a href="#" target="_blank" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="mini tags icon"></i>&nbsp;标签</a>
-      <a href="#" target="_blank" th:href="@{/archives}" class="m-item item m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="mini clone icon"></i>&nbsp;归档</a>
-      <a href="#" target="_blank" th:href="@{/Messages}" class="m-item item m-mobile-hide" th:classappend="${n==5} ? 'active'"><i class="mini envelope outline icon"></i>&nbsp;留言</a>
+<!--      <a href="#" target="_blank" th:href="@{/archives}" class="m-item item m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="mini clone icon"></i>&nbsp;归档</a>-->
+      <a href="#" target="_blank" th:href="@{/messages}" class="m-item item m-mobile-hide" th:classappend="${n==5} ? 'active'"><i class="mini envelope outline icon"></i>&nbsp;留言</a>
       <a href="#" target="_blank" th:href="@{/about}" class="m-item item m-mobile-hide" th:classappend="${n==6} ? 'active'"><i class="mini info icon"></i>关于我</a>
 <!--      <a href="http://music.xiongsihao.com" class="m-item item m-mobile-hide" th:classappend="${n==7} ? 'active'"><i class="mini music icon"></i>&nbsp;在线音乐</a>-->
 <!--      <a href="http://netdisk.xiongsihao.com" class="m-item item m-mobile-hide" th:classappend="${n==8} ? 'active'"><i class="mini save icon"></i>&nbsp;云盘</a>-->
@@ -91,7 +91,8 @@
 <!--底部footer-->
 <footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
   <!--引入网易云音乐播放器插件，固定右下角显示,歌单4864025307-->
-<!--  <div id="netEasy-music" style="display:none;position: fixed;bottom: -45px;right: 280px;width: 0%;z-index:9999" >
+<!--
+  <div id="netEasy-music" style="display:none;position: fixed;bottom: -45px;right: 280px;width: 0%;z-index:9999" >
     <iframe frameborder="no" border="0" marginwidth="0"
             marginheight="0" width=280 height=300
             src="http://music.163.com/outchain/player?type=0&id=4864025307&auto=0">

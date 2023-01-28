@@ -30,9 +30,9 @@ public class ArticleMetaData {
     private long lastAccessTime; // 上次访问时间
     private int views; // 阅读量
     private List<Tag> tags = new ArrayList<>(); //博客与标签的关系为多对多
-    private boolean appreciation = false; //赞赏
+    private boolean appreciation = false; //是否可赞赏
     private boolean shareStatement = true; //
-    private boolean commentabled = false; //留言
+    private boolean commentabled = true; //是否可留言
 
     public ArticleMetaData(File file) {
         this.absolutePath = file.getAbsolutePath();

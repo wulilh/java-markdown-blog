@@ -3,7 +3,7 @@ package top.b0x0.jmb.component;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
-import top.b0x0.jmb.service.ListenerService;
+import top.b0x0.jmb.service.IFileListener;
 
 import java.io.File;
 
@@ -13,9 +13,9 @@ import java.io.File;
 @Slf4j
 public class FileListener extends FileAlterationListenerAdaptor {
 
-    private final ListenerService listenerService;
+    private final IFileListener listenerService;
 
-    public FileListener(ListenerService listenerService) {
+    public FileListener(IFileListener listenerService) {
         this.listenerService = listenerService;
     }
 

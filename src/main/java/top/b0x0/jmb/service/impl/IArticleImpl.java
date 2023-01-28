@@ -6,7 +6,7 @@ import top.b0x0.jmb.common.exception.ArticleNotFoundException;
 import top.b0x0.jmb.common.global.GlobalData;
 import top.b0x0.jmb.common.pojo.ArticleMetaData;
 import top.b0x0.jmb.common.pojo.ArticleResult;
-import top.b0x0.jmb.service.ArticleService;
+import top.b0x0.jmb.service.IArticle;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author wuliling Created By 2023-01-18 21:45
  **/
 @Service
-public class ArticleServiceImpl implements ArticleService {
+public class IArticleImpl implements IArticle {
 
     /**
      * 根据文章 articleId 查找文章

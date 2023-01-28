@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.4</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -115,28 +115,19 @@
 
     </dependencies>
 
-    <!--
-        <repositories>
-            <repository>
-                <id>3rdparty</id>
-                <url>http://dws.sino-life.com/nexus/content/repositories/thirdparty/</url>
-            </repository>
-            <repository>
-                <id>sf-group</id>
-                <name>sf-group</name>
-                <url>http://192.168.13.66:8081/repository/sf-group/</url>
-            </repository>
-        </repositories>
 
-        <pluginRepositories>
-            <pluginRepository>
-                <id>sf-group</id>
-                <url>http://192.168.13.66:8081/repository/sf-group/</url>
-            </pluginRepository>
-        </pluginRepositories>
-    -->
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>

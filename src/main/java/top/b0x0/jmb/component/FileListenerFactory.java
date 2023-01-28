@@ -7,10 +7,9 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.springframework.stereotype.Component;
-import top.b0x0.jmb.service.ListenerService;
+import top.b0x0.jmb.service.IFileListener;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author wuliling Created By 2023-01-17 21:11
@@ -19,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class FileListenerFactory {
 
     @Resource
-    private ListenerService listenerService;
+    private IFileListener listenerService;
 
     /**
      * @param monitorDir 监听路径

@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
-<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="theme/default/_fragments :: head(~{::title})">
+<head th:replace="~{theme/default/_fragments :: head(~{::title})}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>留言板</title>
-    <link rel="stylesheet" href="../../../static/default/css/semantic.min.css" th:href="@{/default/css/semantic.min.css}">
+    <link rel="stylesheet" href="../../../static/default/css/semantic.min.css"
+          th:href="@{/default/css/semantic.min.css}">
     <link rel="stylesheet" href="../../../static/default/css/me.css" th:href="@{/default/css/me.css}">
 </head>
 <body>
 
 <!--导航-->
-<nav th:replace="theme/default/_fragments :: menu(5)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+<nav th:replace="~{theme/default/_fragments :: menu(5)}"
+     class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
 </nav>
 
 <link rel="stylesheet" href="../../../static/default/css/alert_window.css" th:href="@{/default/css/alert_window.css}"/>
@@ -22,7 +23,7 @@
 <div class="widget widget1" id="window1" hidden="hidden">
     <div class="body">
         <div class="msg" style="color: red;font-size: 20px">提示</div>
-        <div style="height:20px"> </div>
+        <div style="height:20px"></div>
         <div class="msg"><b>留言信息不能为空!请确认后填写!</b></div>
         <div class="btns">
             <a href="javascript:void(0);" class="btn-confirm" id="btn_ok1">确 定</a>
@@ -32,7 +33,7 @@
 <div class="widget widget1" id="window2" hidden="hidden">
     <div class="body">
         <div class="msg" style="color: red;font-size: 20px">提示</div>
-        <div style="height:20px"> </div>
+        <div style="height:20px"></div>
         <div class="msg"><b>请确保填入的邮箱正确！</b></div>
         <div class="msg"><b>开启通知后，当留言被回复后你将收到一封邮件通知</b></div>
         <div class="btns">
@@ -43,7 +44,7 @@
 <div class="widget widget1" id="window3" hidden="hidden">
     <div class="body">
         <div class="msg" style="color: #2a2dff;font-size: 20px">提示</div>
-        <div style="height:20px"> </div>
+        <div style="height:20px"></div>
         <div class="msg"><b>请输入手机号</b></div>
         <form class="">
             <div class="">
@@ -64,73 +65,92 @@
             <h2 class="ui dividing teal header">留言</h2>
             <div id="message-form" class="ui teal form">
                 <!--留言板，可编辑div-->
-                <div  id="commentEditor" class="fields error" contenteditable="true" data-placeholder="请输入留言信息..."></div>
+                <div id="commentEditor" class="fields error" contenteditable="true" data-placeholder="请输入留言信息..."></div>
 
                 <div class="fields">
                     <!--表情按钮-->
                     <div class="field m-mobile-wide m-margin-bottom-small" data-tooltip="表情未加载完全或点击无响应可刷新页面重试">
-                        <button id="emojiBtn" type="button" class="ui yellow button m-mobile-wide"><i class="large smile outline icon"></i>表情</button>
+                        <button id="emojiBtn" type="button" class="ui yellow button m-mobile-wide"><i
+                                class="large smile outline icon"></i>表情
+                        </button>
                     </div>
 
                     <div class="field m-mobile-wide m-margin-bottom-small">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="nickname" placeholder="姓名" th:value="${session.nickname}!=null ? ${session.nickname}">
+                            <input type="text" name="nickname" placeholder="姓名"
+                                   th:value="${session.nickname}!=null ? ${session.nickname}">
                         </div>
                     </div>
                     <div class="field m-mobile-wide m-margin-bottom-small">
                         <div class="ui left icon input">
                             <i class="mail icon"></i>
-                            <input type="text" name="email" placeholder="邮箱" th:value="${session.user}!=null ? ${session.user.email}">
+                            <input type="text" name="email" placeholder="邮箱"
+                                   th:value="${session.user}!=null ? ${session.user.email}">
                         </div>
                     </div>
                     <div class="field m-mobile-wide m-margin-bottom-small" data-tooltip="点击选择是否开启留言回复通知">
                         <div id="open-mail" name="open-mail" class="ui toggle checkbox">
-                            <div style="height:10px"> </div>
-                            <input type="checkbox" tabindex="0" class="hidden" />
+                            <div style="height:10px"></div>
+                            <input type="checkbox" tabindex="0" class="hidden"/>
                             <label>回复通知</label>
                         </div>
                     </div>
                     <div class="field  m-margin-bottom-small m-mobile-wide">
-                        <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="large edit icon"></i>发布</button>
+                        <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i
+                                class="large edit icon"></i>发布
+                        </button>
                     </div>
 
                     <div class="field  m-margin-bottom-small m-mobile-wide" data-tooltip="还没做这个功能....有时间再做">
-                        <button id="bindEmail" type="button" class="ui green  button m-mobile-wide"><i class="large envelope outline  icon"></i>邮箱绑定</button>
+                        <button id="bindEmail" type="button" class="ui green  button m-mobile-wide"><i
+                                class="large envelope outline  icon"></i>邮箱绑定
+                        </button>
                     </div>
 
                     <div class="field  m-margin-bottom-small m-mobile-wide" data-tooltip="手机验证码发送demo，仅做测试使用不存储手机号！">
-                        <button id="CodeDemo" type="button" class="ui violet  button m-mobile-wide"><i class="large mobile  icon"></i>demo</button>
+                        <button id="CodeDemo" type="button" class="ui violet  button m-mobile-wide"><i
+                                class="large mobile  icon"></i>demo
+                        </button>
                     </div>
                 </div>
                 <div class="ui error message"></div>
             </div>
             <input type="hidden" name="parentMessage.id" value="-1">
+
             <!--留言列表-->
-            <div id="message-container" class="ui teal segment" >
+            <div id="message-container" class="ui teal segment">
                 <div th:fragment="messageList">
                     <div class="ui threaded comments" style="max-width: 100%;">
 
-                        <div class="comment" th:each="message : ${messages.content}" th:if="!${message.parentMessage}">
-                                <a class="avatar">
-                                    <img th:src="@{${message.avatar}}" src="/images/avatar.png">
+                        <div class="comment" th:each="message : ${messages.getList()}" th:if="!${message.parentMessage}">
+                            <a class="avatar">
+                                <img th:src="@{${message.avatar}}" src="default/images/avatar.png">
+                            </a>
+                            <div class="content">
+                                <a class="author">
+                                    <span th:text="${message.nickname}">小白</span>
+                                    <div class="ui mini basic adminComment left pointing label m-padded-mini"
+                                         th:if="${message.adminMessage}==2">博主
+                                    </div>
+                                    <span class="ui mini basic visitComment left pointing label m-padded-mini"
+                                          th:if="${message.adminMessage}==1">访客</span>
+                                    <span class="ui mini basic touristComment left pointing label m-padded-mini"
+                                          th:if="${message.adminMessage}==0">游客</span>
+                                    <span class="ui small basic githubComment left pointing label m-padded-mini"
+                                          th:if="${message.adminMessage}==3">gayhub</span>
                                 </a>
-                                <div class="content">
-                                    <a class="author">
-                                        <span th:text="${message.nickname}">XSH</span>
-                                        <div class="ui mini basic adminComment left pointing label m-padded-mini" th:if="${message.adminMessage}==2">博主</div>
-                                        <span class="ui mini basic visitComment left pointing label m-padded-mini" th:if="${message.adminMessage}==1">访客</span>
-                                        <span class="ui mini basic touristComment left pointing label m-padded-mini" th:if="${message.adminMessage}==0">游客</span>
-                                        <span class="ui small basic githubComment left pointing label m-padded-mini" th:if="${message.adminMessage}==3">gayhub</span>
-                                    </a>
-                                    <div class="metadata">
-                                        <span class="date" th:text="${#dates.format(message.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-03-17 22:54</span>
-                                    </div>
-                                    <div id="messageText" class="text" th:utext="${message.content}">1234567890</div>
-                                    <div class="actions">
-                                        <a class="reply" data-messageid="1" data-messagenickname="Matt" th:attr="data-messageid=${message.id},data-messagenickname=${message.nickname}" onclick="reply(this)">回复</a>
-                                    </div>
+                                <div class="metadata">
+                                    <span class="date"
+                                          th:text="${#dates.format(message.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-03-17 22:54</span>
                                 </div>
+                                <div id="messageText" class="text" th:utext="${message.content}">1234567890</div>
+                                <div class="actions">
+                                    <a class="reply" data-messageid="1" data-messagenickname="Matt"
+                                       th:attr="data-messageid=${message.id},data-messagenickname=${message.nickname}"
+                                       onclick="reply(this)">回复</a>
+                                </div>
+                            </div>
 
                             <div class="comments" th:if="${#arrays.length(message.replyMessages)}>0">
                                 <div class="comment" th:each="reply : ${message.replyMessages}">
@@ -138,22 +158,30 @@
                                         <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
                                     </a>
                                     <div class="content">
-                                        <a class="author" >
+                                        <a class="author">
                                             <span th:text="${reply.nickname}">小红</span>
-                                            <div class="ui mini basic adminComment left pointing label m-padded-mini" th:if="${reply.adminMessage}==2">博主</div>
-                                            <span class="ui mini basic visitComment left pointing label m-padded-mini" th:if="${reply.adminMessage}==1">访客</span>
-                                            <span class="ui mini basic touristComment left pointing label m-padded-mini" th:if="${reply.adminMessage}==0">游客</span>
-                                            <span class="ui small basic githubComment left pointing label m-padded-mini" th:if="${message.adminMessage}==3">gayhub</span>
+                                            <div class="ui mini basic adminComment left pointing label m-padded-mini"
+                                                 th:if="${reply.adminMessage}==2">博主
+                                            </div>
+                                            <span class="ui mini basic visitComment left pointing label m-padded-mini"
+                                                  th:if="${reply.adminMessage}==1">访客</span>
+                                            <span class="ui mini basic touristComment left pointing label m-padded-mini"
+                                                  th:if="${reply.adminMessage}==0">游客</span>
+                                            <span class="ui small basic githubComment left pointing label m-padded-mini"
+                                                  th:if="${message.adminMessage}==3">gayhub</span>
                                             &nbsp;<span th:text="|@ ${reply.parentMessage.nickname}|" class="m-teal">@ 小白</span>
                                         </a>
                                         <div class="metadata">
-                                            <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                                            <span class="date"
+                                                  th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
                                         </div>
                                         <div id="replyCommentText" class="text" th:utext="${reply.content}">
                                             How artistic!
                                         </div>
                                         <div class="actions">
-                                            <a class="reply" data-messageid="1" data-messagenickname="Matt" th:attr="data-messageid=${reply.id},data-messagenickname=${reply.nickname}" onclick="reply(this)">回复</a>
+                                            <a class="reply" data-messageid="1" data-messagenickname="Matt"
+                                               th:attr="data-messageid=${reply.id},data-messagenickname=${reply.nickname}"
+                                               onclick="reply(this)">回复</a>
                                         </div>
                                     </div>
                                 </div>
@@ -163,28 +191,34 @@
                     <!--分页组件-->
                     <div class="ui center aligned segment">
                         <div class="ui pagination menu">
-                            <a class="item active teal" href="/Messages?page=1">
+                            <a class="item active teal" href="/messages?page=1">
                                 首页
                             </a>
-                            <a class="item" th:if="${a}" th:href="@{/Messages?page={num}(num=${messages.number})}" href="/Messages?page=2">
+                            <a class="item" th:if="${isIsFirstPage}" th:href="@{/messages?currPage={currPage}(currPage=${messages.pageNum})}"
+                               href="/messages?page=2">
                                 上一页
                             </a>
                             <a class="item">
-                                当前第<h3 class="ui orange header m-inline-block m-text-thin" th:text="${messages.number}+1">1</h3>页
+                                当前第<h3 class="ui orange header m-inline-block m-text-thin"
+                                       th:text="${messages.pageNum}+1">1</h3>页
                             </a>
-                            <a class="item" th:if="${b}" th:href="@{/Messages?page={num}(num=${messages.number}+2)}" href="/Messages?page=2">
+                            <a class="item" th:if="${isIsLastPage}" th:href="@{/messages?currPage={currPage}(currPage=${messages.pageNum}+2)}"
+                               href="/messages?page=2">
                                 下一页
                             </a>
-                            <a class="item" th:href="@{/Messages?page={num}(num=${messages.totalPages})}" href="/Messages?page=2">
+                            <a class="item" th:href="@{/messages?currPage={currPage}(currPage=${messages.pages})}"
+                               href="/messages?page=2">
                                 尾页
                             </a>
                             <a class="item">
-                                共<h3 class="ui red header m-inline-block m-text-thin" th:text="${messages.totalPages}">20</h3>页
+                                共<h3 class="ui red header m-inline-block m-text-thin" th:text="${messages.pages}">
+                                20</h3>页
                             </a>
                             <a class="item">
-                                共<h3 class="ui red header m-inline-block m-text-thin" th:text="${messages.totalElements}">200</h3>条
+                                共<h3 class="ui red header m-inline-block m-text-thin"
+                                     th:text="${messages.total}">200</h3>条
                             </a>
-                            <form name="pageForm" class="right item" action="/Messages" method="get">
+                            <form name="pageForm" class="right item" action="/messages" method="get">
                                 <div class="ui right labeled input">
                                     <div class="ui basic label">Go</div>
                                     <input type="text" name="page" placeholder="页码..."
@@ -206,7 +240,7 @@
 <br>
 
 <!--底部footer-->
-<footer th:replace="theme/default/_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+<footer th:replace="~{theme/default/_fragments :: footer}" class="ui inverted vertical segment m-padded-tb-massive">
 </footer>
 
 <script src="../../../static/default/js/jquery.js" th:src="@{/default/js/jquery.js}"></script>
@@ -218,12 +252,12 @@
             button: "#emojiBtn",
             showTab: false,
             animation: 'slide',
-            basePath: '/images/emoji',
+            basePath: 'default/images/emoji',
             icons: emojiLists
         });
 
         $("#messageText").emojiParse({
-            basePath: '/images/emoji',
+            basePath: 'default/images/emoji',
             icons: emojiLists
         });
     }
@@ -235,43 +269,44 @@
 
     function postData() {
         $.ajax({
-            cache:true,//保留缓存数据
-            type:"POST",
-            url:"/POSTMessages",
-            headers:{
-                'x-source':"message-boardPost"
+            cache: true,//保留缓存数据
+            type: "POST",
+            url: "/POSTMessages",
+            headers: {
+                'x-source': "message-boardPost"
             },
-            data:{
-                "parentMessage.id" : $("[name='parentMessage.id']").val(),
+            data: {
+                "parentMessage.id": $("[name='parentMessage.id']").val(),
                 //"openid" : $("[name='openidValue']").val(),
                 "nickname": $("[name='nickname']").val(),
-                "email"   : $("[name='email']").val(),
-                "content" : document.getElementById("commentEditor").innerHTML,
-                "replyInform" : $("[name='open-mail']").hasClass("checked") ? true : false
+                "email": $("[name='email']").val(),
+                "content": document.getElementById("commentEditor").innerHTML,
+                "replyInform": $("[name='open-mail']").hasClass("checked") ? true : false
             },
-            async:true,//异步
-            error:function(request){
+            async: true,//异步
+            error: function (request) {
                 alert(JSON.stringify(request.responseJSON));
                 console.log(JSON.stringify(request.responseJSON.message));
                 //alert("服务器出现了一个未知的错误");
             },
-            success:function(data){
+            success: function (data) {
                 clearContent();
                 $("#message-container").load("/Message");//刷新数据
             }
         });
     }
+
     function reply(obj) {
         var messageId = $(obj).data('messageid');
         var messageNickname = $(obj).data('messagenickname');
-        $("[id='commentEditor']").attr("data-placeholder", "@"+messageNickname);
+        $("[id='commentEditor']").attr("data-placeholder", "@" + messageNickname);
         $("[name='parentMessage.id']").val(messageId);
-        $(window).scrollTo($('#message-form'),500);
+        $(window).scrollTo($('#message-form'), 500);
     }
 
     function clearContent() {
         $("[name='parentMessage.id']").val(-1);
-        document.getElementById("commentEditor").innerText='';
+        document.getElementById("commentEditor").innerText = '';
         $("[id='commentEditor']").attr("data-placeholder", "请输入留言信息...");
     }
 
@@ -279,10 +314,10 @@
     $('#commentpost-btn').click(function () {
         var boo = $('.ui.form').form('validate form');
         var text = document.getElementById("commentEditor").innerHTML;
-        if (boo && text!="") {
+        if (boo && text != "") {
             console.log('校验成功');
             postData();
-        } else if(text == ""){
+        } else if (text == "") {
             console.log('留言数据校验不通过');
             $('#window1').removeAttr('hidden');
             return;
@@ -309,57 +344,57 @@
         }
     });
 
-    $(function(){
+    $(function () {
         //确认
-        $('#btn_ok1').click(function(){
-            $('#window1').attr('hidden','hidden');
+        $('#btn_ok1').click(function () {
+            $('#window1').attr('hidden', 'hidden');
         });
-        $('#btn_ok2').click(function(){
-            $('#window2').attr('hidden','hidden');
+        $('#btn_ok2').click(function () {
+            $('#window2').attr('hidden', 'hidden');
         });
 
-        $('#btn_ok3').click(function(){
+        $('#btn_ok3').click(function () {
             var phone = document.getElementById('phoneNum').value;
-            if(localStorage.getExpire("phoneNum")==phone){
+            if (localStorage.getExpire("phoneNum") == phone) {
                 alert("当前手机号一小时内已发送过短信，请稍候再试......");
                 return false;
             }
-            if(!(/^1[3456789]\d{9}$/.test(phone))){
+            if (!(/^1[3456789]\d{9}$/.test(phone))) {
                 //alert("手机号码有误，请重填");
                 $('#warning').removeAttr('hidden');
                 return false;
             }
-            localStorage.setExpire('phoneNum',phone,3600000);//设置phoneNum过期时间为一小时，防止一个手机号频繁发送短信(因为demo只是做演示)
+            localStorage.setExpire('phoneNum', phone, 3600000);//设置phoneNum过期时间为一小时，防止一个手机号频繁发送短信(因为demo只是做演示)
             $.ajax({
                 type: "GET",
                 url: "/sendSms",
-                data: {phoneNum:phone},
+                data: {phoneNum: phone},
                 dataType: "json",
-                success: function(data){
+                success: function (data) {
                 }
             });
 
-            $('#window3').attr('hidden','hidden');
-            $('#warning').attr('hidden','hidden');
-            document.getElementById('phoneNum').value="";//清空手机号表单
-            alert("已向【"+phone+"】发送了一条短信，请注意查收！")
+            $('#window3').attr('hidden', 'hidden');
+            $('#warning').attr('hidden', 'hidden');
+            document.getElementById('phoneNum').value = "";//清空手机号表单
+            alert("已向【" + phone + "】发送了一条短信，请注意查收！")
         });
 
         //取消
-        $('#btn_cancel3').click(function(){
-            $('#window3').attr('hidden','hidden');
+        $('#btn_cancel3').click(function () {
+            $('#window3').attr('hidden', 'hidden');
         })
     });
     $('.ui.checkbox').checkbox();
 
     /*监听指定元素的class属性*/
-    $(document).ready(function(){
+    $(document).ready(function () {
         var targetNode = document.getElementById('open-mail');//获取监听元素
-        var config = { attributes: true };
-        var callback = function(mutationsList) {
-            for(var mutation of mutationsList) {
+        var config = {attributes: true};
+        var callback = function (mutationsList) {
+            for (var mutation of mutationsList) {
                 if (mutation.type == 'attributes') {
-                    if($(targetNode).hasClass("checked")){//当class属性改变时触发事件
+                    if ($(targetNode).hasClass("checked")) {//当class属性改变时触发事件
                         $('#window2').removeAttr('hidden');
                     }
                 }

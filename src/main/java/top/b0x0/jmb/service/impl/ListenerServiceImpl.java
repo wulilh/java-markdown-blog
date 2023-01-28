@@ -1,13 +1,13 @@
 package top.b0x0.jmb.service.impl;
 
 import org.springframework.stereotype.Service;
-import top.b0x0.jmb.service.ListenerService;
+import top.b0x0.jmb.service.IFileListener;
 
 /**
  * @author wuliling Created By 2023-01-18 20:55
  **/
 @Service
-public class ListenerServiceImpl implements ListenerService {
+public class ListenerServiceImpl implements IFileListener {
 
 
     /**

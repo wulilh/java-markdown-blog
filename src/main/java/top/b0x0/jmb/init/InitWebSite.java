@@ -95,7 +95,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         configMap.put("avatar", "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
         configMap.put("email", "1902325071@qq.com");
         configMap.put("qq", "1902325071");
-        configMap.put("name", "李瑕");
+        configMap.put("name", "wulilinghan");
         configMap.put("footerAbout", "");
         configMap.put("footerICP", "AE8666");
         configMap.put("footerCopyRight", "@NewNew");
@@ -150,13 +150,11 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         log.info("website-config: markdown dir[{}] , index dir[{}] ", markdownDir, indexDir);
         File markDownDirFile = new File(markdownDir);
         if (!markDownDirFile.isDirectory()) {
-            log.error("website markDown-dir[{}] is not directory", markdownDir);
-            throw new RuntimeException("website.markdown-dir not set or not directory");
+            throw new RuntimeException("website.markdown-dir[{" + markdownDir + "}] not set or is not exist or not directory");
         }
         File indexDirFile = new File(indexDir);
         if (!indexDirFile.isDirectory()) {
-            log.error("website index-dir[{}] is not directory", indexDir);
-            throw new RuntimeException("website.index-dir not set or not directory");
+            throw new RuntimeException("website.index-dir[{" + indexDir + "}] not set or is not exist or not directory");
         }
         // 获取文档目录元数据信息
         String catalogJsonFilePath = indexDirFile.getAbsolutePath() + OSUtils.fileSeparator() + webSiteConfig.getCatalogFile();
@@ -176,6 +174,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         }
         //------------------------------------------------
 
+        // 写入目录信息文件
         String catalogJsonString = JSON.toJSONString(rootCatalog);
         FileUtils.writeStringToFile(new File(catalogJsonFilePath), catalogJsonString, CHARSET);
         catalog = rootCatalog;
@@ -266,7 +265,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
             log.error(e.getMessage(), e);
         }
         metaInfo.setCoverImage("https://www.2008php.com/2018_Website_appreciate/2018-11-05/20181105120350bcNnmbcNnm.jpg");
-        metaInfo.setCoverImage("https://source.unsplash.com/random/800x0");
+        metaInfo.setCoverImage("https://source.unsplash.com/random/1270x720");
         return metaInfo;
     }
 

@@ -10,7 +10,7 @@ import top.b0x0.jmb.common.global.GlobalData;
 import top.b0x0.jmb.common.pojo.ArticleResult;
 import top.b0x0.jmb.common.pojo.PageQueryBaseDto;
 import top.b0x0.jmb.common.pojo.PageResult;
-import top.b0x0.jmb.service.ArticleService;
+import top.b0x0.jmb.service.IArticle;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class ArticleController {
 //    public static String theme = "amaze";
 
     @Resource
-    private ArticleService articleService;
+    private IArticle IArticle;
 
     @RequestMapping("/")
     public ModelAndView index(PageQueryBaseDto baseDto) {
@@ -45,22 +45,18 @@ public class ArticleController {
     @RequestMapping("article/md/{articleId}")
     public ModelAndView get(@PathVariable("articleId") String articleId) throws ArticleNotFoundException {
         ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/blog");
-        ArticleResult articleResult = articleService.get(articleId);
+        ArticleResult articleResult = IArticle.get(articleId);
         modelAndView.addObject("blog", articleResult);
+        modelAndView.addObject("comments", new ArrayList<>());
         return modelAndView;
     }
 
     @RequestMapping("article/md/list")
     public ModelAndView list() throws ArticleNotFoundException {
         ModelAndView modelAndView = new ModelAndView("markdown");
-        modelAndView.addObject("value", articleService.list());
+        modelAndView.addObject("value", IArticle.list());
         return modelAndView;
     }
 
-    @RequestMapping("about")
-    public ModelAndView about() throws ArticleNotFoundException {
-        ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/about");
-        modelAndView.addObject("content", articleService.getAbout());
-        return modelAndView;
-    }
+
 }
