@@ -16,7 +16,7 @@ public class PageQueryBaseDto {
     }
 
     public void setCurrPage(int currPage) {
-        this.currPage = currPage;
+        this.currPage = currPage <= 0 ? 1 : currPage;
     }
 
     public int getPageSize() {

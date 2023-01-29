@@ -1,14 +1,16 @@
 package top.b0x0.jmb.service.impl;
 
+import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import top.b0x0.jmb.common.pojo.CommentInfo;
-import top.b0x0.jmb.common.pojo.CommentReply;
-import top.b0x0.jmb.common.pojo.Message;
-import top.b0x0.jmb.mapper.CommentInfoMapper;
+import top.b0x0.jmb.common.pojo.MessageBoardInfo;
+import top.b0x0.jmb.mapper.MessageBoardInfoMapper;
 import top.b0x0.jmb.service.IMessageBoard;
 
 import java.util.ArrayList;
@@ -18,88 +20,80 @@ import java.util.List;
  * @author wuliling Created By 2023-01-28 21:05
  **/
 @Service
+@Slf4j
 public class IMessageBoardImpl implements IMessageBoard {
     @Resource
-    CommentInfoMapper commentInfoMapper;
+    MessageBoardInfoMapper messageBoardInfoMapper;
+
+    /**
+     * 存放迭代找出的所有子代的集合
+     */
+    private List<MessageBoardInfo> tmpReplyList = new ArrayList<>();
 
     @Override
-    public PageInfo<Message> selectByPage(int page, int size) {
+    public PageInfo<MessageBoardInfo> selectByPage(int page, int size) {
         PageHelper.startPage(page, size);
-        List<CommentInfo> list = commentInfoMapper.listComment();
+        List<MessageBoardInfo> list = messageBoardInfoMapper.listRootMessage();
+        final PageInfo<MessageBoardInfo> infoPageInfo = new PageInfo<>(list);
 
-        List<Message> messagesView = new ArrayList<>();
-
-        for (CommentInfo commentInfo : list) {
-            Message message = new Message().
-                    setId(commentInfo.getId())
-                    .setCreateTime(commentInfo.getCreateTime())
-                    .setUserId(commentInfo.getUserId())
-                    .setNickname(commentInfo.getNickname())
-                    .setEmail(commentInfo.getEmail())
-                    .setContent(commentInfo.getContent());
-            // 获取回复
+        List<MessageBoardInfo> messagesView = new ArrayList<>();
+        for (MessageBoardInfo message : list) {
+            // 获取顶节点下子级回复
             recursively(message);
-            // 将回复放到当前子级评论集合中
-            recursivelyToRootMessage(message);
+            // 将所有子级回复放到当前顶节点评论集合中
+            recursivelyReplyMessagesToRootMessage(message);
+            message.setReplyMessages(tmpReplyList);
+            tmpReplyList = new ArrayList<>();
             messagesView.add(message);
         }
-        return new PageInfo<>(messagesView);
+        infoPageInfo.setList(messagesView);
+        return infoPageInfo;
     }
 
     /**
      * 递归获取回复
      *
-     * @param rootMessage 被迭代的对象
+     * @param rootMessage 被迭代的对象rootMessage = {MessageBoardInfo@10967} "Collecting data…"
      */
-    private void recursively(Message rootMessage) {
-        CommentReply commentReply = new CommentReply();
-        commentReply.setCommentId(rootMessage.getId())
-//                .setNickname(rootMessage.getNickname())
-//                .setEmail(rootMessage.getEmail())
-
-//                .setToUserId(rootMessage.getUserId()) // 留言板展示暂不支持树形结构  只支持两层
-        ;
+    private void recursively(MessageBoardInfo rootMessage) {
         // 获取当前message 第一层回复
-        List<CommentReply> commentReplies = commentInfoMapper.listReply(commentReply);
-        List<Message> replyMessages = new ArrayList<>();
-        for (CommentReply reply : commentReplies) {
-            Message messageTmp = new Message().
-                    setId(reply.getId())
-                    .setCreateTime(reply.getCreateTime())
-                    .setNickname(reply.getNickname())
-                    .setEmail(reply.getEmail())
-                    .setContent(reply.getContent())
-                    .setParentMessage(rootMessage)
-                    .setToNickname(reply.getToNickname())
-                    .setToEmail(reply.getToEmail());
-            replyMessages.add(messageTmp);
-        }
-        rootMessage.setReplyMessages(replyMessages);
-
-        // 留言板展示暂不支持树形结构  只支持两层
-        // 递归获取子级回复
-/*        for (CommentReply reply : commentReplies) {
-            Message messageTmp = new Message()
-                    .setId(reply.getCommentId())
-//                    .setNickname(reply.getNickname())
-//                    .setEmail(reply.getEmail())
-                    .setUserId(reply.getUserId());
-            recursively(messageTmp);
-        }*/
-    }
-
-    private void recursivelyToRootMessage(Message message) {
-        if (CollectionUtils.isEmpty(message.getReplyMessages())) {
+        List<MessageBoardInfo> replyMessages = messageBoardInfoMapper.listReplyMessage(rootMessage.getId());
+        if (CollectionUtils.isEmpty(replyMessages)) {
             return;
         }
-        List<Message> replyListTmp = message.getReplyMessages();
-        for (Message reply : replyListTmp) {
-            List<Message> replyMessages = reply.getReplyMessages();
-            if (CollectionUtils.isEmpty(replyMessages)) {
-                return;
-            }
-            message.appendReplyMessage(replyMessages);
-            recursivelyToRootMessage(reply);
+        for (MessageBoardInfo replyMessage : replyMessages) {
+            replyMessage.setParentMessage(rootMessage);
+            // 递归子级
+            recursively(replyMessage);
         }
+        rootMessage.setReplyMessages(replyMessages);
+    }
+
+    private void recursivelyReplyMessagesToRootMessage(MessageBoardInfo message) {
+        List<MessageBoardInfo> replyListTmp = message.getReplyMessages();
+        if (CollectionUtils.isEmpty(replyListTmp)) {
+            return;
+        }
+        tmpReplyList.addAll(replyListTmp);
+        for (MessageBoardInfo reply : replyListTmp) {
+            recursivelyReplyMessagesToRootMessage(reply);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public MessageBoardInfo saveMessage(MessageBoardInfo message) {
+        Integer parentMessageId = message.getParentMessage().getId();
+        if (parentMessageId != -1) {
+            message.setParentMessageId(parentMessageId);
+            message.setParentMessage(messageBoardInfoMapper.queryById(parentMessageId));
+        } else {
+            message.setParentMessageId(null);
+            message.setParentMessage(null);
+        }
+        message.setUserId(IdUtil.getSnowflakeNextIdStr());
+        log.info("json message:[{}]", JSON.toJSONString(message));
+        messageBoardInfoMapper.insert(message);
+        return message;
     }
 }

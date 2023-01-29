@@ -69,11 +69,11 @@
 
                 <div class="fields">
                     <!--表情按钮-->
-                    <div class="field m-mobile-wide m-margin-bottom-small" data-tooltip="表情未加载完全或点击无响应可刷新页面重试">
+<!--                    <div class="field m-mobile-wide m-margin-bottom-small" data-tooltip="表情未加载完全或点击无响应可刷新页面重试">
                         <button id="emojiBtn" type="button" class="ui yellow button m-mobile-wide"><i
                                 class="large smile outline icon"></i>表情
                         </button>
-                    </div>
+                    </div>-->
 
                     <div class="field m-mobile-wide m-margin-bottom-small">
                         <div class="ui left icon input">
@@ -102,7 +102,7 @@
                         </button>
                     </div>
 
-                    <div class="field  m-margin-bottom-small m-mobile-wide" data-tooltip="还没做这个功能....有时间再做">
+<!--                    <div class="field  m-margin-bottom-small m-mobile-wide" data-tooltip="还没做这个功能....有时间再做">
                         <button id="bindEmail" type="button" class="ui green  button m-mobile-wide"><i
                                 class="large envelope outline  icon"></i>邮箱绑定
                         </button>
@@ -112,7 +112,7 @@
                         <button id="CodeDemo" type="button" class="ui violet  button m-mobile-wide"><i
                                 class="large mobile  icon"></i>demo
                         </button>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="ui error message"></div>
             </div>
@@ -147,7 +147,7 @@
                                 </div>
                                 <div id="messageText" class="text" th:utext="${message.content}">1234567890</div>
                                 <div class="actions">
-                                    <a class="reply" data-messageid="1" data-messagenickname="Matt"
+                                    <a id="reply-id" class="reply" data-messageid="1" data-messagenickname="Matt"
                                        th:attr="data-messageid=${message.id},data-messagenickname=${message.nickname}"
                                        onclick="reply(this)">回复</a>
                                 </div>
@@ -166,8 +166,8 @@
                                             <span class="ui mini basic visitComment left pointing label m-padded-mini" th:if="${reply.adminMessage}==1">访客</span>
                                             <span class="ui mini basic touristComment left pointing label m-padded-mini" th:if="${reply.adminMessage}==0">游客</span>
                                             <span class="ui small basic githubComment left pointing label m-padded-mini" th:if="${message.adminMessage}==3">gayhub</span>
-<!--                                            &nbsp;<span th:text="|@ ${reply.parentMessage.nickname}|" class="m-teal">@ 小白</span>-->
-                                            &nbsp;<span th:text="|@ ${reply.toNickname}|" class="m-teal">@ 小白</span>
+                                            &nbsp;<span th:text="|@ ${reply.parentMessage.nickname}|" class="m-teal">@ 小白</span>
+<!--                                            &nbsp;<span th:text="|@ ${reply.toNickname}|" class="m-teal">@ 小白</span>-->
                                         </a>
                                         <div class="metadata">
                                             <span class="date"
@@ -177,7 +177,7 @@
                                             How artistic!
                                         </div>
                                         <div class="actions">
-                                            <a class="reply" data-messageid="1" data-messagenickname="Matt"
+                                            <a id="reply-id1" class="reply" data-messageid="1" data-messagenickname="Matt"
                                                th:attr="data-messageid=${reply.id},data-messagenickname=${reply.nickname}"
                                                onclick="reply(this)">回复</a>
                                         </div>
@@ -192,29 +192,22 @@
                             <a class="item active teal" href="/messages?page=1">
                                 首页
                             </a>
-                            <a class="item" th:if="${isIsFirstPage}" th:href="@{/messages?currPage={currPage}(currPage=${messages.pageNum})}"
-                               href="/messages?page=2">
-                                上一页
+                            <a class="item" th:if="${isIsLastPage}" th:href="@{/messages?currPage={currPage}(currPage=${messages.pageNum}-1)}"
+                               href="/messages?page=2">上一页
                             </a>
                             <a class="item">
-                                当前第<h3 class="ui orange header m-inline-block m-text-thin"
-                                       th:text="${messages.pageNum}+1">1</h3>页
+                                当前第<h3 class="ui orange header m-inline-block m-text-thin" th:text="${messages.pageNum}">1</h3>页
                             </a>
-                            <a class="item" th:if="${isIsLastPage}" th:href="@{/messages?currPage={currPage}(currPage=${messages.pageNum}+2)}"
-                               href="/messages?page=2">
-                                下一页
+                            <a class="item" th:if="${isIsFirstPage}" th:href="@{/messages?currPage={currPage}(currPage=${messages.pageNum}+1)}"
+                               href="/messages?page=2">下一页
                             </a>
-                            <a class="item" th:href="@{/messages?currPage={currPage}(currPage=${messages.pages})}"
-                               href="/messages?page=2">
-                                尾页
+                            <a class="item" th:href="@{/messages?currPage={currPage}(currPage=${messages.pages})}" href="/messages?page=2">尾页
                             </a>
                             <a class="item">
-                                共<h3 class="ui red header m-inline-block m-text-thin" th:text="${messages.pages}">
-                                20</h3>页
+                                共<h3 class="ui red header m-inline-block m-text-thin" th:text="${messages.pages}">20</h3>页
                             </a>
                             <a class="item">
-                                共<h3 class="ui red header m-inline-block m-text-thin"
-                                     th:text="${messages.total}">200</h3>条
+                                共<h3 class="ui red header m-inline-block m-text-thin" th:text="${messages.total}">200</h3>条
                             </a>
                             <form name="pageForm" class="right item" action="/messages" method="get">
                                 <div class="ui right labeled input">
@@ -237,7 +230,7 @@
 <br>
 <br>
 
-<!--底部footer-->
+底部footer
 <footer th:replace="~{theme/default/_fragments :: footer}" class="ui inverted vertical segment m-padded-tb-massive">
 </footer>
 
@@ -289,7 +282,7 @@
             },
             success: function (data) {
                 clearContent();
-                $("#message-container").load("/Message");//刷新数据
+                $("#message-container").load("/refreshMessages");//刷新数据
             }
         });
     }
