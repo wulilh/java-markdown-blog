@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>top.b0x0</groupId>
+    <groupId>com.github.wulilinghan</groupId>
     <artifactId>java-markdown-blog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>java-markdown-blog</name>

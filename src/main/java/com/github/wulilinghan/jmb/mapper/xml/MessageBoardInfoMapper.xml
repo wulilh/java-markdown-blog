@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.wulilinghan.jmb.mapper.MessageBoardInfoMapper">
+    <resultMap id="MessageBoardInfoMap" type="com.github.wulilinghan.jmb.common.pojo.MessageBoardInfo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="parentMessageId" column="parent_message_id" jdbcType="INTEGER"/>
+        <result property="toUserId" column="to_user_id" jdbcType="VARCHAR"/>
+        <result property="toEmail" column="to_email" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="replyInform" column="reply_inform" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isValid" column="is_valid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.github.wulilinghan.jmb.common.pojo.MessageBoardInfo">
+        select * from message_board_info where id = #{id}
+    </select>
+
+    <select id="listRootMessage" resultType="com.github.wulilinghan.jmb.common.pojo.MessageBoardInfo">
+        select * from message_board_info where is_valid = 'Y'  and parent_message_id is null order by create_time desc
+    </select>
+
+    <select id="listReplyMessage" resultType="com.github.wulilinghan.jmb.common.pojo.MessageBoardInfo">
+        select * from message_board_info where is_valid = 'Y' and parent_message_id = #{id} order by create_time desc
+    </select>
+
+    <insert id="insert" parameterType="com.github.wulilinghan.jmb.common.pojo.MessageBoardInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into message_board_info(parent_message_id,user_id, nickname, email, content,reply_inform)
+        values (#{parentMessageId},#{userId}, #{nickname}, #{email}, #{content},#{replyInform})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into message_board_info(user_id, nickname, email, content,reply_inform)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.nickname}, #{entity.email}, #{entity.content}, #{entity.replyInform})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into message_board_info(user_id, nickname, email, content,reply_inform)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.nickname}, #{entity.email}, #{entity.content},#{entity.replyInform})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id),
+        nickname = values(nickname),
+        email = values(email),
+        content = values(content),
+        reply_inform = values(reply_inform)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update message_board_info
+        <set>
+            <if test="userId != null and userId != ''">
+                user_id = #{userId},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="replyInform != null">
+                reply_inform = #{replyInform},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="isValid != null and isValid != ''">
+                is_valid = #{isValid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        update message_board_info set is_valid = 'N' where id = #{id}
+    </delete>
+</mapper>
