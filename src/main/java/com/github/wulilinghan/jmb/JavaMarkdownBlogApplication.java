@@ -11,7 +11,7 @@ import java.util.TimeZone;
 /**
  * @author wuliling Created By 2023-01-17 22:56
  */
-@MapperScan("top.b0x0.jmb.mapper")
+@MapperScan("com.github.wulilinghan.jmb.mapper")
 @SpringBootApplication
 public class JavaMarkdownBlogApplication {
 
