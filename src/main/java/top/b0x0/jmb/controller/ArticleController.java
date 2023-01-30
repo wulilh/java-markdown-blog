@@ -9,8 +9,8 @@ import top.b0x0.jmb.common.exception.ArticleNotFoundException;
 import top.b0x0.jmb.common.global.GlobalData;
 import top.b0x0.jmb.common.pojo.ArticleResult;
 import top.b0x0.jmb.common.pojo.PageQueryBaseDto;
-import top.b0x0.jmb.common.pojo.PageResult;
 import top.b0x0.jmb.service.IArticle;
+import top.b0x0.jmb.service.ITag;
 
 import java.util.ArrayList;
 
@@ -20,32 +20,31 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping("/")
 public class ArticleController {
-    public static String theme = GlobalData.theme;
-    //public static String theme = "yummy-jekyll";
-//    public static String theme = "amaze";
+    public static String themeName = GlobalData.theme;
 
     @Resource
-    private IArticle IArticle;
+    ITag iTag;
+    @Resource
+    private IArticle iArticle;
 
     @RequestMapping("/")
     public ModelAndView index(PageQueryBaseDto baseDto) {
-        ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/index");
+        ModelAndView modelAndView = new ModelAndView("theme/" + themeName + "/index");
         if (baseDto == null) {
-            modelAndView = new ModelAndView("theme/" + theme + "/error/404");
+            modelAndView = new ModelAndView("theme/" + themeName + "/error/404");
             return modelAndView;
         }
-        PageResult pageResult = new PageResult(GlobalData.articleMetaList, baseDto.getCurrPage(), baseDto.getPageSize());
-        modelAndView.addObject("page", pageResult);
+        modelAndView.addObject("page", iArticle.listTop(baseDto));
         modelAndView.addObject("types", new ArrayList<>());
-        modelAndView.addObject("tags", new ArrayList<>());
-        modelAndView.addObject("recommendBlogs", new ArrayList<>());
+        modelAndView.addObject("tags", iTag.listTagTop(10));
+        modelAndView.addObject("recommendBlogs", iArticle.listTop(7));
         return modelAndView;
     }
 
     @RequestMapping("article/md/{articleId}")
     public ModelAndView get(@PathVariable("articleId") String articleId) throws ArticleNotFoundException {
-        ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/blog");
-        ArticleResult articleResult = IArticle.get(articleId);
+        ModelAndView modelAndView = new ModelAndView("theme/" + themeName + "/blog");
+        ArticleResult articleResult = iArticle.get(articleId);
         modelAndView.addObject("blog", articleResult);
         modelAndView.addObject("comments", new ArrayList<>());
         return modelAndView;
@@ -54,7 +53,7 @@ public class ArticleController {
     @RequestMapping("article/md/list")
     public ModelAndView list() throws ArticleNotFoundException {
         ModelAndView modelAndView = new ModelAndView("markdown");
-        modelAndView.addObject("value", IArticle.list());
+        modelAndView.addObject("value", iArticle.listTop(10));
         return modelAndView;
     }
 

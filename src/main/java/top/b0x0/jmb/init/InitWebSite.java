@@ -13,6 +13,7 @@ import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
@@ -21,6 +22,7 @@ import top.b0x0.jmb.common.global.GlobalData;
 import top.b0x0.jmb.common.pojo.ArticleMetaData;
 import top.b0x0.jmb.common.pojo.Catalog;
 import top.b0x0.jmb.common.pojo.GiTalk;
+import top.b0x0.jmb.common.pojo.Tag;
 import top.b0x0.jmb.common.utils.OSUtils;
 import top.b0x0.jmb.component.Cost;
 import top.b0x0.jmb.component.FileListenerFactory;
@@ -28,6 +30,9 @@ import top.b0x0.jmb.component.FileListenerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -46,40 +51,51 @@ import java.util.stream.Collectors;
 public class InitWebSite extends GlobalData implements ApplicationRunner {
 
     @Resource
+    private Environment environment;
+
+    @Resource
     private FileListenerFactory fileListenerFactory;
     @Resource
     private WebSiteConfig webSiteConfig;
     @Resource
     private ThymeleafViewResolver thymeleafViewResolver;
 
+    private static String serverPort;
+    private static String serverIp;
+
     @PostConstruct
     public void init() {
-        MARKDOWN_DIR = webSiteConfig.getMarkdownPath().toFile().getPath();
-        INDEX_DIR = webSiteConfig.getIndexPath().toFile().getPath();
+        MARKDOWN_DIR_FILE = webSiteConfig.getMarkdownPath().toFile();
+        MARKDOWN_DIR_STR = MARKDOWN_DIR_FILE.getPath();
+
+        INDEX_DIR_FILE = webSiteConfig.getIndexPath().toFile();
+        INDEX_DIR_STR = INDEX_DIR_FILE.getPath();
+
         CHARSET = webSiteConfig.getCharset();
+
+        serverPort = getPort();
+        serverIp = getIp();
     }
 
-    @Override
-    public void run(ApplicationArguments args) {
-        log.info("web site start init....");
-        try (final Cost cost = new Cost("web-site-init")) {
-            catalog = loadCatalog();
-            articleMetaList = sortArticle(catalog);
-            aboutFile = new File(webSiteConfig.getIndexDir() + OSUtils.fileSeparator() + webSiteConfig.getAbout());
-            setThymeleafGlobalStaticVariables();
-            startFileMonitor();
-        } catch (Exception e) {
-            log.error("System init error", e);
-            log.error("System exit！");
-            System.exit(-1);
+    public String getPort() {
+        return environment.getProperty("server.port");
+    }
+
+    public String getIp() {
+        InetAddress localHost = null;
+        try {
+            localHost = Inet4Address.getLocalHost();
+            return localHost.getHostAddress();
+        } catch (UnknownHostException e) {
+            log.error(e.getMessage(), e);
         }
-        log.info("web site end init....");
+        return null;
     }
 
     private void startFileMonitor() throws Exception {
-        FileAlterationMonitor markdownDirMonitor = fileListenerFactory.getMonitor(MARKDOWN_DIR);
+        FileAlterationMonitor markdownDirMonitor = fileListenerFactory.getMonitor(MARKDOWN_DIR_STR);
         markdownDirMonitor.start();
-        FileAlterationMonitor indexDirMonitor = fileListenerFactory.getMonitor(INDEX_DIR);
+        FileAlterationMonitor indexDirMonitor = fileListenerFactory.getMonitor(INDEX_DIR_STR);
         indexDirMonitor.start();
     }
 
@@ -105,11 +121,78 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
                 new HashMap<>() {
                     {
                         put("giTalk", new GiTalk());
-                        put("newblogs", articleMetaList.subList(0, 5));
+                        put("newblogs", articleMetaList.subList(0, 3));
                         put("configurations", configMap);
                     }
                 }
         );
+    }
+
+    @Override
+    public void run(ApplicationArguments args) {
+        log.info("web site start init....");
+        try (final Cost cost = new Cost("web-site-init")) {
+            catalog = loadCatalog();
+            loadTag();
+            articleMetaList = sortArticle(catalog);
+            aboutFile = new File(webSiteConfig.getIndexDir() + OSUtils.fileSeparator() + webSiteConfig.getAbout());
+            setThymeleafGlobalStaticVariables();
+            startFileMonitor();
+        } catch (Exception e) {
+            log.error("System init error", e);
+            log.error("System exit！");
+            System.exit(-1);
+        }
+        log.info("web site end init....");
+        log.info("\n-------------------------------------"
+                + "\n初始化读取本地Markdown文档完成."
+                + "\nhttp://" + serverIp + ":" + serverPort
+                + "\n-------------------------------------");
+    }
+
+    private void loadTag() {
+        if (MARKDOWN_DIR_FILE == null || !MARKDOWN_DIR_FILE.isDirectory()) {
+            return;
+        }
+        File[] files = MARKDOWN_DIR_FILE.listFiles();
+        for (File file : files) {
+            recursiveTag(file);
+        }
+    }
+
+    /**
+     * 判断当前文件夹下是否有Markdown文件
+     *
+     * @param file /
+     * @return /
+     */
+    private boolean isHaveMdFile(File file) {
+        return file != null && file.isDirectory() && Arrays.stream(file.listFiles()).anyMatch(this::isMarkDownFile);
+    }
+
+    private void recursiveTag(File file) {
+        if (file.isDirectory()) {
+            // 当前文件夹下没有Markdown文件，则不新增标签
+            if (!isHaveMdFile(file)) {
+                return;
+            }
+            String tagName = FilenameUtils.getName(file.getPath());
+            Tag tag = new Tag(tagName);
+            // tag索引新增
+            tagIndex.put(tag.getId(), tag);
+            tagList.add(tag);
+
+            File[] subFiles = file.listFiles();
+            for (File subFile : subFiles) {
+                if (isMarkDownFile(subFile)) {
+                    ArticleMetaData articleMetaInfo = getArticleMetaInfo(subFile);
+                    tag.addArticle(articleMetaInfo);
+                }
+                if (subFile.isDirectory()) {
+                    recursiveTag(subFile);
+                }
+            }
+        }
     }
 
     /**
@@ -264,7 +347,6 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
-        metaInfo.setCoverImage("https://www.2008php.com/2018_Website_appreciate/2018-11-05/20181105120350bcNnmbcNnm.jpg");
         metaInfo.setCoverImage("https://source.unsplash.com/random/1270x720");
         return metaInfo;
     }

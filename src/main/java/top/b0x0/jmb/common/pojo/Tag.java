@@ -1,6 +1,7 @@
 package top.b0x0.jmb.common.pojo;
 
 import lombok.Data;
+import top.b0x0.jmb.common.global.GlobalData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,22 @@ import java.util.List;
  **/
 @Data
 public class Tag {
-    private Long id;
+    private Integer id;
     private String name;
-    private List<ArticleMetaData> blogs = new ArrayList<>();
+    private List<ArticleMetaData> articleMetaList = new ArrayList<>();
+
+    public Tag() {
+    }
+
+    public Tag(String name) {
+        this.id = GlobalData.tagIncId.incrementAndGet();
+        this.name = name;
+    }
+
+    public void addArticle(ArticleMetaData article) {
+        if (articleMetaList == null) {
+            articleMetaList = new ArrayList<>();
+        }
+        this.articleMetaList.add(article);
+    }
 }

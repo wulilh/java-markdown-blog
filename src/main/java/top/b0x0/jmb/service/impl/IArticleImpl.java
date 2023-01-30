@@ -1,6 +1,8 @@
 package top.b0x0.jmb.service.impl;
 
 import org.springframework.stereotype.Service;
+import top.b0x0.jmb.common.pojo.PageQueryBaseDto;
+import top.b0x0.jmb.common.pojo.PageResult;
 import top.b0x0.jmb.component.MarkDownHandler;
 import top.b0x0.jmb.common.exception.ArticleNotFoundException;
 import top.b0x0.jmb.common.global.GlobalData;
@@ -57,8 +59,18 @@ public class IArticleImpl implements IArticle {
     }
 
     @Override
-    public List<ArticleMetaData> list() {
-        return null;
+    public PageResult listArticleWithTagId(Integer tagId, PageQueryBaseDto query) {
+        return new PageResult(GlobalData.tagIndex.get(tagId).getArticleMetaList(), query.getCurrPage(), query.getPageSize());
+    }
+
+    @Override
+    public PageResult listTop(PageQueryBaseDto query) {
+        return new PageResult(GlobalData.articleMetaList, query.getCurrPage(), query.getPageSize());
+    }
+
+    @Override
+    public List<ArticleMetaData> listTop(int size) {
+        return GlobalData.articleMetaList.subList(0, size);
     }
 
     @Override

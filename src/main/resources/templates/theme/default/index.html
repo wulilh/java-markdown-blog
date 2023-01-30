@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{theme/default/_fragments :: head(~{::title})}">
@@ -15,28 +14,8 @@
 
 <body>
 <!--导航-->
-<!--  <nav th:replace="_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >-->
-<nav th:replace="~{theme/default/_fragments :: menu(1)}"
-     class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
-    <div class="ui container">
-        <div class="ui inverted secondary stackable menu">
-            <h2 class="ui teal header item">Blog</h2>
-            <a href="#" class=" m-item item m-mobile-hide"><i class="mini home icon"></i>首页</a>
-            <a href="#" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
-            <a href="#" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
-            <a href="#" class="m-item item m-mobile-hide"><i class="mini clone icon"></i>归档</a>
-            <a href="#" class="m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
-            <div class="right m-item item m-mobile-hide">
-                <div class="ui icon inverted transparent input m-margin-tb-tiny">
-                    <input type="text" placeholder="Search....">
-                    <i class="search link icon"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
-        <i class="sidebar icon"></i>
-    </a>
+<nav th:replace="~{theme/default/_fragments :: menu(1)}" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+
 </nav>
 
 <!--中间内容-->
@@ -52,8 +31,7 @@
                             <h3 class="ui teal header">博客</h3>
                         </div>
                         <div class="right aligned column">
-                            共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.total}"> 14 </h2>
-                            篇
+                            共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.total}"> 14 </h2>篇
                         </div>
                     </div>
                 </div>
@@ -76,11 +54,10 @@
                                         <div class="ui mini horizontal link list">
                                             <div class="item">
                                                 <!-- <img src="https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png"-->
-                                                <!-- th:src="@{${configurations.get('avatar')}}" alt=""-->
-                                                <!-- class="ui avatar image">-->
+                                                <!-- th:src="@{${configurations.get('avatar')}}" alt="" class="ui avatar image">-->
                                                 <img src="default/favicon.ico" alt="" class="ui avatar image">
-                                                <div class="content"><a href="#" class="header"
-                                                                        th:text="${configurations.get('name')}"></a>
+                                                <div class="content">
+                                                    <a href="#" class="header" th:text="${configurations.get('name')}"></a>
                                                 </div>
                                                 <!-- <div class="content">wuliling</div>-->
                                             </div>
@@ -103,8 +80,7 @@
                             <div class="five wide column">
                                 <a href="#" th:href="@{/blog/{id}(id=${blog.articleId})}" target="_blank">
                                     <!-- <img src="https://source.unsplash.com/random/1270x720" th:src="@{${blog.coverImage}}"  alt="" class="ui rounded image">-->
-                                    <img src="https://source.unsplash.com/random/1270x720" alt=""
-                                         class="ui rounded image">
+                                    <img src="https://source.unsplash.com/random/1270x720" alt="" class="ui rounded image">
                                 </a>
                             </div>
                         </div>
@@ -129,7 +105,7 @@
             <!--右边的top-->
             <div class="five wide column">
                 <!--分类-->
-                <div class="ui segments">
+<!--                <div class="ui segments">
                     <div class="ui secondary segment">
                         <div class="ui two column grid">
                             <div class="column">
@@ -152,7 +128,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <!--标签-->
                 <div class="ui segments m-margin-top-large">
@@ -162,8 +138,7 @@
                                 <i class="tags icon"></i>标签
                             </div>
                             <div class="right aligned column">
-                                <a href="#" th:href="@{tags/-1}" target="_blank">more <i
-                                        class="angle double right icon"></i></a>
+                                <a href="#" th:href="@{tags/-1}" target="_blank">more <i class="angle double right icon"></i></a>
                             </div>
                         </div>
                     </div>
@@ -171,7 +146,7 @@
                         <a href="#" th:href="@{/tags/{id}(id=${tag.id})}" target="_blank"
                            class="ui teal basic left pointing label m-margin-tb-tiny" th:each="tag : ${tags}">
                             <span th:text="${tag.name}">方法论</span>
-                            <div class="detail" th:text="${#arrays.length(tag.blogs)}">23</div>
+                            <div class="detail" th:text="${#arrays.length(tag.articleMetaList)}">23</div>
                         </a>
                     </div>
                 </div>

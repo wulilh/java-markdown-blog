@@ -5,6 +5,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.StringUtils;
 import top.b0x0.jmb.common.pojo.ArticleMetaData;
 import top.b0x0.jmb.common.pojo.Catalog;
+import top.b0x0.jmb.common.pojo.Tag;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,24 +13,53 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author wuliling Created By 2023-01-18 16:38
  **/
 public class GlobalData {
+    //public static String theme = "yummy-jekyll";
+    //public static String theme = "amaze";
     public static String theme = "default";
 
     public final static String MARKDOWN_SUFFIX = "md";
     public static String CHARSET = "";
 
-    public static String MARKDOWN_DIR = "";
-    public static String INDEX_DIR = "";
+    public static String MARKDOWN_DIR_STR = "";
+    public static File MARKDOWN_DIR_FILE;
+    public static String INDEX_DIR_STR = "";
+    public static File INDEX_DIR_FILE;
 
     public static Catalog catalog;
 
-    public static CopyOnWriteArrayList<ArticleMetaData> articleMetaList = new CopyOnWriteArrayList<>();
-    public static ConcurrentHashMap<String, ArticleMetaData> articleMetaIndex = new ConcurrentHashMap<>();
+    /**
+     * 文档目录
+     */
     public static ConcurrentHashMap<String, Catalog> catalogIndex = new ConcurrentHashMap<>();
+
+    /**
+     * 文档集合
+     */
+    public static CopyOnWriteArrayList<ArticleMetaData> articleMetaList = new CopyOnWriteArrayList<>();
+    /**
+     * 文档索引
+     */
+    public static ConcurrentHashMap<String, ArticleMetaData> articleMetaIndex = new ConcurrentHashMap<>();
+
+    /**
+     * tag 自增id
+     */
+    public static AtomicInteger tagIncId = new AtomicInteger(0);
+    /**
+     * 标签集合
+     */
+    public static CopyOnWriteArrayList<Tag> tagList = new CopyOnWriteArrayList<>();
+    /**
+     * 标签索引
+     */
+    public static ConcurrentHashMap<Integer, Tag> tagIndex = new ConcurrentHashMap<>();
+
     public static File aboutFile;
 
     public static String getContent(File file) {
@@ -55,7 +85,7 @@ public class GlobalData {
     }
 
     public boolean isMarkDownFile(File file) {
-        return FilenameUtils.getExtension(file.toString()).equals(MARKDOWN_SUFFIX);
+        return file != null && !file.isDirectory() && FilenameUtils.getExtension(file.toString()).equals(MARKDOWN_SUFFIX);
     }
 
     public static List<String> getArticleLinesContent(String path) {
