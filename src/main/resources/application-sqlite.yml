@@ -1,0 +1,8 @@
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true
+    mapper-locations: classpath*:top/b0x0/jmb/mapper/xml/**.xml
+    type-aliases-package: top.b0x0.jmb.common.pojo
+spring:
+    datasource:
+        url: jdbc:sqlite:dbs/sqlite/jmb.db

@@ -1,0 +1,15 @@
+comment:
+    default:
+        avatar: default/images/avatar.png
+github:
+    callback: http://xiongsihao.com/github/callback
+    client-id: Iv1.5f8c132f227f383c
+    client-secret: 755c85b587ee2734cf59572768bdd623da0b61ea
+image:
+    upload:
+        base-url: d:/website/upload/image
+website:
+    cookie:
+        time: 864000
+    index-dir: d:/website/index
+    markdown-dir: d:/website/md

@@ -1,0 +1,15 @@
+logging:
+    file:
+        path: log
+server:
+    port: 6060
+spring:
+    profiles:
+        include: website,sqlite
+    thymeleaf:
+        cache: false
+        check-template-location: true
+        enabled: true
+        encoding: UTF-8
+        mode: HTML
+        suffix: .html
