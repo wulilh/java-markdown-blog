@@ -9,7 +9,7 @@ import top.b0x0.jmb.common.global.GlobalData;
 import top.b0x0.jmb.service.IArticle;
 
 /**
- * @author tanglinghan Created By 2023-01-28 15:40
+ * @author wuliling Created By 2023-01-28 15:40
  **/
 @Controller
 @RequestMapping("/")

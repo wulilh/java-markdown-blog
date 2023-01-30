@@ -13,3 +13,22 @@ create table message_board_info(
     is_valid varchar default 'Y' -- '是否有效'
 );
 
+create table user_github(
+    id integer constraint user_github_pk primary key autoincrement ,	-- 'id'
+    github_id varchar , -- 'github账号id'
+    node_id varchar ,	--'github唯一标识'
+    login_time varchar ,	--'被评论者id'
+    avatar varchar, -- 'github头像'
+    nickname VARCHAR , --'github账号名字'
+    public_repos VARCHAR , --'公有仓库数量'
+    subscriptions VARCHAR ,	-- '仓库详细信息url'
+    received_events_url VARCHAR , -- '操作事件详细信息url'
+    index_url VARCHAR , -- 'github用户首页'
+    cip VARCHAR , -- 'ip地址'
+    cid VARCHAR , -- '地区编号'
+    cname VARCHAR , -- '所在地'
+    create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'
+    update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'
+    is_valid varchar default 'Y' -- '是否有效'
+);
+

@@ -3,7 +3,7 @@ package top.b0x0.jmb.common.enums;
 /**
  * 留言类型
  *
- * @author tanglinghan Created By 2023-01-29 10:43
+ * @author wuliling Created By 2023-01-29 10:43
  **/
 public enum MessageTypeEnum {
     /**

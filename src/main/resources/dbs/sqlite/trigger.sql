@@ -3,3 +3,9 @@ CREATE TRIGGER u_trig_mbi
 BEGIN
     UPDATE message_board_info SET update_time = datetime('now','localtime') WHERE id = NEW.id;
 END;
+
+CREATE TRIGGER u_trig_ug
+    AFTER UPDATE ON user_github
+BEGIN
+    UPDATE user_github SET update_time = datetime('now','localtime') WHERE id = NEW.id;
+END;

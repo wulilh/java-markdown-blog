@@ -34,11 +34,6 @@
         values (#{parentMessageId},#{userId}, #{nickname}, #{email}, #{content},#{replyInform})
     </insert>
 
-    <insert id="insertReply" parameterType="top.b0x0.jmb.common.pojo.MessageBoardInfo" useGeneratedKeys="true" keyProperty="id">
-        insert into comment_reply(user_id, nickname, email, content,to_user_id,to_nickname,to_email)
-        values (#{userId}, #{nickname}, #{email}, #{content},#{toUserId},#{toNickname},#{toEmail})
-    </insert>
-
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
         insert into message_board_info(user_id, nickname, email, content,reply_inform)
         values

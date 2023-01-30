@@ -14,5 +14,4 @@ public interface MessageBoardInfoMapper {
 
     void insert(MessageBoardInfo message);
 
-    void insertReply(MessageBoardInfo message);
 }
