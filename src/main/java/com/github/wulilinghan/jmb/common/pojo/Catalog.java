@@ -17,6 +17,7 @@ import java.util.List;
 @Data
 public class Catalog {
 
+    private String id;
     private transient Path path;//当前目录路径
     private String name;//当前目录名称
     private String absolutePath;//当前目录路径

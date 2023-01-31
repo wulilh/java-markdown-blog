@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "comment.default.avatar",
+      "type": "java.lang.String",
+      "description": "Description for comment.default.avatar."
+    },
+    {
+      "name": "website.cookie.time",
+      "type": "java.lang.String",
+      "description": "Description for website.cookie.time."
+    },
+    {
+      "name": "image.upload.base-url",
+      "type": "java.lang.String",
+      "description": "Description for image.upload.base-url."
+    }
+  ] }

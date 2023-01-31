@@ -3,12 +3,19 @@ package com.github.wulilinghan.jmb.init;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.github.wulilinghan.jmb.common.config.WebSiteConfig;
+import com.github.wulilinghan.jmb.common.global.GlobalData;
 import com.github.wulilinghan.jmb.common.pojo.ArticleMetaData;
+import com.github.wulilinghan.jmb.common.pojo.Catalog;
+import com.github.wulilinghan.jmb.common.pojo.GiTalk;
+import com.github.wulilinghan.jmb.common.pojo.Tag;
+import com.github.wulilinghan.jmb.common.utils.FileUniId;
+import com.github.wulilinghan.jmb.common.utils.OSUtils;
+import com.github.wulilinghan.jmb.component.Cost;
+import com.github.wulilinghan.jmb.component.FileListenerFactory;
 import com.hankcs.hanlp.HanLP;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
@@ -19,16 +26,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
-import com.github.wulilinghan.jmb.common.global.GlobalData;
-import com.github.wulilinghan.jmb.common.pojo.Catalog;
-import com.github.wulilinghan.jmb.common.pojo.GiTalk;
-import com.github.wulilinghan.jmb.common.pojo.Tag;
-import com.github.wulilinghan.jmb.common.utils.OSUtils;
-import com.github.wulilinghan.jmb.component.Cost;
-import com.github.wulilinghan.jmb.component.FileListenerFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -183,6 +182,9 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
             tagList.add(tag);
 
             File[] subFiles = file.listFiles();
+            if (subFiles == null || subFiles.length == 0) {
+                return;
+            }
             for (File subFile : subFiles) {
                 if (isMarkDownFile(subFile)) {
                     ArticleMetaData articleMetaInfo = getArticleMetaInfo(subFile);
@@ -216,11 +218,14 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
             return;
         }
         result.addAll(catalog.getArticles());
+
         List<Catalog> subCatalogs = catalog.getSubCatalogs();
-        if (!CollectionUtils.isEmpty(subCatalogs)) {
-            for (Catalog subCatalog : subCatalogs) {
-                getArticleMetaInfoFromCatalog(subCatalog, result);
-            }
+        if (CollectionUtils.isEmpty(subCatalogs)) {
+            return;
+        }
+
+        for (Catalog subCatalog : subCatalogs) {
+            getArticleMetaInfoFromCatalog(subCatalog, result);
         }
     }
 
@@ -251,9 +256,9 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         for (ArticleMetaData ra : rootArticles) {
             articleMetaIndex.put(ra.getArticleId(), ra);
         }
-        catalogIndex.put(rootCatalog.getSha256(), rootCatalog);
+        catalogIndex.put(rootCatalog.getId(), rootCatalog);
         for (Catalog subCatalog : rootCatalog.getSubCatalogs()) {
-            catalogIndex.put(subCatalog.getSha256(), subCatalog);
+            catalogIndex.put(subCatalog.getId(), subCatalog);
         }
         //------------------------------------------------
 
@@ -277,14 +282,10 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
             catalog.addArticleMetaInfo(getArticleMetaInfo(file));
             return;
         }
-
         catalog.setName(FilenameUtils.getName(file.getName()));
         catalog.setDirectory(true);
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            catalog.setSha256(DigestUtils.sha256Hex(fileInputStream));
-        } catch (Exception ignored) {
-            catalog.setSha256(IdUtil.simpleUUID());
-        }
+        catalog.setId(FileUniId.numId(file));
+
         // 子目录及子目录文件
         File[] files = file.listFiles();
         if (files == null || files.length == 0) {
@@ -300,15 +301,10 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
                 Catalog subCatalog = new Catalog(subFile.toString());
                 subCatalog.setName(FilenameUtils.getName(subFile.getName()));
                 subCatalog.setDirectory(true);
-                try (FileInputStream fileInputStream = new FileInputStream(subFile)) {
-                    subCatalog.setSha256(DigestUtils.sha256Hex(fileInputStream));
-                } catch (Exception ignored) {
-                    subCatalog.setSha256(IdUtil.simpleUUID());
-                }
+                subCatalog.setId(IdUtil.getSnowflakeNextIdStr());
 
                 // 递归子目录
 //                recursiveCatalog(subFile, subCatalog);
-
 
                 // 获取子目录下所有md文件。这样子 rootCatalog 下只有一层subCatalogs，subCatalogs中Catalog没有子级文件夹
                 Collection<File> subFiles = FileUtils.listFiles(subFile, new String[]{"md"}, true);
@@ -331,19 +327,23 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
     private ArticleMetaData getArticleMetaInfo(final File file) {
         // 文档元信息
         ArticleMetaData metaInfo = new ArticleMetaData(file);
-        metaInfo.setArticleId(IdUtil.simpleUUID()); // articleId
-        metaInfo.setTitle(FilenameUtils.getBaseName(file.toString()));//标题
-//        metaInfo.setSummary(MarkDownHandler.mdSimpleToHtml(getSummary(file)));//摘要
+        // 根据文件名生成唯一id
+        metaInfo.setArticleId(FileUniId.numId(file));
+        //标题
+        metaInfo.setTitle(FilenameUtils.getBaseName(file.toString()));
+        //摘要
+//        metaInfo.setSummary(MarkDownHandler.mdSimpleToHtml(getSummary(file)));
         String summary = HanLP.getSummary(getContent(file), 100);
-        metaInfo.setSummary(summary);//摘要
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            metaInfo.setSha256(DigestUtils.sha256Hex(fileInputStream)); // 文件sha256
-
+        metaInfo.setSummary(summary);
+        try {
             Path path = file.toPath();
             BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
-            metaInfo.setCreationTime(attr.creationTime().toMillis()); // 创建时间
-            metaInfo.setLastModifiedTime(attr.lastModifiedTime().toMillis()); // 更新时间
-            metaInfo.setLastAccessTime(attr.lastAccessTime().toMillis()); // 上次访问时间
+            // 创建时间
+            metaInfo.setCreationTime(attr.creationTime().toMillis());
+            // 更新时间
+            metaInfo.setLastModifiedTime(attr.lastModifiedTime().toMillis());
+            // 上次访问时间
+            metaInfo.setLastAccessTime(attr.lastAccessTime().toMillis());
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
