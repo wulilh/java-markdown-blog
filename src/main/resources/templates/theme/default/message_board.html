@@ -230,12 +230,11 @@
 <br>
 <br>
 
-底部footer
+<!--底部footer-->
 <footer th:replace="~{theme/default/_fragments :: footer}" class="ui inverted vertical segment m-padded-tb-massive">
 </footer>
 
-<script src="../../../static/default/js/jquery.js" th:src="@{/default/js/jquery.js}"></script>
-<script src="../../../static/default/js/semantic.min.js" th:src="@{/default/js/semantic.min.js}"></script>
+<th:block th:replace="~{theme/default/_fragments :: script}"/>
 
 <script th:inline="javascript">
     onload = function () {
@@ -243,16 +242,17 @@
             button: "#emojiBtn",
             showTab: false,
             animation: 'slide',
-            basePath: 'default/images/emoji',
+            basePath: '/default/images/emoji',
             icons: emojiLists
         });
 
         $("#messageText").emojiParse({
-            basePath: 'default/images/emoji',
+            basePath: '/default/images/emoji',
             icons: emojiLists
         });
     }
 </script>
+
 <script>
     $('.menu.toggle').click(function () {
         $('.m-item').toggleClass('m-mobile-hide');
@@ -278,7 +278,6 @@
             error: function (request) {
                 alert(JSON.stringify(request.responseJSON));
                 console.log(JSON.stringify(request.responseJSON.message));
-                //alert("服务器出现了一个未知的错误");
             },
             success: function (data) {
                 clearContent();

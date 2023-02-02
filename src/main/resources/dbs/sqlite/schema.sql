@@ -13,6 +13,21 @@ create table message_board_info(
     is_valid varchar default 'Y' -- '是否有效'
 );
 
+create table message_comment_info(
+    id integer constraint message_comment_info_pk primary key autoincrement ,	-- '评论主表id'
+    parent_comment_id INTEGER , -- '父留言id'
+    to_email varchar ,	--'被评论者邮箱'
+    to_user_id varchar ,	--'被评论者id'
+    user_id varchar, -- '评论者id'
+    nickname VARCHAR , --'评论者昵称'
+    email VARCHAR , --'评论者邮箱'
+    content text not null ,	-- '评论内容'
+    reply_inform INTEGER , -- '留言被回复后是否发邮件通知'
+    create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'
+    update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'
+    is_valid varchar default 'Y' -- '是否有效'
+);
+
 create table user_github(
     id integer constraint user_github_pk primary key autoincrement ,	-- 'id'
     github_id varchar , -- 'github账号id'

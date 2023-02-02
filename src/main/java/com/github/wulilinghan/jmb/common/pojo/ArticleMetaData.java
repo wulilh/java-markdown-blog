@@ -34,6 +34,9 @@ public class ArticleMetaData {
     private boolean shareStatement = true; //
     private boolean commentabled = true; //是否可留言
 
+    public ArticleMetaData() {
+    }
+
     public ArticleMetaData(File file) {
         this.absolutePath = file.getAbsolutePath();
         this.path = file.toPath();

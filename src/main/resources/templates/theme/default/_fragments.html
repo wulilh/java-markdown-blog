@@ -164,6 +164,8 @@
   <script src="../../../static/default/js/jquery.emoji.js" th:src="@{/default/js/jquery.emoji.js}"></script>
   <script src="../../../static/default/js/emoji.list.js" th:src="@{/default/js/emoji.list.js}"></script>
 
+  <script src="../../../static/default/js/constant.js" th:src="@{/default/js/constant.js}"></script>
+
   <script>
     $('.ui.dropdown').dropdown({
       on: 'hover'
@@ -192,18 +194,20 @@
     }
     if (browser.versions.mobile) {
       //执行移动端的相关代码
-      //alert("移动端");
+      console.log("移动端");
       //设置移动端不显示网易云音乐插件
       onload = function () {
           var MusicDivShow = document.getElementById('netEasy-music');//获取指定div中的元素
           MusicDivShow.style.display = 'none';//控制层隐藏
       };
     }else if(!browser.versions.mobile){ //非移动端，动态加载js和div
+      console.log("PC端");
+
       //设置电脑端显示网易云音乐插件
-      onload = function () {
+/*      onload = function () {
         var MusicDivShow = document.getElementById('netEasy-music');//获取指定div中的元素
         MusicDivShow.style.display = 'block';//控制层显示
-      };
+      };*/
       var snowScript = document.createElement('script');
       snowScript.type = 'text/javascript';
       snowScript.src = '\\default\\js\\snow.js';
@@ -230,7 +234,7 @@
       // $body.append(snowScript);//雪花特效
       // $body.append(clickShowTextScript);//单击弹出文字
       // $body.append(canvasNestScript); //网页动态线条背景效果，背景上会有动态的线组合成三角形等各种图形，并且会对用户鼠标移动作出响应
-      $body.append(live2DScript);// live-2D （看板娘）
+      // $body.append(live2DScript);// live-2D （看板娘）
     }
   </script>
 </th:block>

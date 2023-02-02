@@ -36,7 +36,10 @@ public class MessageBoardInfo {
     private List<MessageBoardInfo> replyMessages = new ArrayList<>(); //回复
     private MessageBoardInfo parentMessage; //评论
 
-    private Integer adminMessage = 0;//评论类型，0为游客评论，1为访客评论，2为管理员评论
+    /**
+     * @see com.github.wulilinghan.jmb.common.enums.MessageTypeEnum
+     */
+    private Integer adminMessage = 0;
 
     public void appendReplyMessage(Collection<MessageBoardInfo> messages) {
         this.replyMessages.addAll(messages);
