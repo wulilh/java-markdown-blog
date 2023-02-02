@@ -32,7 +32,9 @@ public class IMessageCommentImpl implements IMessageComment {
 
     @Override
     public PageInfo<MessageCommentInfo> selectByPage(int page, int size) {
-        PageHelper.startPage(page, size);
+        if (size != -1) {
+            PageHelper.startPage(page, size);
+        }
         List<MessageCommentInfo> list = messageCommentInfoMapper.listRootMessage();
         final PageInfo<MessageCommentInfo> infoPageInfo = new PageInfo<>(list);
 

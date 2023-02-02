@@ -39,9 +39,9 @@ public class MessageCommentInfo {
     private MessageCommentInfo parentComment; //评论
 
     /**
-     * @see com.github.wulilinghan.jmb.common.enums.MessageTypeEnum
+     * @see com.github.wulilinghan.jmb.common.enums.CommentTypeEnum
      */
-    private Integer adminMessage = 0;
+    private Integer adminComment = 0;
 
     public void appendReplyMessage(Collection<MessageCommentInfo> messages) {
         this.replyComments.addAll(messages);
@@ -67,7 +67,7 @@ public class MessageCommentInfo {
                 ", articleMetaData=" + articleMetaData +
                 ", openid='" + openid + '\'' +
                 ", parentComment=" + parentComment +
-                ", adminMessage=" + adminMessage +
+                ", adminComment=" + adminComment +
                 '}';
     }
 }

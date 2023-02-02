@@ -1,7 +1,7 @@
 package com.github.wulilinghan.jmb.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.github.wulilinghan.jmb.common.enums.MessageTypeEnum;
+import com.github.wulilinghan.jmb.common.enums.CommentTypeEnum;
 import com.github.wulilinghan.jmb.common.exception.ArticleNotFoundException;
 import com.github.wulilinghan.jmb.common.global.GlobalData;
 import com.github.wulilinghan.jmb.common.pojo.ArticleResult;
@@ -52,16 +52,16 @@ public class MessageCommentController {
             String openid = (String) session.getAttribute("openid");//QQ标识
             String node_id = (String) session.getAttribute("node_id");//github标识
             comment.setAvatar(avatar);
-            comment.setAdminMessage(MessageTypeEnum.visitor.getType());
+            comment.setAdminComment(CommentTypeEnum.visitor.getType());
             if (StringUtils.hasText(node_id)) {
-                comment.setAdminMessage(MessageTypeEnum.github.getType());
+                comment.setAdminComment(CommentTypeEnum.github.getType());
             }
             // 判断是否为管理员评论
             if (adminOpenid.equals(openid)) {
-                comment.setAdminMessage(MessageTypeEnum.admin.getType());
+                comment.setAdminComment(CommentTypeEnum.admin.getType());
             }
         } else {
-            comment.setAdminMessage(MessageTypeEnum.tourist.getType());
+            comment.setAdminComment(CommentTypeEnum.tourist.getType());
             comment.setAvatar(avatar);
         }
         iMessageComment.saveComment(comment);
@@ -71,12 +71,12 @@ public class MessageCommentController {
 
     @GetMapping("/refreshComments")
     public String refreshComments(PageQueryBaseDto query, Model model) {
-        PageInfo<MessageCommentInfo> commentInfoPageInfo = iMessageComment.selectByPage(query.getCurrPage(), query.getPageSize());
+        PageInfo<MessageCommentInfo> commentInfoPageInfo = iMessageComment.selectByPage(1, -1);
         boolean isFirstPage = commentInfoPageInfo.isIsFirstPage(); //判断是否为首页
         boolean isLastPage = commentInfoPageInfo.isIsLastPage();//判断是否为尾页
         model.addAttribute("isIsFirstPage", isFirstPage);
         model.addAttribute("isIsLastPage", isLastPage);
-        model.addAttribute("comments", commentInfoPageInfo);
+        model.addAttribute("comments", commentInfoPageInfo.getList());
         //将数据返回 blog 页面的th:fragment="commentList"片段，实现局部刷新
         return "theme/" + theme + "/blog :: commentList";
     }
