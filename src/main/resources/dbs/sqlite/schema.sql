@@ -6,6 +6,7 @@ create table if not exists message_board_info(
     user_id varchar, -- '评论者id'
     nickname VARCHAR , --'评论者昵称'
     email VARCHAR , --'评论者邮箱'
+    avatar VARCHAR , --'评论者头像'
     content text not null ,	-- '评论内容'
     reply_inform INTEGER , -- '留言被回复后是否发邮件通知'
     create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'
@@ -15,12 +16,14 @@ create table if not exists message_board_info(
 
 create table if not exists message_comment_info(
     id integer constraint message_comment_info_pk primary key autoincrement ,	-- '评论主表id'
+    article_id varchar , -- '文章id'
     parent_comment_id INTEGER , -- '父留言id'
     to_email varchar ,	--'被评论者邮箱'
     to_user_id varchar ,	--'被评论者id'
     user_id varchar, -- '评论者id'
     nickname VARCHAR , --'评论者昵称'
     email VARCHAR , --'评论者邮箱'
+    avatar VARCHAR , --'评论者头像'
     content text not null ,	-- '评论内容'
     reply_inform INTEGER , -- '留言被回复后是否发邮件通知'
     create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'

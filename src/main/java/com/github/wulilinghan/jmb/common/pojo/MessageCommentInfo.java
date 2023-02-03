@@ -15,6 +15,7 @@ import java.util.*;
 public class MessageCommentInfo {
     private Integer id;
     private Integer parentCommentId;
+    private String articleId; //文章id
     private String userId; //评论者昵称
     private String nickname; //评论者昵称
     private String email; //邮箱

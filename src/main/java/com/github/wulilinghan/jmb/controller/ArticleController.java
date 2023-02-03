@@ -30,7 +30,7 @@ public class ArticleController {
     public ModelAndView get(@PathVariable("articleId") String articleId) throws ArticleNotFoundException {
         ModelAndView modelAndView = new ModelAndView("theme/" + themeName + "/blog");
         modelAndView.addObject("blog", iArticle.get(articleId));
-        modelAndView.addObject("comments", iMessageComment.selectByPage(1, -1).getList());
+        modelAndView.addObject("comments", iMessageComment.listCommentsByArticleId(articleId, 1, -1).getList());
         return modelAndView;
     }
 

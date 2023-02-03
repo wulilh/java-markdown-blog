@@ -1,12 +1,10 @@
 package com.github.wulilinghan.jmb.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.github.wulilinghan.jmb.common.enums.CommentTypeEnum;
 import com.github.wulilinghan.jmb.common.exception.ArticleNotFoundException;
 import com.github.wulilinghan.jmb.common.global.GlobalData;
 import com.github.wulilinghan.jmb.common.pojo.ArticleResult;
 import com.github.wulilinghan.jmb.common.pojo.MessageCommentInfo;
-import com.github.wulilinghan.jmb.common.pojo.PageQueryBaseDto;
 import com.github.wulilinghan.jmb.service.IArticle;
 import com.github.wulilinghan.jmb.service.IMessageComment;
 import jakarta.annotation.Resource;
@@ -16,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author wuliling Created By 2023-02-02 21:02
@@ -43,10 +43,11 @@ public class MessageCommentController {
      * @return /
      */
     @PostMapping("/POSTComments")
-    public String post(MessageCommentInfo comment, HttpSession session) throws ArticleNotFoundException {
+    public String post(MessageCommentInfo comment, HttpSession session, RedirectAttributes redirectAttributes) throws ArticleNotFoundException {
         String articleId = comment.getArticleMetaData().getArticleId();
         ArticleResult articleResult = iArticle.get(articleId);
         comment.setArticleMetaData(articleResult.getMeta());
+        comment.setArticleId(articleId);
         String loginStatus = (String) session.getAttribute("loginStatus");
         if (loginStatus != null) {
             String openid = (String) session.getAttribute("openid");//QQ标识
@@ -65,19 +66,15 @@ public class MessageCommentController {
             comment.setAvatar(avatar);
         }
         iMessageComment.saveComment(comment);
-        return "redirect:/refreshComments";
+//        redirectAttributes.addAttribute(articleId);
+        return "redirect:/refreshComments/"+articleId;
     }
 
 
-    @GetMapping("/refreshComments")
-    public String refreshComments(PageQueryBaseDto query, Model model) {
-        PageInfo<MessageCommentInfo> commentInfoPageInfo = iMessageComment.selectByPage(1, -1);
-        boolean isFirstPage = commentInfoPageInfo.isIsFirstPage(); //判断是否为首页
-        boolean isLastPage = commentInfoPageInfo.isIsLastPage();//判断是否为尾页
-        model.addAttribute("isIsFirstPage", isFirstPage);
-        model.addAttribute("isIsLastPage", isLastPage);
-        model.addAttribute("comments", commentInfoPageInfo.getList());
+    @GetMapping("/refreshComments/{articleId}")
+    public String refreshComments(@PathVariable("articleId") String articleId, Model model) {
+        model.addAttribute("comments", iMessageComment.listCommentsByArticleId(articleId, 1, -1).getList());
         //将数据返回 blog 页面的th:fragment="commentList"片段，实现局部刷新
-        return "theme/" + themeName + "/blog :: commentList";
+        return "theme/" + themeName + "/blog::commentList";
     }
 }

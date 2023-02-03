@@ -1,5 +1,6 @@
 mybatis:
     configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
         map-underscore-to-camel-case: true
     mapper-locations: classpath*:com/github/wulilinghan/jmb/mapper/xml/**.xml
     type-aliases-package: com.github.wulilinghan.jmb.common.pojo

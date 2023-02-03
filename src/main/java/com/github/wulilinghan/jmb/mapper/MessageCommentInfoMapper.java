@@ -11,9 +11,9 @@ public interface MessageCommentInfoMapper {
 
     MessageCommentInfo queryById(Integer id);
 
-    List<MessageCommentInfo> listRootMessage();
+    List<MessageCommentInfo> listRootComment(String articleId);
 
-    List<MessageCommentInfo> listReplyMessage(Integer id);
+    List<MessageCommentInfo> listReplyComment(String articleId, Integer id);
 
     void insert(MessageCommentInfo message);
 

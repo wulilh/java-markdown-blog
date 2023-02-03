@@ -8,7 +8,7 @@ import com.github.wulilinghan.jmb.common.pojo.MessageCommentInfo;
  **/
 public interface IMessageComment {
 
-    PageInfo<MessageCommentInfo> selectByPage(int page, int size);
+    PageInfo<MessageCommentInfo> listCommentsByArticleId(String articleId, int page, int size);
 
     MessageCommentInfo saveComment(MessageCommentInfo message);
 }

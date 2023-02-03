@@ -9,6 +9,7 @@
         <result property="userId" column="user_id" jdbcType="VARCHAR"/>
         <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
         <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="replyInform" column="reply_inform" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -30,8 +31,8 @@
     </select>
 
     <insert id="insert" parameterType="com.github.wulilinghan.jmb.common.pojo.MessageBoardInfo" useGeneratedKeys="true" keyProperty="id">
-        insert into message_board_info(parent_message_id,user_id, nickname, email, content,reply_inform)
-        values (#{parentMessageId},#{userId}, #{nickname}, #{email}, #{content},#{replyInform})
+        insert into message_board_info(parent_message_id,user_id, nickname, email, avatar,content,reply_inform)
+        values (#{parentMessageId},#{userId}, #{nickname}, #{email},#{avatar}, #{content},#{replyInform})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">

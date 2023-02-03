@@ -31,11 +31,11 @@ public class IMessageCommentImpl implements IMessageComment {
     private List<MessageCommentInfo> tmpReplyList = new ArrayList<>();
 
     @Override
-    public PageInfo<MessageCommentInfo> selectByPage(int page, int size) {
+    public PageInfo<MessageCommentInfo> listCommentsByArticleId(String articleId, int page, int size) {
         if (size != -1) {
             PageHelper.startPage(page, size);
         }
-        List<MessageCommentInfo> list = messageCommentInfoMapper.listRootMessage();
+        List<MessageCommentInfo> list = messageCommentInfoMapper.listRootComment(articleId);
         final PageInfo<MessageCommentInfo> infoPageInfo = new PageInfo<>(list);
 
         List<MessageCommentInfo> messagesView = new ArrayList<>();
@@ -59,7 +59,7 @@ public class IMessageCommentImpl implements IMessageComment {
      */
     private void recursively(MessageCommentInfo rootMessage) {
         // 获取当前message 第一层回复
-        List<MessageCommentInfo> replyMessages = messageCommentInfoMapper.listReplyMessage(rootMessage.getId());
+        List<MessageCommentInfo> replyMessages = messageCommentInfoMapper.listReplyComment(rootMessage.getArticleId(), rootMessage.getId());
         if (CollectionUtils.isEmpty(replyMessages)) {
             return;
         }
@@ -85,11 +85,13 @@ public class IMessageCommentImpl implements IMessageComment {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public MessageCommentInfo saveComment(MessageCommentInfo message) {
-        if (message.getParentComment() == null) {
+        Integer parentCommentId = message.getParentCommentId();
+        if (parentCommentId == -1) {
             message.setParentCommentId(null);
             message.setParentComment(null);
-        } else if (message.getParentComment().getId() != -1) {
-            Integer parentCommentId = message.getParentComment().getId();
+        }
+
+        if (parentCommentId != -1) {
             message.setParentCommentId(parentCommentId);
             message.setParentComment(messageCommentInfoMapper.queryById(parentCommentId));
         }
