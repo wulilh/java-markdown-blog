@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  **/
 @Controller
 public class MessageCommentController {
-    public static String theme = GlobalData.theme;
+    public static String themeName = GlobalData.theme;
 
     @Value("${comment.default.avatar}")
     private String avatar;
@@ -78,6 +78,6 @@ public class MessageCommentController {
         model.addAttribute("isIsLastPage", isLastPage);
         model.addAttribute("comments", commentInfoPageInfo.getList());
         //将数据返回 blog 页面的th:fragment="commentList"片段，实现局部刷新
-        return "theme/" + theme + "/blog :: commentList";
+        return "theme/" + themeName + "/blog :: commentList";
     }
 }

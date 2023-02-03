@@ -237,7 +237,8 @@
 <th:block th:replace="~{theme/default/_fragments :: script}"/>
 
 <script th:inline="javascript">
-    onload = function () {
+    /** 加载emoji表情 */
+/*    onload = function () {
         $("#commentEditor").emoji({
             button: "#emojiBtn",
             showTab: false,
@@ -250,7 +251,7 @@
             basePath: '/default/images/emoji',
             icons: emojiLists
         });
-    }
+    }*/
 </script>
 
 <script>

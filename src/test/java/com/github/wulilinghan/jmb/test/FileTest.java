@@ -30,6 +30,21 @@ import java.util.*;
 public class FileTest extends TestBase {
 
     @Test
+    public void test_path() throws IOException {
+        String rootPath = "D:\\work-space\\github\\assets\\markdown-articles";
+        String s = rootPath + "\\IntelliJIDEA使用\\插件篇.md";
+        String rootAbsolutePath = new File(rootPath).getAbsolutePath();
+        System.out.println("absolutePath = " + rootAbsolutePath);
+
+        File file = new File(s);
+        String fileAbsolutePath = file.getAbsolutePath();
+        System.out.println("file = " + fileAbsolutePath);
+
+        String replace = fileAbsolutePath.replace(rootAbsolutePath, "");
+        System.out.println("replace = " + replace);
+    }
+
+    @Test
     public void test_r() throws IOException {
         String s = "cache";
         File file = new File(s);

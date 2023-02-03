@@ -1,4 +1,4 @@
-create table message_board_info(
+create table if not exists message_board_info(
     id integer constraint message_board_info_pk primary key autoincrement ,	-- '评论主表id'
     parent_message_id INTEGER , -- '父留言id'
     to_email varchar ,	--'被评论者邮箱'
@@ -13,7 +13,7 @@ create table message_board_info(
     is_valid varchar default 'Y' -- '是否有效'
 );
 
-create table message_comment_info(
+create table if not exists message_comment_info(
     id integer constraint message_comment_info_pk primary key autoincrement ,	-- '评论主表id'
     parent_comment_id INTEGER , -- '父留言id'
     to_email varchar ,	--'被评论者邮箱'
@@ -28,7 +28,7 @@ create table message_comment_info(
     is_valid varchar default 'Y' -- '是否有效'
 );
 
-create table user_github(
+create table if not exists user_github(
     id integer constraint user_github_pk primary key autoincrement ,	-- 'id'
     github_id varchar , -- 'github账号id'
     node_id varchar ,	--'github唯一标识'

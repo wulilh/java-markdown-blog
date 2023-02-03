@@ -1,10 +1,11 @@
 package com.github.wulilinghan.jmb.common.config;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import com.github.wulilinghan.jmb.common.pojo.GiTalk;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -21,17 +22,27 @@ import java.nio.file.Path;
 public class WebSiteConfig {
 
     private String markdownDir; //Markdown文件根目录
-    private Path markdownPath;
-    private String indexDir; //存放about.md 以及md文件元信息
-    private Path indexPath;
+    private transient Path markdownPath;
+    private String indexDir; //存放About.md 以及md文件元信息
+    private transient Path indexPath;
     private String cacheDir = "cache/md"; //文档html缓存
-    private Path cachePath;
-    private String about = "about.md";
+    private transient Path cachePath;
 
-    private String metaFile = "metaInfo.json";
+    private String about = "About.md";
+
     private String catalogFile = "catalog.json";
     private String charset = "UTF-8";
     private GiTalk giTalk;
+
+    private String webSiteTittle = "wuliling's 博客";
+    private String webSiteDescription = "一个用Java写的Markdown博客";
+    private String webSiteLogo = "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png";
+    private String webSiteIcon = "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png";
+
+    private String author = "wulilinghan";
+    private String authorAvatar = "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png";
+
+    private Footer footer;
 
     public WebSiteConfig() {
         File cacheFileDir = new File(cacheDir);
@@ -61,6 +72,31 @@ public class WebSiteConfig {
             log.info("setCacheDir create cache-dir result:[{}]", mkdir);
         }
         this.cachePath = cacheFileDir.toPath();
+    }
 
+
+    /**
+     * Gitalk 是一个基于 GitHub Issue 和 Preact 开发的评论插件。
+     * https://gitalk.github.io/
+     *
+     * @author wuliling Created By 2023-01-17 9:51
+     **/
+    @Getter
+    @Setter
+    public static class GiTalk {
+        private Boolean enable = Boolean.FALSE;
+        private String owner;
+        private String admin;
+        private String repo;
+        private String clientId;
+        private String secret;
+    }
+
+    @Getter
+    @Setter
+    public static class Footer {
+        private String icp;
+        private String poweredBy;
+        private String poweredByUrl = "https://github.com/wulilinghan/java-markdown-blog";
     }
 }

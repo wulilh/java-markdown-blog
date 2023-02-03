@@ -3,6 +3,8 @@ logging:
         path: log
 server:
     port: 6060
+    session:
+        timeout: 864000 #session自动过期时间为10天，单位秒 60*60*24*10；记录登录状态
 spring:
     profiles:
         include: website,sqlite

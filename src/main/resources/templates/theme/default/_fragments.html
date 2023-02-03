@@ -36,7 +36,7 @@
 <nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
   <div class="ui container">
     <div class="ui inverted secondary stackable menu">
-      <h2 class="ui teal header item" title="个人博客" th:text="${configurations.get('websiteName')}">wulilinghan_Blog</h2>
+      <h2 class="ui teal header item" title="个人博客" th:text="${webSiteConfig.getWebSiteTittle()}">wulilinghan's Blog</h2>
       <a href="#" target="_blank" th:href="@{/}" class="m-item item m-mobile-hide " th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>&nbsp;首页</a>
 <!--      <a href="#" target="_blank" th:href="@{/types/-1}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini idea icon"></i>分类</a>-->
       <a href="#" target="_blank" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="mini tags icon"></i>&nbsp;标签</a>
@@ -101,22 +101,23 @@
 
   <div class="ui center aligned container">
     <p class="m-text-thin m-text-spaced m-opacity-tiny">
-      Copyright © 2019 -<span th:text="${#dates.year(#dates.createNow())}">2020</span>&nbsp;wulilinghan
+      ©<span th:text="${#dates.year(#dates.createNow())}">2020</span>&nbsp;. All Rights Reserved. Powered by
+      <a href="https://github.com/wulilinghan/java-markdown-blog" target="_blank" th:href="${footer.getPoweredByUrl()}"><span th:text="${footer.getPoweredBy()}">java-markdown-blog</span></a>
     </p>
 
     <!-- 备案号 -->
-<!--    <div style="width:300px;margin:0 auto; padding:1px 0; ">
+    <div style="width:300px;margin:0 auto; padding:1px 0; ">
       <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36098102000147"
          style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
-        <img src="default/images/1.png" style="float:left;" alt=""/>
-        <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#ff1c04;">粤公网安备 6666666666666666号</p>
+        <img src="/default/images/beian_img.png" style="float:left;" alt=""/>
+        <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#ff1c04;" th:text="${footer.getIcp()}">粤公网安备 6666666666666号</p>
       </a>
-    </div>-->
+    </div>
 
-    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<!--    <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+
     <script>
       var now = new Date();
-
       function createtime() {
         var grt = new Date("11/11/2019 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
         now.setTime(now.getTime() + 250);
@@ -142,7 +143,7 @@
       }
 
       setInterval("createtime()", 500);
-    </script>
+    </script>-->
 
   </div>
 
@@ -181,13 +182,13 @@
           trident: u.indexOf('Trident') > -1, //IE内核
           presto: u.indexOf('Presto') > -1, //opera内核
           webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-          gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+          gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') === -1, //火狐内核
           mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
           ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
           android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
           iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
           iPad: u.indexOf('iPad') > -1, //是否iPad
-          webApp: u.indexOf('Safari') == -1 //是否web应用程序，没有头部与底部
+          webApp: u.indexOf('Safari') === -1 //是否web应用程序，没有头部与底部
         };
       }(),
       language: (navigator.browserLanguage || navigator.language).toLowerCase()

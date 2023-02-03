@@ -2,13 +2,10 @@ package com.github.wulilinghan.jmb.service.impl;
 
 import com.github.wulilinghan.jmb.common.exception.ArticleNotFoundException;
 import com.github.wulilinghan.jmb.common.global.GlobalData;
-import com.github.wulilinghan.jmb.common.pojo.ArticleMetaData;
-import com.github.wulilinghan.jmb.common.pojo.ArticleResult;
-import com.github.wulilinghan.jmb.common.pojo.PageResult;
+import com.github.wulilinghan.jmb.common.pojo.*;
 import com.github.wulilinghan.jmb.component.MarkDownHandler;
 import com.github.wulilinghan.jmb.service.IArticle;
 import org.springframework.stereotype.Service;
-import com.github.wulilinghan.jmb.common.pojo.PageQueryBaseDto;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -71,11 +68,6 @@ public class IArticleImpl implements IArticle {
     @Override
     public List<ArticleMetaData> listTop(int size) {
         return GlobalData.articleMetaList.subList(0, size);
-    }
-
-    @Override
-    public List<ArticleMetaData> listCatalogArticle(String catalogId) {
-        return GlobalData.catalogIndex.get(catalogId).getArticles();
     }
 
 

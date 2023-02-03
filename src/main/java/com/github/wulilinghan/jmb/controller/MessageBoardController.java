@@ -22,7 +22,7 @@ import com.github.wulilinghan.jmb.service.IMessageBoard;
  **/
 @Controller
 public class MessageBoardController {
-    public static String theme = GlobalData.theme;
+    public static String themeName = GlobalData.theme;
 
     @Value("${comment.default.avatar}")
     private String avatar;
@@ -34,7 +34,7 @@ public class MessageBoardController {
 
     @GetMapping("messages")
     public ModelAndView messages(PageQueryBaseDto query) {
-        ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/message_board");
+        ModelAndView modelAndView = new ModelAndView("theme/" + themeName + "/message_board");
         PageInfo<MessageBoardInfo> commentInfoPageInfo = messageBoard.selectByPage(query.getCurrPage(), query.getPageSize());
         boolean isFirstPage = commentInfoPageInfo.isIsFirstPage(); //判断是否为首页
         boolean isLastPage = commentInfoPageInfo.isIsLastPage();//判断是否为尾页
@@ -83,6 +83,6 @@ public class MessageBoardController {
         model.addAttribute("isIsLastPage", isLastPage);
         model.addAttribute("messages", commentInfoPageInfo);
         //将数据返回message_board页面的th:fragment="messageList"片段，实现局部刷新
-        return "theme/" + theme + "/message_board :: messageList";
+        return "theme/" + themeName + "/message_board :: messageList";
     }
 }

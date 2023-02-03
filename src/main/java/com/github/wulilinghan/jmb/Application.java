@@ -13,11 +13,11 @@ import java.util.TimeZone;
  */
 @MapperScan("com.github.wulilinghan.jmb.mapper")
 @SpringBootApplication
-public class JavaMarkdownBlogApplication {
+public class Application {
 
     public static void main(String[] args) {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-        SpringApplication.run(JavaMarkdownBlogApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     @Bean

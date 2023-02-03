@@ -1,15 +1,32 @@
 comment:
-    default:
-        avatar: default/images/avatar.png
+  default:
+    avatar: /default/images/avatar.png
 github:
-    callback: http://xiongsihao.com/github/callback
-    client-id: Iv1.5f8c132f227f383c
-    client-secret: 755c85b587ee2734cf59572768bdd623da0b61ea
+  callback: http://xiongsihao.com/github/callback
+  client-id: Iv1.5f8c132f227f383c
+  client-secret: 755c85b587ee2734cf59572768bdd623da0b61ea
 image:
-    upload:
-        base-url: d:/website/upload/image
+  upload:
+    base-url: d:/website/upload/image
 website:
-    cookie:
-        time: 864000
-    index-dir: d:/website/index
-    markdown-dir: D:\work-space\github\assets\markdown-articles
+  indexDir: d:/website/index
+  markdownDir: D:\work-space\github\assets\markdown-articles
+  cookie:
+    time: 864000
+  webSiteTittle: "wuliling's 博客"
+  webSiteDescription: "一个用Java写的Markdown博客"
+  webSiteLogo: "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png"
+  webSiteIcon: "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png"
+  author: "wulilinghan"
+  authorAvatar: "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png"
+  footer:
+    icp: "粤公网安备 123456789号"
+    poweredBy: "java-markdown-blog"
+    poweredByUrl: "https://github.com/wulilinghan/java-markdown-blog"
+  gitTalk:
+    enable:
+    owner:
+    admin:
+    repo:
+    clientId:
+    secret:

@@ -1,10 +1,7 @@
 package com.github.wulilinghan.jmb.service;
 
 import com.github.wulilinghan.jmb.common.exception.ArticleNotFoundException;
-import com.github.wulilinghan.jmb.common.pojo.ArticleMetaData;
-import com.github.wulilinghan.jmb.common.pojo.ArticleResult;
-import com.github.wulilinghan.jmb.common.pojo.PageResult;
-import com.github.wulilinghan.jmb.common.pojo.PageQueryBaseDto;
+import com.github.wulilinghan.jmb.common.pojo.*;
 
 import java.util.List;
 
@@ -19,8 +16,6 @@ public interface IArticle {
     PageResult listTop(PageQueryBaseDto query);
 
     List<ArticleMetaData> listTop(int size);
-
-    List<ArticleMetaData> listCatalogArticle(String catalogId);
 
     PageResult listArticleWithTagId(Integer tagId, PageQueryBaseDto query);
 }

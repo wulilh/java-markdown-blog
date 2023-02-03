@@ -6,9 +6,8 @@ import com.github.wulilinghan.jmb.common.config.WebSiteConfig;
 import com.github.wulilinghan.jmb.common.global.GlobalData;
 import com.github.wulilinghan.jmb.common.pojo.ArticleMetaData;
 import com.github.wulilinghan.jmb.common.pojo.Catalog;
-import com.github.wulilinghan.jmb.common.pojo.GiTalk;
 import com.github.wulilinghan.jmb.common.pojo.Tag;
-import com.github.wulilinghan.jmb.common.utils.FileUniId;
+import com.github.wulilinghan.jmb.common.utils.IdUtils;
 import com.github.wulilinghan.jmb.common.utils.OSUtils;
 import com.github.wulilinghan.jmb.component.Cost;
 import com.github.wulilinghan.jmb.component.FileListenerFactory;
@@ -48,6 +47,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Order(1)
 public class InitWebSite extends GlobalData implements ApplicationRunner {
+
+    private transient WebSiteConfig.GiTalk giTalk;
+
 
     @Resource
     private Environment environment;
@@ -102,26 +104,13 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
      * 设置thymeleaf全局变量
      */
     private void setThymeleafGlobalStaticVariables() {
-        Map<String, String> configMap = new HashMap<>();
-        configMap.put("websiteName", "测试博客");
-        configMap.put("websiteDescription", "一个用java写的Markdown博客");
-        configMap.put("websiteLogo", "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
-        configMap.put("websiteIcon", "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
-        configMap.put("avatar", "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png");
-        configMap.put("email", "1902325071@qq.com");
-        configMap.put("qq", "1902325071");
-        configMap.put("name", "wulilinghan");
-        configMap.put("footerAbout", "");
-        configMap.put("footerICP", "AE8666");
-        configMap.put("footerCopyRight", "@NewNew");
-        configMap.put("footerPoweredBy", "WULILINGHAN");
-        configMap.put("footerPoweredByURL", "https://github.com/wulilinghan/java-markdown-blog");
         thymeleafViewResolver.setStaticVariables(
-                new HashMap<>() {
+                new HashMap<>(4) {
                     {
-                        put("giTalk", new GiTalk());
+                        put("giTalk", giTalk);
                         put("newblogs", articleMetaList.subList(0, 3));
-                        put("configurations", configMap);
+                        put("webSiteConfig", webSiteConfig);
+                        put("footer", webSiteConfig.getFooter());
                     }
                 }
         );
@@ -144,7 +133,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         }
         log.info("web site end init....");
         log.info("\n-------------------------------------"
-                + "\n初始化读取本地Markdown文档完成."
+                + "\n读取本地Markdown文档完成."
                 + "\nhttp://" + serverIp + ":" + serverPort
                 + "\n-------------------------------------");
     }
@@ -284,7 +273,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         }
         catalog.setName(FilenameUtils.getName(file.getName()));
         catalog.setDirectory(true);
-        catalog.setId(FileUniId.numId(file));
+        catalog.setId(IdUtils.fileUniId(MARKDOWN_DIR_FILE, file));
 
         // 子目录及子目录文件
         File[] files = file.listFiles();
@@ -328,7 +317,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         // 文档元信息
         ArticleMetaData metaInfo = new ArticleMetaData(file);
         // 根据文件名生成唯一id
-        metaInfo.setArticleId(FileUniId.numId(file));
+        metaInfo.setArticleId(IdUtils.fileUniId(MARKDOWN_DIR_FILE, file));
         //标题
         metaInfo.setTitle(FilenameUtils.getBaseName(file.toString()));
         //摘要
