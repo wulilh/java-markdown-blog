@@ -22,7 +22,7 @@ public class ArticleMetaData {
     private String articleId;
     private String title; //标题
     private String summary; //摘要
-    private String coverImage = "";
+    private String coverImage = "https://picsum.photos/seed/picsum/1720/720";
     private String categoryName = "";
     private String categoryIcon = "";
     private long creationTime; // 创建时间

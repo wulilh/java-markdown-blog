@@ -23,7 +23,7 @@
       <div class="ui contianer">
         <h2>404</h2>
         <p>对不起，你访问的资源不存在</p>
-        <p th:text="|Message: ${message}|"></p>
+        <p th:if="${message}" th:text="|Message: ${message}|"></p>
       </div>
     </div>
   </div>

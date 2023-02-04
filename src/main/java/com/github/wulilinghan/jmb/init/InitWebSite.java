@@ -3,16 +3,14 @@ package com.github.wulilinghan.jmb.init;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.github.wulilinghan.jmb.common.config.WebSiteConfig;
-import com.github.wulilinghan.jmb.common.exception.ArticleNotFoundException;
 import com.github.wulilinghan.jmb.common.global.GlobalData;
 import com.github.wulilinghan.jmb.common.pojo.ArticleMetaData;
 import com.github.wulilinghan.jmb.common.pojo.Catalog;
 import com.github.wulilinghan.jmb.common.pojo.Tag;
-import com.github.wulilinghan.jmb.common.utils.IdUtils;
+import com.github.wulilinghan.jmb.common.utils.CommonUtils;
 import com.github.wulilinghan.jmb.common.utils.OSUtils;
 import com.github.wulilinghan.jmb.component.Cost;
 import com.github.wulilinghan.jmb.component.FileListenerFactory;
-import com.hankcs.hanlp.HanLP;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +23,12 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -275,7 +268,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         }
         catalog.setName(FilenameUtils.getName(file.getName()));
         catalog.setDirectory(true);
-        catalog.setId(IdUtils.fileUniId(MARKDOWN_DIR_FILE, file));
+        catalog.setId(CommonUtils.markdownUniId(MARKDOWN_DIR_FILE, file));
 
         // 子目录及子目录文件
         File[] files = file.listFiles();
@@ -307,49 +300,6 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
                 catalog.addSubCatalog(subCatalog);
             }
         }
-    }
-
-    /**
-     * 设置文章元信息
-     *
-     * @param file /
-     * @return /
-     */
-    private ArticleMetaData getArticleMetaInfo(final File file) {
-        // 文档元信息
-        ArticleMetaData metaInfo = new ArticleMetaData(file);
-        // 根据文件名生成唯一id
-        metaInfo.setArticleId(IdUtils.fileUniId(MARKDOWN_DIR_FILE, file));
-        //标题
-        metaInfo.setTitle(FilenameUtils.getBaseName(file.toString()));
-        //摘要
-//        metaInfo.setSummary(MarkDownHandler.mdSimpleToHtml(getSummary(file)));
-        String summary = "";
-        try {
-            if (StringUtils.hasText(getContent(file))) {
-                summary = HanLP.getSummary(getContent(file), 100);
-            }
-        } catch (ArticleNotFoundException e) {
-            e.printStackTrace();
-        }
-        metaInfo.setSummary(summary);
-        try {
-            Path path = file.toPath();
-            BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
-            // 创建时间
-            metaInfo.setCreationTime(attr.creationTime().toMillis());
-            // 更新时间
-            metaInfo.setLastModifiedTime(attr.lastModifiedTime().toMillis());
-            // 上次访问时间
-            metaInfo.setLastAccessTime(attr.lastAccessTime().toMillis());
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
-        // https://source.unsplash.com/random/1270x720
-        // https://source.unsplash.com/random/1720x720
-        // https://picsum.photos/seed/picsum/1720/720
-        metaInfo.setCoverImage("https://source.unsplash.com/random/1720x720");
-        return metaInfo;
     }
 
 

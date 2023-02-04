@@ -47,18 +47,20 @@ public class FileListener extends FileAlterationListenerAdaptor {
      */
     @Override
     public void onFileCreate(File file) {
-        String compressedPath = file.getAbsolutePath();
-        log.info("新建文件：" + compressedPath);
+        log.info("----新建文件：" + file.getAbsolutePath());
         if (file.canRead()) {
-            log.info("fileCanRead，需要进行处理 TODO");
+            listenerService.addArticle(file);
         }
+        log.info("----新建文件 结束");
     }
 
     @Override
     public void onFileChange(File file) {
         String compressedPath = file.getAbsolutePath();
-        log.info("文件修改：" + compressedPath);
+        log.info("----文件修改：" + compressedPath);
         listenerService.updateArticleCache(compressedPath);
+        log.info("----文件修改 结束");
+
     }
 
     /**
@@ -68,7 +70,9 @@ public class FileListener extends FileAlterationListenerAdaptor {
      */
     @Override
     public void onFileDelete(File file) {
-        log.info("文件删除：" + file.getAbsolutePath());
+        log.info("----文件删除：" + file.getAbsolutePath());
+        listenerService.deleteArticle(file);
+        log.info("----文件删除 结束");
     }
 
 
