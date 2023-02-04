@@ -3,6 +3,7 @@ package com.github.wulilinghan.jmb.init;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.github.wulilinghan.jmb.common.config.WebSiteConfig;
+import com.github.wulilinghan.jmb.common.exception.ArticleNotFoundException;
 import com.github.wulilinghan.jmb.common.global.GlobalData;
 import com.github.wulilinghan.jmb.common.pojo.ArticleMetaData;
 import com.github.wulilinghan.jmb.common.pojo.Catalog;
@@ -24,6 +25,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import java.io.File;
@@ -322,7 +324,14 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         metaInfo.setTitle(FilenameUtils.getBaseName(file.toString()));
         //摘要
 //        metaInfo.setSummary(MarkDownHandler.mdSimpleToHtml(getSummary(file)));
-        String summary = HanLP.getSummary(getContent(file), 100);
+        String summary = "";
+        try {
+            if (StringUtils.hasText(getContent(file))) {
+                summary = HanLP.getSummary(getContent(file), 100);
+            }
+        } catch (ArticleNotFoundException e) {
+            e.printStackTrace();
+        }
         metaInfo.setSummary(summary);
         try {
             Path path = file.toPath();
@@ -336,7 +345,10 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
-        metaInfo.setCoverImage("https://source.unsplash.com/random/1270x720");
+        // https://source.unsplash.com/random/1270x720
+        // https://source.unsplash.com/random/1720x720
+        // https://picsum.photos/seed/picsum/1720/720
+        metaInfo.setCoverImage("https://source.unsplash.com/random/1720x720");
         return metaInfo;
     }
 

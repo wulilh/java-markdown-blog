@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView articleHandler(ArticleNotFoundException notFound) {
         ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/error/404");
+        modelAndView.addObject("message", notFound.getMessage());
         log.error("article {} not found !", notFound.getArticleId());
         return modelAndView;
     }
@@ -33,6 +34,7 @@ public class GlobalExceptionHandler {
         ModelAndView modelAndView = new ModelAndView("theme/" + theme + "/error/500");
         e.printStackTrace();
         log.error("uri : {} , exception: {}", request.getRequestURI(), e.getCause());
+        modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
 }

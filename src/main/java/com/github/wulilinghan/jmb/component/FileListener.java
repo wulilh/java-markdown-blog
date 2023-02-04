@@ -42,12 +42,15 @@ public class FileListener extends FileAlterationListenerAdaptor {
         log.info("删除文件夹：" + directory.getAbsolutePath());
     }
 
+    /**
+     * @param file 新建 或者 被重命名的新文件
+     */
     @Override
     public void onFileCreate(File file) {
         String compressedPath = file.getAbsolutePath();
         log.info("新建文件：" + compressedPath);
         if (file.canRead()) {
-            log.info("fileCanRead，进行处理");
+            log.info("fileCanRead，需要进行处理 TODO");
         }
     }
 
@@ -58,6 +61,11 @@ public class FileListener extends FileAlterationListenerAdaptor {
         listenerService.updateArticleCache(compressedPath);
     }
 
+    /**
+     * 文件重名命 也会触发
+     *
+     * @param file 删除的 或者 要被重名命的原文件
+     */
     @Override
     public void onFileDelete(File file) {
         log.info("文件删除：" + file.getAbsolutePath());

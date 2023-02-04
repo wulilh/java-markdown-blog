@@ -1,14 +1,14 @@
 package com.github.wulilinghan.jmb.common.global;
 
+import com.github.wulilinghan.jmb.common.exception.ArticleNotFoundException;
 import com.github.wulilinghan.jmb.common.pojo.ArticleMetaData;
 import com.github.wulilinghan.jmb.common.pojo.Catalog;
+import com.github.wulilinghan.jmb.common.pojo.Tag;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.StringUtils;
-import com.github.wulilinghan.jmb.common.pojo.Tag;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -62,12 +62,12 @@ public class GlobalData {
 
     public static File aboutFile;
 
-    public static String getContent(File file) {
+    public static String getContent(File file) throws ArticleNotFoundException {
         List<String> lines = getArticleLinesContent(file);
         return String.join("\n", lines);
     }
 
-    public static String getSummary(File file) {
+    public static String getSummary(File file) throws ArticleNotFoundException {
         List<String> lines = getArticleLinesContent(file);
         List<String> rs = new ArrayList<>();
         int index = 0;
@@ -88,7 +88,7 @@ public class GlobalData {
         return file != null && !file.isDirectory() && FilenameUtils.getExtension(file.toString()).equals(MARKDOWN_SUFFIX);
     }
 
-    public static List<String> getArticleLinesContent(String path) {
+    public static List<String> getArticleLinesContent(String path) throws ArticleNotFoundException {
         return getArticleLinesContent(new File(path));
     }
 
@@ -98,13 +98,26 @@ public class GlobalData {
      * @param file /
      * @return /
      */
-    public static List<String> getArticleLinesContent(File file) {
+    public static List<String> getArticleLinesContent(File file) throws ArticleNotFoundException {
         List<String> list = new ArrayList<>();
         try {
             list = FileUtils.readLines(file, StringUtils.hasText(CHARSET) ? CHARSET : "utf-8");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new ArticleNotFoundException(null).setMessage(getMarkdownRelativePath(file) + "文件可能已被删除");
         }
         return list;
+    }
+
+    /**
+     * 获取Markdown文档相对路径
+     * 配置的markdown-dir 根；路径为 D:\weibsite\md
+     * 入参数  D:\weibsite\md\技术\Spring.md
+     * 返回的的是 \技术\Spring.md
+     *
+     * @param file /
+     */
+    public static String getMarkdownRelativePath(File file) {
+        String rootAbsolutePath = MARKDOWN_DIR_FILE.getAbsolutePath().toLowerCase();
+        return file.getAbsolutePath().toLowerCase().replace(rootAbsolutePath, "");
     }
 }
