@@ -35,11 +35,11 @@ website:
     time: 864000
   webSiteTittle: "wuliling's 博客"
   webSiteDescription: "一个用Java写的Markdown博客"
-  webSiteLogo: "https://imgse.com/i/pS6QTJO"
-  webSiteIcon: "https://imgse.com/i/pS6QTJO"
+  webSiteLogo: "https://i.328888.xyz/2023/02/05/NPLMJ.png"
+  webSiteIcon:
   author: "wulilinghan"
   #authorAvatar: "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png"
-  authorAvatar: "https://imgse.com/i/pS6EyGR"
+  authorAvatar: "https://i.328888.xyz/2023/02/05/NPvYP.jpeg"
   footer:
     icp:            # 例如：粤公网安备 123456789号
     poweredBy: "java-markdown-blog"
@@ -51,7 +51,7 @@ website:
     repo:
     clientId:
     secret:
-  plugin-player: false  # 网易云播放器
+  plugin-player: "false"  # 网易云播放器
   plugin-player-type: "neteasePlayer"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
 
 

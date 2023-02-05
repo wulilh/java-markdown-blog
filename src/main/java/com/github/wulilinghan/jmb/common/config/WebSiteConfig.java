@@ -32,11 +32,11 @@ public class WebSiteConfig {
     private String charset = "UTF-8";
 
     private String author = "wulilinghan";
-    private String authorAvatar;
+    private String authorAvatar = "https://i.328888.xyz/2023/02/05/NPvYP.jpeg";
 
     private String webSiteTittle = "wuliling's 博客";
     private String webSiteDescription = "一个用Java写的Markdown博客";
-    private String webSiteLogo;
+    private String webSiteLogo = "https://i.328888.xyz/2023/02/05/NPLMJ.png";
     private String webSiteIcon;
 
     private Footer footer;
@@ -46,11 +46,11 @@ public class WebSiteConfig {
     /**
      * 网易云播放器
      */
-    private Boolean pluginPlayer;
+    private Boolean pluginPlayer = Boolean.FALSE;
     /**
      * 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
      */
-    private String pluginPlayerType;
+    private String pluginPlayerType = "netEasy-music";
 
     public WebSiteConfig() {
         File cacheFileDir = new File(cacheDir);

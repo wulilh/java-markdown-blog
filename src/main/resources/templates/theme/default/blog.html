@@ -76,12 +76,12 @@
                     <div class="ui orange basic label">
                         <div class="ui images" style="font-size: inherit !important;">
                             <div class="image">
-                                <img src="../../../static/default/images/wechat.jpg" th:src="@{/images/wechat.jpg}"
+                                <img src="../../../static/default/images/blog_up_avatar.png" th:src="@{/default/images/blog_up_avatar.png}"
                                      alt="" class="ui rounded bordered image" style="width: 120px">
                                 <div>支付宝</div>
                             </div>
                             <div class="image">
-                                <img src="../../../static/default/images/wechat.jpg" th:src="@{/images/wechat.jpg}"
+                                <img src="../../../static/default/images/blog_up_avatar.png" th:src="@{/default/images/blog_up_avatar.png}"
                                      alt="" class="ui rounded bordered image" style="width: 120px">
                                 <div>微信</div>
                             </div>
@@ -106,7 +106,7 @@
                     </ui>
                 </div>
                 <div class="five wide column">
-                    <img src="../../../static/default/images/wechat.jpg" th:src="@{/default/images/wechat.jpg}" alt=""
+                    <img src="../../../static/default/images/blog_up_avatar.png" th:src="@{/default/images/blog_up_avatar.png}" alt=""
                          class="ui right floated rounded bordered image" style="width: 110px">
                 </div>
             </div>
@@ -120,7 +120,7 @@
                         <h3 class="ui dividing header">评论</h3>
                         <div class="comment" th:each="comment : ${comments}">
                             <a class="avatar">
-                                <!--                                <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">-->
+                                <!-- <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">-->
                                 <img src="/default/images/avatar.png" alt=""/>
                             </a>
                             <div class="content">
@@ -153,7 +153,7 @@
                             <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
                                 <div class="comment" th:each="reply : ${comment.replyComments}">
                                     <a class="avatar">
-                                        <!--                                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">-->
+                                        <!-- <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">-->
                                         <img src="/default/images/avatar.png" alt=""/>
                                     </a>
                                     <div class="content">
@@ -237,7 +237,6 @@
     <div class="ui vertical icon buttons ">
         <button type="button" class="ui toc teal button">目录</button>
         <a href="#comment-container" class="ui teal button" th:if="${blog.meta.commentabled}">留言</a>
-        <a href="#comment-container" class="ui teal button">留言</a>
         <button type="button" class="ui share teal button">分享</button>
         <!--<button class="ui wechat icon button"><i class="weixin icon"></i></button>-->
         <button class="ui wechat icon button"><i class="big qrcode icon"></i></button>
@@ -268,7 +267,7 @@
 <!--二维码弹框-->
 <div id="qrcode" class="ui wechat-qr flowing popup transition hidden " style="width: 130px !important;">
     <p style="color: red;font-size: small;text-align:center" class="h6 small">手机扫码阅读本文</p>
-    <!--<img src="./static/images/wechat.jpg" alt="" class="ui rounded image" style="width: 120px !important;">-->
+    <!--<img src="/default/blog_up_avatar.png" alt="" class="ui rounded image" style="width: 120px !important;">-->
 </div>
 
 
