@@ -7,6 +7,7 @@
 >
 >后端：Springboot + Thymeleaf
 
+![](https://raw.githubusercontent.com/wulilinghan/PicBed/main/img2023/202302052330187.png)
 
 # IDEA集成Docker并部署
 ## docker配置文件修改
