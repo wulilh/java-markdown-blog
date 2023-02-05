@@ -155,7 +155,7 @@ public class GlobalData {
         // https://source.unsplash.com/random/1270x720
         // https://source.unsplash.com/random/1720x720
         // https://picsum.photos/seed/picsum/1720/720
-        metaInfo.setCoverImage("https://picsum.photos/seed/picsum/1720/720");
+        metaInfo.setCoverImage("https://source.unsplash.com/random/1720x720");
         return metaInfo;
     }
 }

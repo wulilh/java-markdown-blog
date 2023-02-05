@@ -12,7 +12,7 @@ create table if not exists message_board_info(
     create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'
     update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'
     is_valid varchar default 'Y' -- '是否有效'
-)^;
+);
 
 create table if not exists message_comment_info(
     id integer constraint message_comment_info_pk primary key autoincrement ,	-- '评论主表id'
@@ -29,7 +29,7 @@ create table if not exists message_comment_info(
     create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'
     update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'
     is_valid varchar default 'Y' -- '是否有效'
-)^;
+);
 
 create table if not exists user_github(
     id integer constraint user_github_pk primary key autoincrement ,	-- 'id'
@@ -48,5 +48,5 @@ create table if not exists user_github(
     create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'
     update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'
     is_valid varchar default 'Y' -- '是否有效'
-)^;
+);
 

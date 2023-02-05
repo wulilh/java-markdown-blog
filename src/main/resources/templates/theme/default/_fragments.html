@@ -4,10 +4,12 @@
 
 <head th:fragment="head(title)">
   <meta charset="UTF-8">
+  <meta name="description" th:content="${webSiteConfig.getWebSiteDescription()}" content="一个用Java写的Markdown博客">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:replace="${title}">博客详情</title>
+  <title th:replace="${title}">博客标题</title>
   <!-- 标签页logo -->
-  <link rel="shortcut icon" href="../../../static/default/favicon.ico" th:href="@{/default/favicon.ico}"/>
+<!--  <link rel="shortcut icon" href="../../../static/default/site_logo.ico" th:href="${webSiteConfig.getWebSiteLogo()}"/>-->
+  <link rel="shortcut icon" href="../../../static/default/site_logo.ico" th:href="@{/default/site_logo.ico}"/>
 
   <link rel="stylesheet" href="../../../static/default/css/semantic.min.css" th:href="@{/default/css/semantic.min.css}">
   <link rel="stylesheet" href="../../../static/default/css/typo.css" th:href="@{/default/css/typo.css}">
@@ -91,13 +93,33 @@
 
 <!--底部footer-->
 <footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
-  <!--引入网易云音乐播放器插件，固定右下角显示,歌单 2920779395 换成自己的， auto值取0，关闭自动播放-->
-  <div id="netEasy-music" style="display:none;position: fixed;bottom: -45px;right: 280px;width: 0%;z-index:9999" >
+  <!--网易云音乐播放器插件，固定右下角显示,歌单 2920779395 换成自己的， auto值取0，关闭自动播放-->
+  <!-- <div id="netEasy-music" style="display:none;position: fixed;bottom: -45px;right: 280px;width: 0%;z-index:9999" >-->
+  <div id="netEasy-music" th:if="${webSiteConfig.getPluginPlayer() and webSiteConfig.getPluginPlayerType() eq 'netEasy-music'}"
+       style="position: fixed;bottom: -45px;right: 280px;width: 0%;z-index:9999" >
     <iframe frameborder="no" border="0" marginwidth="0"
             marginheight="0" width=280 height=300
             src="http://music.163.com/outchain/player?type=0&id=2920779395&auto=0">
     </iframe>
   </div>
+  <!-- 网易云音乐播放器插件
+  data-fixed        歌词是否居中显示，
+  data-id           网易云歌单id,
+  data-order为random 表示随机播放列表音乐,
+  data-autoplay     是否自动播放,
+  data-volume       默认音量
+  -->
+  <script src="../../../static/default/js/APlayer.min.js" th:src="@{/default/js/APlayer.min.js}"></script>
+  <div th:if="${webSiteConfig.getPluginPlayer() and webSiteConfig.getPluginPlayerType() eq 'neteasePlayer'}" id="player"
+       class="aplayer aplayer-withlist aplayer-fixed"
+       data-id="2920779395"
+       data-server="netease"
+       data-autoplay="false"
+       data-type="playlist"
+       data-fixed="false"
+       data-volume="0.6"
+       data-listfolded="true"
+       data-theme="#2D8CF0"></div>
 
   <div class="ui center aligned container">
     <p class="m-text-thin m-text-spaced m-opacity-tiny">
@@ -106,7 +128,7 @@
     </p>
 
     <!-- 备案号 -->
-    <div style="width:300px;margin:0 auto; padding:1px 0; ">
+    <div style="width:300px;margin:0 auto; padding:1px 0; " th:if="${!#strings.isEmpty(footer.getIcp())}">
       <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36098102000147"
          style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
         <img src="/default/images/beian_img.png" style="float:left;" alt=""/>
@@ -150,10 +172,6 @@
 </footer>
 
 <th:block th:fragment="script">
-  <!--data-fixed歌词是否居中显示， data-id网易云歌单id,data-order为random表示随机播放列表音乐,data-autoplay是否自动播放,data-volume默认音量-->
-  <div id="player" class="aplayer aplayer-withlist aplayer-fixed" data-id="3778678" data-server="netease" data-autoplay="true" data-type="playlist"  data-fixed="true" data-volume="0.6" data-listfolded="true" data-theme="#2D8CF0"></div>
-
-  <script src="../../../static/default/js/APlayer.min.js" th:src="@{/default/js/APlayer.min.js}"></script>
   <script src="../../../static/default/js/Meting.min.js" th:src="@{/default/js/Meting.min.js}"></script>
   <script src="../../../static/default/js/jquery.js" th:src="@{/default/js/jquery.js}"></script>
   <script src="../../../static/default/js/semantic.min.js" th:src="@{/default/js/semantic.min.js}"></script>
@@ -165,6 +183,7 @@
   <script src="../../../static/default/js/jquery.emoji.js" th:src="@{/default/js/jquery.emoji.js}"></script>
   <script src="../../../static/default/js/emoji.list.js" th:src="@{/default/js/emoji.list.js}"></script>
 
+  <!-- 自定义常量 -->
   <script src="../../../static/default/js/constant.js" th:src="@{/default/js/constant.js}"></script>
 
   <script>

@@ -99,16 +99,12 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
      * 设置thymeleaf全局变量
      */
     private void setThymeleafGlobalStaticVariables() {
-        thymeleafViewResolver.setStaticVariables(
-                new HashMap<>(4) {
-                    {
-                        put("giTalk", giTalk);
-                        put("newblogs", articleMetaList.subList(0, 3));
-                        put("webSiteConfig", webSiteConfig);
-                        put("footer", webSiteConfig.getFooter());
-                    }
-                }
-        );
+        HashMap<String, Object> staticVal = new HashMap<>(4);
+        staticVal.put("giTalk", giTalk);
+        staticVal.put("webSiteConfig", webSiteConfig);
+        staticVal.put("footer", webSiteConfig.getFooter());
+        log.info("staticVal: {}", staticVal.toString());
+        thymeleafViewResolver.setStaticVariables(staticVal);
     }
 
     @Override
@@ -123,14 +119,8 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
             startFileMonitor();
         } catch (Exception e) {
             log.error("System init error", e);
-            log.error("System exit！");
-            System.exit(-1);
         }
         log.info("web site end init....");
-        log.info("\n-------------------------------------"
-                + "\n读取本地Markdown文档完成."
-                + "\nhttp://" + serverIp + ":" + serverPort
-                + "\n-------------------------------------");
     }
 
     private void loadTag() {
@@ -221,12 +211,16 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         String indexDir = webSiteConfig.getIndexDir();
         log.info("website-config: markdown dir[{}] , index dir[{}] ", markdownDir, indexDir);
         File markDownDirFile = new File(markdownDir);
-        if (!markDownDirFile.isDirectory()) {
-            throw new RuntimeException("website.markdown-dir[{" + markdownDir + "}] not set or is not exist or not directory");
+        if (!markDownDirFile.exists()) {
+            log.info("Folder [{}] is not exist", markDownDirFile);
+            boolean mkdirs = markDownDirFile.mkdirs();
+            log.info("Created Folder [{}] result: [{}]", markDownDirFile, mkdirs);
         }
         File indexDirFile = new File(indexDir);
-        if (!indexDirFile.isDirectory()) {
-            throw new RuntimeException("website.index-dir[{" + indexDir + "}] not set or is not exist or not directory");
+        if (!indexDirFile.exists()) {
+            log.info("Folder [{}] is not exist", indexDirFile);
+            boolean mkdirs = indexDirFile.mkdirs();
+            log.info("Created Folder [{}] result: [{}]", indexDirFile, mkdirs);
         }
         // 获取文档目录元数据信息
         String catalogJsonFilePath = indexDirFile.getAbsolutePath() + OSUtils.fileSeparator() + webSiteConfig.getCatalogFile();

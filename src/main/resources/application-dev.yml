@@ -1,0 +1,62 @@
+# db conf
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:com/github/wulilinghan/jmb/mapper/xml/**.xml
+  type-aliases-package: com.github.wulilinghan.jmb.common.pojo
+spring:
+  datasource:
+    url: jdbc:sqlite:sqlite/jmb.db
+    driver-class-name: org.sqlite.JDBC
+  sql:
+    init:
+      mode: ALWAYS
+      separator: ^; # 使用默认 ; 分隔符执行trigger报错，这里换成 ^;
+      schema-locations:
+        - classpath:dbs/sqlite/schema.sql
+        - classpath:dbs/sqlite/trigger.sql
+
+# website conf
+comment:
+  default:
+    avatar: /default/images/avatar.png
+github:
+  callback: http://xiongsihao.com/github/callback  # 修改成自己应用回调地址
+  client-id: Iv1.5f8c132f227f383c                 # 修改成自己github client-id
+  client-secret: 755c85b587ee2734cf59572768bdd623da0b61ea     # 修改成自己github client-secret
+image:
+  upload:
+    base-url: d:/website/upload/image
+website:
+  indexDir: d:/website/index
+  markdownDir: D:\work-space\github\assets\markdown-articles
+  cookie:
+    time: 864000
+  # 博主
+  author: "wulilinghan"
+  #authorAvatar: "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png"
+  authorAvatar: "https://imgse.com/i/pS6EyGR"
+  # 网站
+  webSiteTittle: "wuliling's 博客"
+  webSiteDescription: "一个用Java写的Markdown博客"
+  webSiteLogo: "https://imgur.com/a/OuIa9eS"
+  webSiteIcon: "https://imgse.com/i/pS6QTJO"
+  footer:
+    icp:                # 例如：粤公网安备 123456789号
+    poweredBy: "java-markdown-blog"
+    poweredByUrl: "https://github.com/wulilinghan/java-markdown-blog"
+  # 评论 gitTalk未开发
+  gitTalk:
+    enable:
+    owner:
+    admin:
+    repo:
+    clientId:
+    secret:
+  plugin-player: "true"  # 是否开启网易云播放器
+  plugin-player-type: "neteasePlayer"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
+
+
+
+

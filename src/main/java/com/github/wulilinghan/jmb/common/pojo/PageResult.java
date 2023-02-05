@@ -1,13 +1,17 @@
 package com.github.wulilinghan.jmb.common.pojo;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * @author wuliling Created By 2023-01-19 14:45
  **/
+@Slf4j
 public class PageResult implements Serializable {
     @Serial
     private static final long serialVersionUID = 3602764259182858275L;
@@ -32,13 +36,16 @@ public class PageResult implements Serializable {
      * @param currPage 当前页数
      */
     public PageResult(List<?> list, int currPage, int pageSize) {
+        if (list == null) {
+            log.warn("paramList is null");
+            list = new ArrayList<>();
+        }
         this.list = list;
         this.total = list.size();
         this.currPage = currPage;
         this.pageSize = pageSize;
         this.totalPage = (int) Math.ceil((double) total / pageSize);
-        long skipNum = (long) pageSize * (currPage - 1);
-        skipNum = skipNum <= 0 ? 0 : skipNum;
+        long skipNum = (long) (pageSize <= 0 ? 5 : pageSize) * (currPage <= 0 ? 1 : currPage - 1);
         this.list = list.stream().skip(skipNum).limit(pageSize).collect(Collectors.toList());
 
         this.first = currPage == 1;

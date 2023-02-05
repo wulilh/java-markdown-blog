@@ -1,8 +1,6 @@
 package com.github.wulilinghan.jmb.common.config;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -32,17 +30,27 @@ public class WebSiteConfig {
 
     private String catalogFile = "catalog.json";
     private String charset = "UTF-8";
-    private GiTalk giTalk;
+
+    private String author = "wulilinghan";
+    private String authorAvatar;
 
     private String webSiteTittle = "wuliling's 博客";
     private String webSiteDescription = "一个用Java写的Markdown博客";
-    private String webSiteLogo = "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png";
-    private String webSiteIcon = "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png";
-
-    private String author = "wulilinghan";
-    private String authorAvatar = "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png";
+    private String webSiteLogo;
+    private String webSiteIcon;
 
     private Footer footer;
+
+    private GiTalk giTalk;
+
+    /**
+     * 网易云播放器
+     */
+    private Boolean pluginPlayer;
+    /**
+     * 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
+     */
+    private String pluginPlayerType;
 
     public WebSiteConfig() {
         File cacheFileDir = new File(cacheDir);
@@ -81,8 +89,7 @@ public class WebSiteConfig {
      *
      * @author wuliling Created By 2023-01-17 9:51
      **/
-    @Getter
-    @Setter
+    @Data
     public static class GiTalk {
         private Boolean enable = Boolean.FALSE;
         private String owner;
@@ -92,11 +99,10 @@ public class WebSiteConfig {
         private String secret;
     }
 
-    @Getter
-    @Setter
+    @Data
     public static class Footer {
         private String icp;
-        private String poweredBy;
+        private String poweredBy = "java-markdown-blog";
         private String poweredByUrl = "https://github.com/wulilinghan/java-markdown-blog";
     }
 }

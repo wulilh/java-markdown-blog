@@ -12,14 +12,13 @@ import com.github.wulilinghan.jmb.service.IArticle;
  * @author wuliling Created By 2023-01-28 15:40
  **/
 @Controller
-@RequestMapping("/about")
 public class AboutController {
     public static String themeName = GlobalData.theme;
 
     @Resource
     private IArticle article;
 
-    @RequestMapping("")
+    @RequestMapping("about")
     public ModelAndView about() throws ArticleNotFoundException {
         ModelAndView modelAndView = new ModelAndView("theme/" + themeName + "/about");
         modelAndView.addObject("content", article.getAbout());

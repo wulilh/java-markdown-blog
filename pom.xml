@@ -120,7 +120,6 @@
     </dependencies>
 
 
-
     <build>
         <resources>
             <resource>
@@ -130,9 +129,35 @@
                 </includes>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <!--下方resources的文件夹名字要和自己项目的文件夹名确认一致才行 很多人就是忽略了名字不一致 -->
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>timestamp-property</id>
+                        <goals>
+                            <goal>timestamp-property</goal>
+                        </goals>
+                        <configuration>
+                            <name>build.time</name>
+                            <pattern>yyyyMMddHHmmss</pattern>
+                            <locale>zh_CN</locale>
+                            <timeZone>GMT+8</timeZone>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
@@ -150,6 +175,10 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <!-- 打包文件名带时间戳 -->
+        <!-- <finalName>${project.artifactId}_${build.time}</finalName>-->
+        <finalName>app</finalName>
     </build>
 
 </project>

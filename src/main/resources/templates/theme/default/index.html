@@ -4,11 +4,12 @@
 <head th:replace="~{theme/default/_fragments :: head(~{::title})}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>博客</title>
+    <!-- 标签页标题 -->
+    <title th:text="${webSiteConfig.getWebSiteTittle()}">博客</title>
     <!-- 标签页logo -->
-    <link rel="shortcut icon" href="../../../static/default/favicon.ico" th:href="@{/default/favicon.ico}"/>
-    <link rel="stylesheet" href="../../../static/default/css/semantic.min.css"
-          th:href="@{/default/css/semantic.min.css}">
+    <link rel="shortcut icon" href="../../../static/default/favicon.ico" th:href="@{/default/site_logo.ico}"/>
+
+    <link rel="stylesheet" href="../../../static/default/css/semantic.min.css" th:href="@{/default/css/semantic.min.css}">
     <link rel="stylesheet" href="../../../static/default/css/me.css" th:href="@{/default/css/me.css}">
 </head>
 

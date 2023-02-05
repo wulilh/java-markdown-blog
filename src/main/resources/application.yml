@@ -1,17 +1,17 @@
 logging:
-    file:
-        path: log
+  file:
+    path: log
 server:
-    port: 6060
-    session:
-        timeout: 864000 #session自动过期时间为10天，单位秒 60*60*24*10；记录登录状态
+  port: 6060
+  session:
+    timeout: 864000 #session自动过期时间为10天，单位秒 60*60*24*10；记录登录状态
 spring:
-    profiles:
-        include: website,sqlite
-    thymeleaf:
-        cache: false
-        check-template-location: true
-        enabled: true
-        encoding: UTF-8
-        mode: HTML
-        suffix: .html
+  profiles:
+    active: dev
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    enabled: true
+    encoding: UTF-8
+    mode: HTML
+    suffix: .html

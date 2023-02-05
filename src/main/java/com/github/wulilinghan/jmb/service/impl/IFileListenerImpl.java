@@ -16,7 +16,7 @@ import static com.github.wulilinghan.jmb.common.global.GlobalData.*;
  **/
 @Service
 @Slf4j
-public class ListenerServiceImpl implements IFileListener {
+public class IFileListenerImpl implements IFileListener {
 
 
     /**
@@ -40,15 +40,16 @@ public class ListenerServiceImpl implements IFileListener {
         boolean removeIf = articleMetaList.removeIf(md -> markdownUniId.equals(md.getArticleId()));
         log.info("articleMetaList markdownUniId:[{}] removeIf = {}", markdownUniId, removeIf);
 
-        // 标签删除
+        // todo 标签下的文章同步删除
     }
 
     @Override
     public void addArticle(File file) {
         ArticleMetaData articleMetaInfo = getArticleMetaInfo(file);
+        log.info("addArticle articleMetaInfo:[{}] ", JSON.toJSONString(articleMetaInfo));
         articleMetaIndex.put(articleMetaInfo.getArticleId(), articleMetaInfo);
-
         articleMetaList.add(articleMetaInfo);
 
+        // todo 标签下的文章同步新增
     }
 }

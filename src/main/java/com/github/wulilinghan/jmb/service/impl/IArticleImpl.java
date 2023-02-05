@@ -6,8 +6,10 @@ import com.github.wulilinghan.jmb.common.pojo.*;
 import com.github.wulilinghan.jmb.component.MarkDownHandler;
 import com.github.wulilinghan.jmb.service.IArticle;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -51,13 +53,17 @@ public class IArticleImpl implements IArticle {
             return MarkDownHandler.mdToHtml(GlobalData.getContent(GlobalData.aboutFile));
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ArticleNotFoundException("about.md");
         }
+        return "";
     }
 
     @Override
     public PageResult listArticleWithTagId(Integer tagId, PageQueryBaseDto query) {
-        return new PageResult(GlobalData.tagIndex.get(tagId).getArticleMetaList(), query.getCurrPage(), query.getPageSize());
+        Tag tag = GlobalData.tagIndex.get(tagId);
+        if (Objects.isNull(tag)) {
+            tag = new Tag();
+        }
+        return new PageResult(tag.getArticleMetaList(), query.getCurrPage(), query.getPageSize());
     }
 
     @Override
@@ -67,7 +73,8 @@ public class IArticleImpl implements IArticle {
 
     @Override
     public List<ArticleMetaData> listTop(int size) {
-        return GlobalData.articleMetaList.subList(0, size);
+        return CollectionUtils.isEmpty(GlobalData.articleMetaList) || GlobalData.articleMetaList.size() <= size
+                ? GlobalData.articleMetaList : GlobalData.articleMetaList.subList(0, size);
     }
 
 
