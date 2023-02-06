@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<!-- head -->
+<head th:replace="~{theme/simple/head::head(~{::title})}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 标签页标题 -->
+    <title th:text="${webSiteConfig.getWebSiteTittle()}">博客</title>
+</head>
+<!-- head -->
+
+<body>
+<!-- header -->
+<div th:replace="~{theme/simple/header::header}"></div>
+<!-- header -->
+
+<!-- main -->
+<main role="main-home-wrapper" class="container">
+    <div class="row">
+        <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+            <article role="pge-title-content">
+                <header>
+                    <h2><span>Luis</span> A Java Developer.</h2>
+                </header>
+                <p>maker of things for the web app, always focused on elegant simplicity, relentlessly learning by
+                    making mistakes.</p>
+            </article>
+        </section>
+        <th:block th:each="archive,archiveStat : ${page.list}">
+            <th:block th:if="${archiveStat.index == 1}">
+                <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6 grid">
+                    <figure class="effect-oscar">
+                        <img src="https://source.unsplash.com/random/1270x720"
+                             alt="" class="img-responsive"/>
+                        <figcaption>
+                            <h2>
+                                <th:block th:text="${archive.title}"></th:block>
+                            </h2>
+                            <p>
+                                <th:block th:utext="${#dates.format(archive.lastModifiedTime,'yyyy-MM-dd')}"></th:block>
+                            </p>
+                            <a th:href="@{/article/md/{id}(id=${archive.articleId})}">View more</a></figcaption>
+                    </figure>
+                </section>
+            </th:block>
+        </th:block>
+
+        <!-- left -->
+        <div class="clearfix"></div>
+        <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6 grid">
+            <ul class="grid-lod effect-2" id="grid">
+                <th:block th:each="archive,archiveStat : ${page.list}">
+                    <th:block th:if="${archiveStat.index != 1 && archiveStat.index % 2 == 0}">
+                        <li>
+                            <figure class="effect-oscar">
+                                <img src="https://source.unsplash.com/random/1270x720"
+                                     alt="" class="img-responsive"/>
+                                <figcaption>
+                                    <h2>
+                                        <th:block th:text="${archive.title}"></th:block>
+                                    </h2>
+                                    <p>
+                                        <th:block th:utext="${#dates.format(archive.lastModifiedTime,'yyyy-MM-dd')}"></th:block>
+                                    </p>
+                                    <a th:href="@{/article/md/{id}(id=${archive.articleId})}">View more</a></figcaption>
+                            </figure>
+                        </li>
+                    </th:block>
+                </th:block>
+            </ul>
+        </section>
+
+        <!-- right -->
+        <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6 grid">
+            <ul class="grid-lod effect-2" id="grid">
+                <th:block th:each="archive,archiveStat : ${page.list}">
+                    <th:block th:if="${archiveStat.index != 1 && archiveStat.index % 2 != 0}">
+                        <li>
+                            <figure class="effect-oscar">
+                                <img src="https://source.unsplash.com/random/1270x720"
+                                     alt="" class="img-responsive"/>
+                                <figcaption>
+                                    <h2>
+                                        <th:block th:text="${archive.title}"></th:block>
+                                    </h2>
+                                    <p>
+                                        <th:block th:utext="${#dates.format(archive.lastModifiedTime,'yyyy-MM-dd')}"></th:block>
+                                    </p>
+                                    <a th:href="@{/article/md/{id}(id=${archive.articleId})}">View more</a></figcaption>
+                            </figure>
+                        </li>
+                    </th:block>
+                </th:block>
+            </ul>
+        </section>
+        <div class="clearfix"></div>
+    </div>
+</main>
+<!-- main -->
+
+<!-- footer -->
+<div th:replace="~{theme/simple/footer::footer}"></div>
+
+</body>
+</html>
