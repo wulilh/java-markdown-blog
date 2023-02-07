@@ -1,8 +1,12 @@
 # java-markdown-blog
 
 一个粗粗糙糙的用Java写的Markdown博客，用来将本地Markdown文档发布到网站上。
-> 前端参考：https://github.com/xiongsihao/myblog
->
+> 前端参考：
+> 
+> https://github.com/xiongsihao/myblog
+> 
+> https://github.com/WinterChenS/my-site
+> 
 >后端：Springboot + Thymeleaf
 
 ![](https://raw.githubusercontent.com/wulilinghan/PicBed/main/img2023/202302052330187.png)

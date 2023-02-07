@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.tlh.jmb.mapper.MessageCommentInfoMapper">
+    <resultMap id="MessageBoardInfoMap" type="io.github.tlh.jmb.common.pojo.MessageCommentInfo">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="articleId" column="article_id" jdbcType="VARCHAR"/>
+        <result property="parentCommentId" column="parent_comment_id" jdbcType="INTEGER"/>
+        <result property="toUserId" column="to_user_id" jdbcType="VARCHAR"/>
+        <result property="toEmail" column="to_email" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="replyInform" column="reply_inform" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isValid" column="is_valid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultType="io.github.tlh.jmb.common.pojo.MessageCommentInfo">
+        select * from message_comment_info where id = #{id}
+    </select>
+
+    <select id="listRootComment" resultType="io.github.tlh.jmb.common.pojo.MessageCommentInfo">
+        select * from message_comment_info where article_id = #{articleId} and is_valid = 'Y'  and parent_comment_id is null order by create_time desc
+    </select>
+
+    <select id="listReplyComment" resultType="io.github.tlh.jmb.common.pojo.MessageCommentInfo">
+        select * from message_comment_info where article_id = #{articleId} and is_valid = 'Y' and parent_comment_id = #{id} order by create_time desc
+    </select>
+
+    <insert id="insert" parameterType="io.github.tlh.jmb.common.pojo.MessageCommentInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into message_comment_info(article_id,parent_comment_id,user_id, nickname, avatar,email, content,reply_inform)
+        values (#{articleId},#{parentCommentId},#{userId}, #{nickname}, #{avatar},#{email}, #{content},#{replyInform})
+    </insert>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        update message_comment_info set is_valid = 'N' where id = #{id}
+    </delete>
+</mapper>
