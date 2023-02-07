@@ -7,4 +7,6 @@ import io.github.tlh.jmb.common.pojo.Catalog;
  **/
 public interface ICatalog {
     Catalog getCatalog(String catalogId);
+
+    Catalog getCatalog();
 }

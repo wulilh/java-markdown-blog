@@ -80,13 +80,13 @@
         </div>
     </div>
     <div class="lists-navigator clearfix">
-        <div th:replace="comm/macros::pageNav(${articles},'←','→','blog/page')"></div>
+        <div th:replace="theme/simple/comm/macros::pageNav(${page},'←','→','blog/page')"></div>
     </div>
 </main>
 <!-- main -->
 
 <!-- footer -->
-<div th:replace="site/footer::footer(${commons.site_title()},${commons.site_record()},${commons.site_url()})"></div>
+<div th:replace="theme/simple/site/footer::footer"></div>
 </body>
 
 </html>

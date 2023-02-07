@@ -15,4 +15,9 @@ public class ICatalogImpl implements ICatalog {
     public Catalog getCatalog(String catalogId) {
         return GlobalData.catalogIndex.get(catalogId);
     }
+
+    @Override
+    public Catalog getCatalog() {
+        return GlobalData.catalog;
+    }
 }

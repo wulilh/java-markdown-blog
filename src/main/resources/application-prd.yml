@@ -3,8 +3,8 @@ mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: true
-  mapper-locations: classpath*:com/github/wulilinghan/jmb/mapper/xml/**.xml
-  type-aliases-package: com.github.wulilinghan.jmb.common.pojo
+  mapper-locations: classpath*:io/github/tlh/jmb/mapper/xml/**.xml
+  type-aliases-package: io.github.tlh.jmb.common.pojo
 spring:
   datasource:
     url: jdbc:sqlite:sqlite/jmb.db
@@ -29,6 +29,7 @@ image:
   upload:
     base-url: /website/upload/image
 website:
+  theme: "default"  # default,simple
   indexDir: /website/index
   markdownDir: /website/markdown-articles
   cookie:

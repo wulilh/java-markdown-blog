@@ -19,6 +19,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -26,9 +27,6 @@ import org.springframework.util.CollectionUtils;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import java.io.File;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -43,9 +41,6 @@ import java.util.stream.Collectors;
 @Order(1)
 public class InitWebSite extends GlobalData implements ApplicationRunner {
 
-    private transient WebSiteConfig.GiTalk giTalk;
-
-
     @Resource
     private Environment environment;
 
@@ -56,11 +51,11 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
     @Resource
     private ThymeleafViewResolver thymeleafViewResolver;
 
-    private static String serverPort;
-    private static String serverIp;
-
     @PostConstruct
+    @DependsOn(value = {"WebSiteConfig"})
     public void init() {
+        theme = webSiteConfig.getTheme();
+
         MARKDOWN_DIR_FILE = webSiteConfig.getMarkdownPath().toFile();
         MARKDOWN_DIR_STR = MARKDOWN_DIR_FILE.getPath();
 
@@ -68,24 +63,6 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         INDEX_DIR_STR = INDEX_DIR_FILE.getPath();
 
         CHARSET = webSiteConfig.getCharset();
-
-        serverPort = getPort();
-        serverIp = getIp();
-    }
-
-    public String getPort() {
-        return environment.getProperty("server.port");
-    }
-
-    public String getIp() {
-        InetAddress localHost = null;
-        try {
-            localHost = Inet4Address.getLocalHost();
-            return localHost.getHostAddress();
-        } catch (UnknownHostException e) {
-            log.error(e.getMessage(), e);
-        }
-        return null;
     }
 
     private void startFileMonitor() throws Exception {
@@ -100,7 +77,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
      */
     private void setThymeleafGlobalStaticVariables() {
         HashMap<String, Object> staticVal = new HashMap<>(4);
-        staticVal.put("giTalk", giTalk);
+        staticVal.put("giTalk", webSiteConfig.getGiTalk());
         staticVal.put("webSiteConfig", webSiteConfig);
         staticVal.put("footer", webSiteConfig.getFooter());
         log.info("staticVal: {}", staticVal.toString());
@@ -109,7 +86,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        log.info("web site start init....");
+        log.info(".... web site start init ....");
         try (final Cost cost = new Cost("web-site-init")) {
             catalog = loadCatalog();
             loadTag();
@@ -120,7 +97,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         } catch (Exception e) {
             log.error("System init error", e);
         }
-        log.info("web site end init....");
+        log.info(".... web site end init ....");
     }
 
     private void loadTag() {

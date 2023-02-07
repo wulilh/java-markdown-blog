@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<ol class="page-navigator" th:fragment="pageNav(pageInfo, prevText, nextText, prefix)">
+    <th:block th:if="${pageInfo.isHasPreviousPage()}">
+        <li class="prev"><a th:href="@{'/'+${prefix}+'/'+${pageInfo.getPrePage()}}" th:text="${prevText}"></a></li>
+    </th:block>
+
+
+    <th:block th:each="navIndex :${pageInfo.getNavigatePages()}">
+        <li th:class="${pageInfo.getPageNum()==navIndex}?'current':''"><a th:href="@{'/'+${prefix}+'/'+ ${navIndex}}"
+                                                                     th:text="${navIndex}"></a></li>
+    </th:block>
+
+
+    <th:block th:if="${pageInfo.isHasNextPage()}">
+        <li class="next"><a th:href="@{'/'+${prefix}+'/'+${pageInfo.getNextPage()}}" th:text="${nextText}"></a></li>
+    </th:block>
+
+</ol>
+
+<div th:fragment="pageAdminNav(pageInfo)">
+    <div class="clearfix">
+        <ul class="pagination m-b-5 pull-right">
+            <li th:if="${pageInfo.isHasPreviousPage()}">
+                <a th:href="@{'?page='+${pageInfo.getPrePage()}}" aria-label="Previous">
+                    <i class="fa fa-angle-left"></i>&nbsp;上一页
+                </a>
+            </li>
+
+            <th:block th:each="nav : ${pageInfo.getNavigatePages()}">
+                <li th:class="${nav==pageInfo.getPageNum()}?'active':''"><a th:href="@{'?page='+${nav}}" th:text="${nav}"></a>
+                </li>
+            </th:block>
+
+            <th:block th:if="${pageInfo.isHasNextPage()}">
+                <li>
+                    <a th:href="@{'?page='+${pageInfo.getNextPage()}}" aria-label="Next">
+                        下一页&nbsp;<i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+            </th:block>
+
+            <li><span th:text="'共'+${pageInfo.getPages()}+'页'"></span></li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

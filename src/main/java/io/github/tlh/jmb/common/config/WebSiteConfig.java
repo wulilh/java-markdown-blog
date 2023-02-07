@@ -17,8 +17,10 @@ import java.nio.file.Path;
 @ConfigurationProperties("website")
 @Data
 @Slf4j
+@SuppressWarnings("all")
 public class WebSiteConfig {
 
+    private String theme = "default"; //主题
     private String markdownDir; //Markdown文件根目录
     private transient Path markdownPath;
     private String indexDir; //存放About.md 以及md文件元信息

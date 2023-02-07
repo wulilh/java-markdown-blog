@@ -27,9 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 @Slf4j
 public class GlobalData {
-    //public static String theme = "yummy-jekyll";
-    public static String theme = "simple";
-//    public static String theme = "default";
+    public static String theme;
 
     public final static String MARKDOWN_SUFFIX = "md";
     public static String CHARSET = "";

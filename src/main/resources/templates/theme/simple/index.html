@@ -94,7 +94,11 @@
                 </th:block>
             </ul>
         </section>
-        <div class="clearfix"></div>
+<!--        <div class="clearfix"></div>-->
+    </div>
+    <div class="lists-navigator clearfix">
+<!--        <div th:replace="~{theme/simple/comm/macros::pageAdminNav(${page})}"></div>-->
+        <div th:replace="~{theme/simple/comm/macros::pageNav(${page},'←','→')}"></div>
     </div>
 </main>
 <!-- main -->

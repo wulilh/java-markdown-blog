@@ -25,6 +25,24 @@ public class PageResult implements Serializable {
     private boolean first; //是否是第一页
     private boolean last; //是否是最后一页
 
+    /**
+     * 是否为第一页
+     */
+    private boolean isFirstPage = false;
+    /**
+     * 是否为最后一页
+     */
+    private boolean isLastPage = false;
+    /**
+     * 是否有前一页
+     */
+    private boolean hasPreviousPage = false;
+    /**
+     * 是否有下一页
+     */
+    private boolean hasNextPage = false;
+
+
     public PageResult() {
     }
 
@@ -50,6 +68,52 @@ public class PageResult implements Serializable {
 
         this.first = currPage == 1;
         this.last = this.totalPage == currPage;
+
+        calcByNavigatePages();
+    }
+
+    public void calcByNavigatePages() {
+        //判断页面边界
+        judgePageBoudary();
+    }
+
+    private void judgePageBoudary() {
+        isFirstPage = currPage == 1;
+        isLastPage = currPage == totalPage || totalPage == 0;
+        hasPreviousPage = currPage > 1;
+        hasNextPage = currPage < totalPage;
+    }
+
+    public boolean isFirstPage() {
+        return isFirstPage;
+    }
+
+    public void setFirstPage(boolean firstPage) {
+        isFirstPage = firstPage;
+    }
+
+    public boolean isLastPage() {
+        return isLastPage;
+    }
+
+    public void setLastPage(boolean lastPage) {
+        isLastPage = lastPage;
+    }
+
+    public boolean isHasPreviousPage() {
+        return hasPreviousPage;
+    }
+
+    public void setHasPreviousPage(boolean hasPreviousPage) {
+        this.hasPreviousPage = hasPreviousPage;
+    }
+
+    public boolean isHasNextPage() {
+        return hasNextPage;
+    }
+
+    public void setHasNextPage(boolean hasNextPage) {
+        this.hasNextPage = hasNextPage;
     }
 
     public int getTotal() {

@@ -4,7 +4,6 @@ import io.github.tlh.jmb.common.exception.ArticleNotFoundException;
 import io.github.tlh.jmb.common.pojo.ArticleMetaData;
 import io.github.tlh.jmb.common.pojo.ArticleResult;
 import io.github.tlh.jmb.common.pojo.PageResult;
-import com.github.wulilinghan.jmb.common.pojo.*;
 import io.github.tlh.jmb.common.pojo.PageQueryBaseDto;
 
 import java.util.List;
