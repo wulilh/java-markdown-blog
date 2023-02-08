@@ -86,12 +86,12 @@ public class IMessageCommentImpl implements IMessageComment {
     @Transactional(rollbackFor = Exception.class)
     public MessageCommentInfo saveComment(MessageCommentInfo message) {
         Integer parentCommentId = message.getParentCommentId();
-        if (parentCommentId == -1) {
+        if (parentCommentId == null || parentCommentId == -1) {
             message.setParentCommentId(null);
             message.setParentComment(null);
         }
 
-        if (parentCommentId != -1) {
+        if (parentCommentId != null && parentCommentId != -1) {
             message.setParentCommentId(parentCommentId);
             message.setParentComment(messageCommentInfoMapper.queryById(parentCommentId));
         }

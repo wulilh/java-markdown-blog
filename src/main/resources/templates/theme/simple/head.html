@@ -2,15 +2,18 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head th:fragment="head(title)">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <meta charset="utf-8">
 
+    <meta name="google-site-verification" th:content=".........."/>
+    <meta name="baidu-site-verification" th:content=".........."/>
     <!--    <meta name="author" th:text="${webSiteConfig.getAuthor()}" content="wulilinghan">-->
     <!--    <meta name="description" th:content="${webSiteConfig.getWebSiteDescription()}" content="一个用Java写的Markdown博客">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta charset="utf-8">
     <title th:replace="${title}">博客标题</title>
+    <!-- 标签页logo -->
+    <link rel="shortcut icon" href="../../../static/simple/site/images/favicon.ico"
+          th:href="@{/simple/site/images/favicon.ico}"/>
 
-    <meta name="google-site-verification" th:content=".........." />
-    <meta name="baidu-site-verification" th:content=".........." />
 
     <!-- style -->
     <link th:href="@{/simple/site/css/style.css}" rel="stylesheet" type="text/css">

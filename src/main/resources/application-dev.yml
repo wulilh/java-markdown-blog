@@ -15,7 +15,6 @@ spring:
       separator: ^; # 使用默认 ; 分隔符执行trigger报错，这里换成 ^;
       schema-locations:
         - classpath:dbs/sqlite/schema.sql
-        - classpath:dbs/sqlite/trigger.sql
 
 # website conf
 comment:

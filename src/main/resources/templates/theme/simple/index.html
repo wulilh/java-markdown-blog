@@ -40,7 +40,8 @@
                             <p>
                                 <th:block th:utext="${#dates.format(archive.lastModifiedTime,'yyyy-MM-dd')}"></th:block>
                             </p>
-                            <a th:href="@{/article/md/{id}(id=${archive.articleId})}">View more</a></figcaption>
+                            <a th:href="@{/article/md/{id}(id=${archive.articleId})}">View more</a>
+                        </figcaption>
                     </figure>
                 </section>
             </th:block>

@@ -7,12 +7,18 @@ create table if not exists message_board_info(
     nickname VARCHAR , --'评论者昵称'
     email VARCHAR , --'评论者邮箱'
     avatar VARCHAR , --'评论者头像'
+    url VARCHAR , --'评论者网址'
     content text not null ,	-- '评论内容'
     reply_inform INTEGER , -- '留言被回复后是否发邮件通知'
     create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'
     update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'
     is_valid varchar default 'Y' -- '是否有效'
 )^;
+CREATE TRIGGER  IF NOT EXISTS u_trig_mbi
+    AFTER UPDATE ON message_board_info
+BEGIN
+UPDATE message_board_info SET update_time = datetime('now','localtime') WHERE id = NEW.id;
+END^;
 
 create table if not exists message_comment_info(
     id integer constraint message_comment_info_pk primary key autoincrement ,	-- '评论主表id'
@@ -24,12 +30,18 @@ create table if not exists message_comment_info(
     nickname VARCHAR , --'评论者昵称'
     email VARCHAR , --'评论者邮箱'
     avatar VARCHAR , --'评论者头像'
+    url VARCHAR , --'评论者头像'
     content text not null ,	-- '评论内容'
     reply_inform INTEGER , -- '留言被回复后是否发邮件通知'
     create_time timestamp default (datetime('now','localtime')) ,   -- '创建时间'
     update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'
     is_valid varchar default 'Y' -- '是否有效'
 )^;
+CREATE TRIGGER  IF NOT EXISTS u_trig_mci
+    AFTER UPDATE ON message_comment_info
+BEGIN
+UPDATE message_comment_info SET update_time = datetime('now','localtime') WHERE id = NEW.id;
+END^;
 
 create table if not exists user_github(
     id integer constraint user_github_pk primary key autoincrement ,	-- 'id'
@@ -49,4 +61,8 @@ create table if not exists user_github(
     update_time timestamp default (datetime('now','localtime')) ,	-- '修改时间'
     is_valid varchar default 'Y' -- '是否有效'
 )^;
-
+CREATE TRIGGER  IF NOT EXISTS u_trig_ug
+    AFTER UPDATE ON user_github
+BEGIN
+UPDATE user_github SET update_time = datetime('now','localtime') WHERE id = NEW.id;
+END^;

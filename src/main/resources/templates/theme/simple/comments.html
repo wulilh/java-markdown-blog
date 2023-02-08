@@ -2,61 +2,54 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="comments">
 
 <body>
-<div th:if="${article.allowComment}" class="comment-allow">
-    <div id="comments-content" th:if="${article}!=null">
-        <div th:id="${article.cid ?: 0}" class="comments-pan">
-
+<div th:if="${blog.meta.commentabled}" class="comment-allow">
+    <div id="comments-content" th:fragment="commentList">
+        <div th:id="${blog.meta.articleId ?: 0}" class="comments-pan">
             <h3>
-                <th:block th:text="${article.commentsNum ?: 0}"></th:block>
+                <th:block th:text="${comments.size ?: 0}">0</th:block>
                 Comments
             </h3>
 
             <ul th:if="${comments}" class="comments-reply">
                 <th:block th:each="comment :${comments}">
-                    <li th:id="'li-comment-'+${comment.coid}">
-
-                        <figure th:id="'comment-'+${comment.coid}">
-
-                            <img th:src="@{${commons.gravatar(comment.mail)}(s='80',r='G',d='')}" alt=""
+                    <li th:id="'li-comment-'+${comment.id}">
+                        <figure th:id="'comment-'+${comment.id}">
+                            <!-- <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">-->
+                            <img src="/default/images/avatar.png"
+                                 alt=""
                                  class="img-responsive"/>
-
                         </figure>
 
                         <section>
-
-                            <h4><a th:href="${comment.url}" target="blank" th:text="${comment.author}"></a></h4>
-
+                            <h4><a th:href="${comment.url}" target="blank" th:text="${comment.nickname}"></a></h4>
                             <div class="date-pan">
-                                <th:block th:text="${commons.fmtdate(comment.created)}"></th:block>
+                                <th:block th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}">Today at
+                                    5:42PM
+                                </th:block>
                             </div>
-
-                            <th:block th:utext="${commons.article(comment.content)}"></th:block>
-
+                            <th:block th:utext="${comment.content}">How artistic!</th:block>
                         </section>
-
-
                     </li>
+
                 </th:block>
-
-
             </ul>
+
             <div class="commentys-form">
                 <h4>Leave a comment</h4>
                 <div class="row">
                     <form id="comment-form" class="comment-form" role="form"
                           onsubmit="return TaleComment.subComment();">
-
-                        <input type="hidden" name="coid" id="coid"/>
-                        <input type="hidden" name="cid" id="cid" th:value="${article.cid}"/>
-                        <input type="hidden" name="_csrf_token" th:value="${_csrf_token}"/>
+                        <!-- 评论id -->
+                        <input type="hidden" name="parentCommentId" id="parentCommentId"/>
+                        <!-- 文章id -->
+                        <input type="hidden" name="articleId" id="cid" th:value="${blog.meta.articleId}"/>
+                        <!--<input type="hidden" name="_csrf_token" th:value="${_csrf_token}"/>-->
                         <div class="col-xs-12 col-sm-4 col-md-4">
-                            <input type="text" name="author" maxlength="12" id="author" placeholder="姓名 (*)"/>
+                            <input type="text" name="nickname" maxlength="12" id="author" placeholder="昵称 (*)"/>
                         </div>
-
                         <div class="col-xs-12 col-sm-4 col-md-4">
-                            <input type="email" name="mail" id="mail" placeholder="邮箱 (*)"/>
+                            <input type="email" name="email" id="mail" placeholder="邮箱 (*)"/>
                         </div>
-
                         <div class="col-xs-12 col-sm-4 col-md-4">
                             <input type="url" name="url" id="url" placeholder="网址 (http://)"/>
                         </div>
@@ -64,9 +57,9 @@
                         <div class="clearfix"></div>
 
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                                <textarea name="text" id="textarea" placeholder="以上信息可以为空,评论不能为空哦!"
-                                          required="required" minlength="5"
-                                          maxlength="2000"></textarea>
+                            <textarea name="content" id="textarea" placeholder="以上信息可以为空,评论不能为空哦!" required="required"
+                                      minlength="5"
+                                      maxlength="2000"></textarea>
                         </div>
 
                         <div class="text-center">

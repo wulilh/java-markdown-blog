@@ -11,6 +11,7 @@
         <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
         <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
         <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="replyInform" column="reply_inform" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -32,8 +33,8 @@
     </select>
 
     <insert id="insert" parameterType="io.github.tlh.jmb.common.pojo.MessageCommentInfo" useGeneratedKeys="true" keyProperty="id">
-        insert into message_comment_info(article_id,parent_comment_id,user_id, nickname, avatar,email, content,reply_inform)
-        values (#{articleId},#{parentCommentId},#{userId}, #{nickname}, #{avatar},#{email}, #{content},#{replyInform})
+        insert into message_comment_info(article_id,parent_comment_id,user_id, nickname, avatar,email,url, content,reply_inform)
+        values (#{articleId},#{parentCommentId},#{userId}, #{nickname}, #{avatar},#{email},#{url}, #{content},#{replyInform})
     </insert>
 
     <!--通过主键删除-->

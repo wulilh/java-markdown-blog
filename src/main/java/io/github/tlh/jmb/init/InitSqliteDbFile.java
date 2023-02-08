@@ -28,14 +28,14 @@ public class InitSqliteDbFile implements ApplicationRunner {
             throw new RuntimeException(sqliteUrl + " sqlite url error");
         }
         File dbFile = new File(sqliteUrl.split(":")[2]);
-        log.info("......StartInitSqliteDbFile sqliteUrl: [{}] ,dbFile:[{}]", sqliteUrl, dbFile);
+        log.info("Start_InitSqliteDbFile sqliteUrl: [{}] ,dbFile:[{}]", sqliteUrl, dbFile);
         // sqlite文件不存在时创建
         if (!dbFile.exists()) {
             FileUtils.touch(dbFile);
         } else {
             log.info("DbFile is exist sqliteUrl: [{}],dbFile:[{}]", sqliteUrl, dbFile);
         }
-        log.info("......EndInitSqliteDbFile sqliteUrl: [{}],dbFile:[{}]", sqliteUrl, dbFile);
+        log.info("End_InitSqliteDbFile sqliteUrl: [{}],dbFile:[{}]", sqliteUrl, dbFile);
 
     }
 }

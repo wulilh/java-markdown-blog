@@ -5,10 +5,7 @@ import io.github.tlh.jmb.common.enums.CommentTypeEnum;
 import io.github.tlh.jmb.common.enums.MessageTypeEnum;
 import io.github.tlh.jmb.common.exception.ArticleNotFoundException;
 import io.github.tlh.jmb.common.global.GlobalData;
-import io.github.tlh.jmb.common.pojo.ArticleResult;
-import io.github.tlh.jmb.common.pojo.MessageBoardInfo;
-import io.github.tlh.jmb.common.pojo.MessageCommentInfo;
-import io.github.tlh.jmb.common.pojo.PageQueryBaseDto;
+import io.github.tlh.jmb.common.pojo.*;
 import io.github.tlh.jmb.service.IArticle;
 import io.github.tlh.jmb.service.IMessageBoard;
 import io.github.tlh.jmb.service.IMessageComment;
@@ -108,7 +105,16 @@ public class MessageBoardController {
      */
     @PostMapping("/POSTComments")
     public String post(MessageCommentInfo comment, HttpSession session, RedirectAttributes redirectAttributes) throws ArticleNotFoundException {
-        String articleId = comment.getArticleMetaData().getArticleId();
+        String articleId = "";
+        if (comment.getArticleMetaData() == null) {
+            articleId = comment.getArticleId();
+            ArticleMetaData metaData = new ArticleMetaData();
+            metaData.setArticleId(articleId);
+            comment.setArticleMetaData(metaData);
+        } else {
+            articleId = comment.getArticleMetaData().getArticleId();
+            comment.setArticleId(articleId);
+        }
         ArticleResult articleResult = iArticle.get(articleId);
         comment.setArticleMetaData(articleResult.getMeta());
         comment.setArticleId(articleId);

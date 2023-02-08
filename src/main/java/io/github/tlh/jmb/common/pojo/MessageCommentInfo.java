@@ -13,6 +13,7 @@ import java.util.*;
  **/
 @Data
 @Accessors(chain = true)
+@SuppressWarnings("all")
 public class MessageCommentInfo {
     private Integer id;
     private Integer parentCommentId;
@@ -20,6 +21,7 @@ public class MessageCommentInfo {
     private String userId; //评论者昵称
     private String nickname; //评论者昵称
     private String email; //邮箱
+    private String url; //网址
     private String content; //评论内容
     private String avatar; //头像
     private Date createTime;
@@ -47,29 +49,5 @@ public class MessageCommentInfo {
 
     public void appendReplyMessage(Collection<MessageCommentInfo> messages) {
         this.replyComments.addAll(messages);
-    }
-
-    @Override
-    public String toString() {
-        return "MessageCommentInfo{" +
-                "id=" + id +
-                ", parentCommentId=" + parentCommentId +
-                ", userId='" + userId + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", email='" + email + '\'' +
-                ", content='" + content + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", isValid='" + isValid + '\'' +
-                ", toUserId='" + toUserId + '\'' +
-                ", toNickname='" + toNickname + '\'' +
-                ", toEmail='" + toEmail + '\'' +
-                ", replyInform=" + replyInform +
-                ", articleMetaData=" + articleMetaData +
-                ", openid='" + openid + '\'' +
-                ", parentComment=" + parentComment +
-                ", adminComment=" + adminComment +
-                '}';
     }
 }

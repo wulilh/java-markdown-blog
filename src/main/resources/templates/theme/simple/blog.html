@@ -1,92 +1,48 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<!-- head -->
 <head th:replace="~{theme/simple/head :: head(~{::title})}">
     <title>博客详情</title>
-</head>
-<!-- head -->
 
+</head>
 
 <body>
 <!-- header -->
-<div th:replace="~{theme/simple/header :: header}"></div>
+<div th:replace="~{theme/simple/header::header}"></div>
 <!-- header -->
 
 <!-- main -->
 <main role="main-inner-wrapper" class="container">
-    <div class="row">
-        <!-- Left -->
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
-            <article role="pge-title-content" class="blog-header">
-                <header>
-                    <h2><span>Blog</span> write by luis</h2>
-                </header>
-                <p>Some technical blogs and life logs about Java.</p>
-            </article>
+    <div class="blog-details">
+        <article class="post-details" id="post-details">
+            <header role="bog-header" class="bog-header text-center">
+                <h3>
+                    <th:block th:utext="${#dates.format(blog.meta.lastModifiedTime,'yyyy-MM-dd')}"></th:block>
+                </h3>
+                <h2>
+                    <th:block th:text="${blog.meta.title}"></th:block>
+                </h2>
+            </header>
+            <figure>
+                <img src="/simple/site/images/blog-images/blog-details-image.jpg" alt="" class="img-responsive"/>
+            </figure>
+            <div id="post-content" class="post-content" itemprop="articleBody">
+                <th:block th:utext="${blog.html}"></th:block>
+            </div>
+        </article>
 
-            <ul class="grid-lod effect-2" id="grid">
-                <th:block th:each="article,articleStat : ${articles.list}">
-                    <th:block th:if="${articleStat.index % 2 != 0}">
-                        <li>
-                            <section class="blog-content">
-
-                                <a th:href="${commons.blogPermalink(article.cid)}">
-                                    <figure>
-                                        <div class="post-date">
-                                            <th:block th:utext="${commons.fmtdate_en(article.created)}"></th:block>
-                                        </div>
-                                        <img th:src="${commons.show_thumb(article.content) ?:commons.randomBlogPic(1322)}"
-                                             alt=""
-                                             class="img-responsive"/>
-                                    </figure>
-                                </a>
-                                <article>
-                                    <th:block th:text="${article.title}"></th:block>
-                                </article>
-                            </section>
-                        </li>
-                    </th:block>
-                </th:block>
-            </ul>
-        </div>
-
-
-        <!-- right -->
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <ul class="grid-lod effect-2" id="grid">
-                <th:block th:each="article,articleStat : ${articles.list}">
-                    <th:block th:if="${articleStat.index % 2 == 0}">
-                        <li>
-                            <section class="blog-content">
-                                <a th:href="${commons.blogPermalink(article.cid)}">
-                                    <figure>
-                                        <div class="post-date">
-                                            <th:block th:utext="${commons.fmtdate_en(article.created)}"></th:block>
-                                        </div>
-                                        <img th:src="${commons.show_thumb(article.content) ?:commons.randomBlogPic(1221)}"
-                                             alt=""
-                                             class="img-responsive"/>
-                                    </figure>
-                                </a>
-                                <article>
-                                    <th:block th:text="${article.title}"></th:block>
-                                </article>
-                            </section>
-                        </li>
-                    </th:block>
-                </th:block>
-            </ul>
-        </div>
-    </div>
-    <div class="lists-navigator clearfix">
-        <div th:replace="theme/simple/comm/macros::pageNav(${page},'←','→','blog/page')"></div>
+        <!-- Comments -->
+        <div th:replace="~{theme/simple/comments::comments}"></div>
     </div>
 </main>
 <!-- main -->
 
 <!-- footer -->
-<div th:replace="theme/simple/site/footer::footer"></div>
+<div th:replace="~{theme/simple/footer::footer}"></div>
+
+<!-- js -->
+<th:block th:replace="~{theme/simple/_fragments :: TaleCommentScript}"/>
+
 </body>
 
 </html>
