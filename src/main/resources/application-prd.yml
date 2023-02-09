@@ -31,9 +31,12 @@ website:
   theme:
     active: "default"  # 主题 default,simple
     default-theme:
-      plugin-player: "false"  # 是否开启网易云播放器
-      plugin-player-type: "neteasePlayer"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
-      netease-player-list-id: "2920779395"   # 网易云歌单id
+      plugin-player: "true"  # 是否开启网易云播放器
+      plugin-player-type: "netEasy-music"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
+      netease-player-list-id: "2993302747"   # 网易云歌单id  例如此链接id=后面的数字 https://music.163.com/#/my/m/music/playlist?id=2993302747
+      github: "https://github.com/wulilinghan"
+      twitter: "isvling"
+      qq: "1902325071"
     simple-theme:
       github: "https://github.com/wulilinghan"
       twitter: "https://twitter.com/isvling"
