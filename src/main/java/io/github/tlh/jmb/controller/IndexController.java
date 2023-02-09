@@ -39,16 +39,16 @@ public class IndexController {
 
     @RequestMapping("about")
     public ModelAndView about() throws ArticleNotFoundException {
-        ModelAndView modelAndView = new ModelAndView("theme/" + GlobalData.theme + "/about");
+        ModelAndView modelAndView = new ModelAndView("theme/" + GlobalData.activeTheme + "/about");
         modelAndView.addObject("content", iArticle.getAbout());
         return modelAndView;
     }
 
     @RequestMapping("/")
     public ModelAndView index(PageQueryBaseDto baseDto) {
-        ModelAndView modelAndView = new ModelAndView("theme/" + GlobalData.theme + "/index");
+        ModelAndView modelAndView = new ModelAndView("theme/" + GlobalData.activeTheme + "/index");
         if (baseDto == null) {
-            modelAndView = new ModelAndView("theme/" + GlobalData.theme + "/error/404");
+            modelAndView = new ModelAndView("theme/" + GlobalData.activeTheme + "/error/404");
             return modelAndView;
         }
         modelAndView.addObject("page", iArticle.listTop(baseDto));
@@ -61,7 +61,7 @@ public class IndexController {
 
     @RequestMapping("article/md/{articleId}")
     public ModelAndView get(@PathVariable("articleId") String articleId) throws ArticleNotFoundException {
-        ModelAndView modelAndView = new ModelAndView("theme/" + GlobalData.theme + "/blog");
+        ModelAndView modelAndView = new ModelAndView("theme/" + GlobalData.activeTheme + "/blog");
         modelAndView.addObject("blog", iArticle.get(articleId));
         modelAndView.addObject("comments", iMessageComment.listCommentsByArticleId(articleId, 1, -1).getList());
         return modelAndView;
@@ -85,7 +85,7 @@ public class IndexController {
         model.addAttribute("tags", tags);
         model.addAttribute("page", iArticle.listArticleWithTagId(id, pageDto));
         model.addAttribute("activeTagId", id);
-        return "theme/" + GlobalData.theme + "/tags";
+        return "theme/" + GlobalData.activeTheme + "/tags";
     }
 
     @RequestMapping("rootCatalog")

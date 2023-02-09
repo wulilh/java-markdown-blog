@@ -43,7 +43,7 @@ public class MessageBoardController {
 
     @GetMapping("messages")
     public ModelAndView messages(PageQueryBaseDto query) {
-        ModelAndView modelAndView = new ModelAndView("theme/" + GlobalData.theme + "/message_board");
+        ModelAndView modelAndView = new ModelAndView("theme/" + GlobalData.activeTheme + "/message_board");
         PageInfo<MessageBoardInfo> commentInfoPageInfo = messageBoard.selectByPage(query.getCurrPage(), query.getPageSize());
         boolean isFirstPage = commentInfoPageInfo.isIsFirstPage(); //判断是否为首页
         boolean isLastPage = commentInfoPageInfo.isIsLastPage();//判断是否为尾页
@@ -92,7 +92,7 @@ public class MessageBoardController {
         model.addAttribute("isIsLastPage", isLastPage);
         model.addAttribute("messages", commentInfoPageInfo);
         //将数据返回message_board页面的th:fragment="messageList"片段，实现局部刷新
-        return "theme/" + GlobalData.theme + "/message_board :: messageList";
+        return "theme/" + GlobalData.activeTheme + "/message_board :: messageList";
     }
 
 
@@ -144,6 +144,6 @@ public class MessageBoardController {
     public String refreshComments(@PathVariable("articleId") String articleId, Model model) {
         model.addAttribute("comments", iMessageComment.listCommentsByArticleId(articleId, 1, -1).getList());
         //将数据返回 blog 页面的th:fragment="commentList"片段，实现局部刷新
-        return "theme/" + GlobalData.theme + "/blog::commentList";
+        return "theme/" + GlobalData.activeTheme + "/blog::commentList";
     }
 }

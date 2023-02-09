@@ -46,14 +46,13 @@
                     <div class="ui teal basic left pointing label m-margin-tb-tiny">...</div>
                 </div>
                 <div class="ui bottom attached segment">
-                    <a href="https://github.com/wulilinghan" class="ui github circular icon button" target="_blank" data-content="https://github.com/wulilinghan" data-position="bottom center">
+                    <a th:if="${!#strings.isEmpty(themeConfig.getGithub)}" href="https://github.com/wulilinghan" class="ui github circular icon button" target="_blank" data-content="https://github.com/wulilinghan" data-position="bottom center">
                         <i class="github icon"></i>
                     </a>
-<!--                    <a href="#" class="ui wechat circular icon button" data-content="wulilinghan" data-position="bottom center"><i class="weixin icon"></i></a>-->
-                    <a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=1902325071&website=www.oicqzone.com" target="_blank" class="ui qq circular icon button" data-content="1902325071" data-position="bottom center">
+                    <a th:if="${!#strings.isEmpty(themeConfig.getQq())}" th:href="|tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=${themeConfig.getQq()}&website=www.oicqzone.com|" target="_blank" class="ui qq circular icon button" th:data-content="${themeConfig.getQq()}" data-position="bottom center">
                         <i class="qq icon"></i>
                     </a>
-                    <a href="https://twitter.com/isvling" target="_blank" class="ui qq circular icon button" data-content="@isvling" data-position="bottom center">
+                    <a th:if="${!#strings.isEmpty(themeConfig.getTwitter())}" th:href="|https://twitter.com/${themeConfig.getTwitter()}|" target="_blank" class="ui qq circular icon button" th:data-content="${themeConfig.getTwitter()}" data-position="bottom center">
                         <i class="twitter icon"></i>
                     </a>
                 </div>

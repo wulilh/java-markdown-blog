@@ -28,24 +28,35 @@ image:
   upload:
     base-url: d:/website/upload/image
 website:
-  theme: "simple"  # 主题 default,simple
-  indexDir: d:/website/index
-  markdownDir: D:\work-space\github\assets\markdown-articles
+  theme:
+    active: "default"  # 主题 default,simple
+    default-theme:
+      plugin-player: "true"  # 是否开启网易云播放器
+      plugin-player-type: "netEasy-music"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
+      netease-player-list-id: "2993302747"   # 网易云歌单id  例如此链接id=后面的数字 https://music.163.com/#/my/m/music/playlist?id=2993302747
+      github: "https://github.com/wulilinghan"
+      twitter: "isvling"
+      qq: "1902325071"
+    simple-theme:
+      github: "https://github.com/wulilinghan"
+      twitter: "https://twitter.com/isvling"
+  index-dir: d:/website/index
+  markdown-dir: D:\work-space\github\assets\markdown-articles
   cookie:
     time: 864000
   # 博主
   author: "wulilinghan"
   #authorAvatar: "https://cn.gravatar.com/userimage/176875695/30e6f4fb8ae8b9eef75989ac24806248.png"
-  authorAvatar: "https://i.328888.xyz/2023/02/05/NPvYP.jpeg"
+  author-avatar: "https://i.328888.xyz/2023/02/05/NPvYP.jpeg"
   # 网站
-  webSiteTittle: "wuliling's 博客"
-  webSiteDescription: "一个用Java写的Markdown博客"
-  webSiteLogo: "https://i.328888.xyz/2023/02/05/NPLMJ.png"
-  webSiteIcon:
+  web-site-tittle: "wuliling's 博客"
+  web-site-description: "一个用Java写的Markdown博客"
+  web-site-logo: "https://i.328888.xyz/2023/02/05/NPLMJ.png"
+  web-site-icon:
   footer:
     icp:                # 例如：粤公网安备 123456789号
-    poweredBy: "java-markdown-blog"
-    poweredByUrl: "https://github.com/wulilinghan/java-markdown-blog"
+    powered-by: "java-markdown-blog"
+    powered-by-url: "https://github.com/wulilinghan/java-markdown-blog"
   # 评论 gitTalk未开发
   gitTalk:
     enable:
@@ -54,8 +65,6 @@ website:
     repo:
     clientId:
     secret:
-  plugin-player: "false"  # 是否开启网易云播放器
-  plugin-player-type: "neteasePlayer"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
 
 
 

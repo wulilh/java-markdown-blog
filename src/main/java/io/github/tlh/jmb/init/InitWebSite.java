@@ -54,7 +54,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
     @PostConstruct
     @DependsOn(value = {"WebSiteConfig"})
     public void init() {
-        theme = webSiteConfig.getTheme();
+        activeTheme = webSiteConfig.getTheme().getActive();
 
         MARKDOWN_DIR_FILE = webSiteConfig.getMarkdownPath().toFile();
         MARKDOWN_DIR_STR = MARKDOWN_DIR_FILE.getPath();
@@ -80,6 +80,7 @@ public class InitWebSite extends GlobalData implements ApplicationRunner {
         staticVal.put("giTalk", webSiteConfig.getGiTalk());
         staticVal.put("webSiteConfig", webSiteConfig);
         staticVal.put("footer", webSiteConfig.getFooter());
+        staticVal.put("themeConfig", webSiteConfig.getActiveTheme());
         log.info("staticVal: {}", staticVal.toString());
         thymeleafViewResolver.setStaticVariables(staticVal);
     }

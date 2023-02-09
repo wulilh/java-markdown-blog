@@ -20,7 +20,6 @@ import java.nio.file.Path;
 @SuppressWarnings("all")
 public class WebSiteConfig {
 
-    private String theme = "default"; //主题
     private String markdownDir; //Markdown文件根目录
     private transient Path markdownPath;
     private String indexDir; //存放About.md 以及md文件元信息
@@ -41,18 +40,13 @@ public class WebSiteConfig {
     private String webSiteLogo = "https://i.328888.xyz/2023/02/05/NPLMJ.png";
     private String webSiteIcon;
 
+    private Cookie cookie;
+
     private Footer footer;
 
     private GiTalk giTalk;
 
-    /**
-     * 网易云播放器
-     */
-    private Boolean pluginPlayer = Boolean.FALSE;
-    /**
-     * 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
-     */
-    private String pluginPlayerType = "netEasy-music";
+    private Theme theme; //主题
 
     public WebSiteConfig() {
         File cacheFileDir = new File(cacheDir);
@@ -84,6 +78,21 @@ public class WebSiteConfig {
         this.cachePath = cacheFileDir.toPath();
     }
 
+    public Theme getActiveTheme() {
+        if (this.theme.getActive().equals("default")) {
+            return this.theme.getDefaultTheme();
+        }
+
+        if (this.theme.getActive().equals("simple")) {
+            return this.theme.getSimpleTheme();
+        }
+        throw new RuntimeException("unknow theme: " + this.theme.getActive());
+    }
+
+    @Data
+    public static class Cookie {
+        private Integer time;
+    }
 
     /**
      * Gitalk 是一个基于 GitHub Issue 和 Preact 开发的评论插件。
@@ -106,5 +115,42 @@ public class WebSiteConfig {
         private String icp;
         private String poweredBy = "java-markdown-blog";
         private String poweredByUrl = "https://github.com/wulilinghan/java-markdown-blog";
+    }
+
+    @Data
+    public static class Theme {
+
+        private String active = "default"; //主题
+
+        private Default defaultTheme;
+        private Simple simpleTheme;
+
+        @Data
+        public static class Default extends Theme {
+            private String qq;
+            private String github;
+            private String twitter;
+
+            /**
+             * 网易云播放器
+             */
+            private Boolean pluginPlayer = Boolean.FALSE;
+            /**
+             * 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
+             */
+            private String pluginPlayerType;
+            private String neteasePlayerListId;
+        }
+
+        @Data
+        public static class Simple extends Theme {
+            private String resume;
+            private String github;
+            private String twitter;
+            private String csdn;
+            private String jianshu;
+            private String zhihu;
+            private String weibo;
+        }
     }
 }

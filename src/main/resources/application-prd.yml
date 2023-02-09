@@ -28,7 +28,15 @@ image:
   upload:
     base-url: /website/upload/image
 website:
-  theme: "default"  # default,simple
+  theme:
+    active: "default"  # 主题 default,simple
+    default-theme:
+      plugin-player: "false"  # 是否开启网易云播放器
+      plugin-player-type: "neteasePlayer"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
+      netease-player-list-id: "2920779395"   # 网易云歌单id
+    simple-theme:
+      github: "https://github.com/wulilinghan"
+      twitter: "https://twitter.com/isvling"
   indexDir: /website/index
   markdownDir: /website/markdown-articles
   cookie:
@@ -51,8 +59,6 @@ website:
     repo:
     clientId:
     secret:
-  plugin-player: "false"  # 网易云播放器
-  plugin-player-type: "neteasePlayer"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer
 
 
 

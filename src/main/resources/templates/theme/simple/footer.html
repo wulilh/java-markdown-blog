@@ -15,13 +15,13 @@
     </nav>
 
     <ul role="social-icons">
-        <li><a class="icon csdn" target="_blank" href="http://www.baidu.com"></a></li>
-        <li><a class="icon jianshu" target="_blank" href="http://www.baidu.com"></a></li>
-        <li><a class="icon resume" target="_blank" href="http://www.baidu.com"></a></li>
-        <li><a class="icon weibo" target="_blank" href="http://www.baidu.com"></a></li>
-        <li><a class="icon zhihu" target="_blank" href="http://www.baidu.com"></a></li>
-        <li><a class="icon github" target="_blank" href="http://www.baidu.com"></a></li>
-        <li><a class="icon twitter" target="_blank" href="http://www.baidu.com"></a></li>
+        <li th:if="${!#strings.isEmpty(themeConfig.getCsdn())}"><a class="icon csdn" target="_blank" href="http://www.baidu.com"></a></li>
+        <li th:if="${!#strings.isEmpty(themeConfig.getJianshu())}"><a class="icon jianshu" target="_blank" href="http://www.baidu.com"></a></li>
+        <li th:if="${!#strings.isEmpty(themeConfig.getResume())}"><a class="icon resume" target="_blank" href="http://www.baidu.com"></a></li>
+        <li th:if="${!#strings.isEmpty(themeConfig.getWeibo())}"><a class="icon weibo" target="_blank" href="http://www.baidu.com"></a></li>
+        <li th:if="${!#strings.isEmpty(themeConfig.getZhihu())}"><a class="icon zhihu" target="_blank" href="http://www.baidu.com"></a></li>
+        <li th:if="${!#strings.isEmpty(themeConfig.getGitHub())}"><a class="icon github" target="_blank" href="http://www.baidu.com"></a></li>
+        <li th:if="${!#strings.isEmpty(themeConfig.getTwitter())}"><a class="icon twitter" target="_blank" href="http://www.baidu.com"></a></li>
     </ul>
     <p class="copy-right">&copy;
         <span th:text="${#dates.year(#dates.createNow())}">2020</span>&nbsp;. All Rights Reserved. Powered by
