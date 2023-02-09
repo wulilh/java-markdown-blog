@@ -7,17 +7,13 @@ FROM openjdk:17-jdk-slim
 MAINTAINER wulililinghan 1902325071@qq.com
 # 设定时区
 ENV TZ=Asia/Shanghai
-RUN set -eux; \
-    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime; \
-    echo $TZ > /etc/timezone
 # 设置匿名卷
 VOLUME /tmp
-RUN mkdir -p /website/{conf,log,sqlite}
 # 进入容器内的默认目录
 WORKDIR /website
 # 复制指定目录或文件到docker容器的website目录下
-ADD app.jar /website/app.jar
-ADD conf   /website/conf
+COPY app.jar /website/app.jar
+COPY conf   /website/conf
 # 导入启动脚本
 COPY docker-entrypoint.sh /website/docker-entrypoint.sh
 RUN chmod +x /website/docker-entrypoint.sh

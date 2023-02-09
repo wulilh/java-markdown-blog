@@ -29,7 +29,7 @@ image:
     base-url: d:/website/upload/image
 website:
   theme:
-    active: "default"  # 主题 default,simple
+    active: "simple"  # 主题 default,simple
     default-theme:
       plugin-player: "true"  # 是否开启网易云播放器
       plugin-player-type: "netEasy-music"   # 网易云播放器插件，有两种  netEasy-music ，neteasePlayer

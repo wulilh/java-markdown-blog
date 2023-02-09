@@ -1,11 +1,10 @@
 
+> 我这里服务器是centos7，已安装docker
+
 # 方式一 手动 docker 打包
 将docker文件夹上传到服务器，按照当前目录结构
 
 > - conf 放置spring配置文件
-> 
-> - sqlite/jmb.db是初始化的db文件
-
 
 进入到 Dockerfile 文件目录，执行
 ```shell
@@ -25,8 +24,6 @@ docker build -t java-markdown-blog:0.0.1-SNAPSHOT .
 # 创建挂在目录以及db文件
 mkdir -p /opt/docker/java-markdwon-blog/website/{index,markdown-articles,log,conf,sqlite} \
 && touch /opt/docker/java-markdwon-blog/website/sqlite/jmb.db 
-
-docker run -d --name java-markdown-blog --restart=always -p 6060:6060 java-markdown-blog:0.0.1-SNAPSHOT
 
 docker run -d --name java-markdown-blog --restart=always \
 -p 6060:6060 \

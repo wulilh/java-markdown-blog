@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
-set -ex;
+set -o pipefail
+set -e
 
-exec java $JAVA_OPTS -Dspring.profiles.active=prd -Dspring.config.location=/website/conf/application.yml -jar /website/app.jar
+# start app
+exec java $JAVA_OPTS \
+-Djava.security.egd=file:/dev/./urandom \
+-Duser.timezone=${TZ:-Asia/Shanghai} \
+-Dspring.profiles.active=prd \
+-Dspring.config.location=/website/conf/application.yml \
+-jar /website/app.jar
+ "$@"
+
+
+exit 0
