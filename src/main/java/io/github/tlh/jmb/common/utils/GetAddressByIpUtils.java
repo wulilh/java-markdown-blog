@@ -1,8 +1,8 @@
 package io.github.tlh.jmb.common.utils;
 
+import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import io.github.tlh.jmb.common.pojo.HttpResult;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -192,16 +192,17 @@ public class GetAddressByIpUtils {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("ip", ip);//传入ip地址
         map.add("json", "true");
-        HttpResult httpResult = null;
+        Map httpResult = null;
         try {
-            httpResult = httpUtil.doPostByFormData(url, map, HttpResult.class);
+            // code,body
+            httpResult = httpUtil.doPostByFormData(url, map, Map.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (httpResult.getCode() == 200) {
+        if (MapUtil.getInt(httpResult, "code") == 200) {
             System.out.println("SUCCESS");
         }
-        JSONObject jsonObject = JSONObject.parseObject(httpResult.getBody());
+        JSONObject jsonObject = JSONObject.parseObject(MapUtil.getStr(httpResult, "body"));
 
         String pro = jsonObject.getString("pro");
         String city = jsonObject.getString("city");

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Data
 @Accessors(chain = true)
+@SuppressWarnings("all")
 public class Result<T> implements Serializable {
 
     private T data;
